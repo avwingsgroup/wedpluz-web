@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /checkout
+Disallow: /messages
+Disallow: /wallet
+Sitemap: https://wedpluz.com/sitemap.xml

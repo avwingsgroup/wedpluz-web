@@ -1,0 +1,3333 @@
+{
+  "authLogin": {
+    "request": {
+      "email": "johnbrown@gmail.com",
+      "password": "password123",
+      "deviceName": "Chrome 131 on Windows"
+    },
+    "response": {
+      "data": {
+        "user": {
+          "id": "usr_me",
+          "firstName": "John",
+          "lastName": "Brown",
+          "displayName": "John Brown",
+          "username": "johnbrown",
+          "email": "johnbrown@gmail.com",
+          "phone": "+2348012345678",
+          "avatarUrl": "https://i.pravatar.cc/150?img=12",
+          "dateOfBirth": "1995-08-08",
+          "emailVerifiedAt": "2026-04-29T10:00:00+01:00",
+          "phoneVerifiedAt": null,
+          "identityStatus": "unverified",
+          "interests": [
+            "business-networking",
+            "faith-spirituality"
+          ],
+          "roles": [
+            "user",
+            "organizer"
+          ],
+          "status": "active",
+          "plan": "free",
+          "locale": "en",
+          "city": "Port Harcourt",
+          "countryCode": "NG",
+          "businessProfileId": null,
+          "walletEnabled": true,
+          "createdAt": "2026-03-03T10:00:00+01:00",
+          "lastSeenAt": "2026-11-14T17:20:00+01:00",
+          "isVerified": false,
+          "isVendor": false
+        },
+        "tokens": {
+          "accessToken": "mock-token-usr_me",
+          "refreshToken": "mock-refresh-usr_me",
+          "tokenType": "Bearer",
+          "expiresIn": 3600,
+          "expiresAt": "2026-11-16T07:48:16.111Z"
+        },
+        "nextStep": null
+      }
+    }
+  },
+  "authMe": {
+    "response": {
+      "data": {
+        "id": "usr_me",
+        "firstName": "John",
+        "lastName": "Brown",
+        "displayName": "John Brown",
+        "username": "johnbrown",
+        "email": "johnbrown@gmail.com",
+        "phone": "+2348012345678",
+        "avatarUrl": "https://i.pravatar.cc/150?img=12",
+        "dateOfBirth": "1995-08-08",
+        "emailVerifiedAt": "2026-04-29T10:00:00+01:00",
+        "phoneVerifiedAt": null,
+        "identityStatus": "unverified",
+        "interests": [
+          "business-networking",
+          "faith-spirituality"
+        ],
+        "roles": [
+          "user",
+          "organizer"
+        ],
+        "status": "active",
+        "plan": "free",
+        "locale": "en",
+        "city": "Port Harcourt",
+        "countryCode": "NG",
+        "businessProfileId": null,
+        "walletEnabled": true,
+        "createdAt": "2026-03-03T10:00:00+01:00",
+        "lastSeenAt": "2026-11-14T17:20:00+01:00",
+        "isVerified": false,
+        "isVendor": false
+      }
+    }
+  },
+  "accountConfig": {
+    "response": {
+      "data": {
+        "features": {
+          "communities": true,
+          "liveStreams": true,
+          "pluzPlanner": true,
+          "aiDesigns": true,
+          "eventPromotion": true,
+          "wallet": true,
+          "subEvents": true,
+          "seatSelection": true,
+          "vendorPromos": true,
+          "identityVerification": true
+        },
+        "payments": {
+          "enabledProviders": [
+            "paystack",
+            "stripe"
+          ],
+          "serviceFeePercent": 3
+        },
+        "support": {
+          "email": "support@wedpluz.com",
+          "phone": "+234 800 000 0000",
+          "whatsapp": "+234 800 000 0001"
+        },
+        "app": {
+          "minAndroidVersion": "2.3.0",
+          "minIosVersion": "2.3.0",
+          "forceUpdate": false,
+          "androidStoreUrl": "https://play.google.com/store/apps/details?id=com.wedpluz.app",
+          "iosStoreUrl": "https://apps.apple.com/app/wedpluz"
+        }
+      }
+    }
+  },
+  "accountSessions": {
+    "response": {
+      "data": [
+        {
+          "id": "ses_1",
+          "device": "Windows PC",
+          "browser": "Chrome 131",
+          "ip": "105.112.33.1",
+          "location": "Port Harcourt, NG",
+          "lastActiveAt": "2026-11-15T10:00:00+01:00",
+          "isCurrent": true
+        },
+        {
+          "id": "ses_2",
+          "device": "iPhone 15",
+          "browser": "Wedpluz iOS 2.4",
+          "ip": "102.89.1.44",
+          "location": "Lagos, NG",
+          "lastActiveAt": "2026-11-15T01:00:00+01:00",
+          "isCurrent": false
+        }
+      ]
+    }
+  },
+  "eventsCategories": {
+    "response": {
+      "data": [
+        {
+          "id": "cat_social",
+          "name": "Social activities",
+          "slug": "social-activities",
+          "icon": "party",
+          "isActive": true,
+          "eventsCount": 3
+        },
+        {
+          "id": "cat_hobbies",
+          "name": "Hobbies & Passion",
+          "slug": "hobbies-passion",
+          "icon": "palette",
+          "isActive": true,
+          "eventsCount": 1
+        }
+      ]
+    }
+  },
+  "eventsList": {
+    "response": {
+      "data": [
+        {
+          "id": "evt_g12",
+          "slug": "generated-event-12",
+          "title": "Yoga in the Park 13",
+          "coverUrl": "https://picsum.photos/seed/gen-12/1200/700",
+          "category": {
+            "id": "cat_food",
+            "name": "Food & Drinks",
+            "slug": "food-drinks"
+          },
+          "startsAt": "2027-01-24T10:00:00+01:00",
+          "endsAt": "2027-01-24T14:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Ibadan",
+          "isFree": true,
+          "minPrice": 0,
+          "currency": "NGN",
+          "status": "live",
+          "isSaved": false,
+          "isFeatured": false,
+          "isPromoted": false,
+          "approvalRequired": false,
+          "guestLimit": 200,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": false,
+          "organizer": {
+            "id": "usr_tessy",
+            "displayName": "Tessy Ade",
+            "avatarUrl": "https://i.pravatar.cc/150?img=29",
+            "username": "tessyade",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": null,
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-08-31T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": "2026-11-05T10:00:00+01:00",
+          "ticketsSold": 416
+        },
+        {
+          "id": "evt_g20",
+          "slug": "generated-event-20",
+          "title": "Marathon 10K 21",
+          "coverUrl": "https://picsum.photos/seed/gen-20/1200/700",
+          "category": {
+            "id": "cat_food",
+            "name": "Food & Drinks",
+            "slug": "food-drinks"
+          },
+          "startsAt": "2026-11-28T10:00:00+01:00",
+          "endsAt": "2026-11-28T14:00:00+01:00",
+          "attendanceMode": "online",
+          "city": "Port Harcourt",
+          "isFree": false,
+          "minPrice": 1500000,
+          "currency": "NGN",
+          "status": "live",
+          "isSaved": false,
+          "isFeatured": false,
+          "isPromoted": false,
+          "approvalRequired": false,
+          "guestLimit": 200,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": false,
+          "organizer": {
+            "id": "usr_g2",
+            "displayName": "Tunde Chukwu",
+            "avatarUrl": "https://i.pravatar.cc/150?img=44",
+            "username": "tundechukwu",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": null,
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-09-16T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": "2026-11-05T10:00:00+01:00",
+          "ticketsSold": 144
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 2,
+        "lastPage": 1
+      }
+    }
+  },
+  "eventsBySlug": {
+    "response": {
+      "data": {
+        "id": "evt_movie",
+        "slug": "movie-in-the-park-denim-edition",
+        "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+        "description": "Join us for the PiggyVest Open House in Port Harcourt! This exciting event is your chance to learn about smart savings and investment options with PiggyVest. Enjoy engaging discussions, meet our team, and discover how you can maximize your financial future. Don’t miss out on t...",
+        "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+        "category": {
+          "id": "cat_social",
+          "name": "Social activities",
+          "slug": "social-activities"
+        },
+        "startsAt": "2026-12-07T18:00:00+01:00",
+        "endsAt": "2026-12-07T22:00:00+01:00",
+        "attendanceMode": "physical",
+        "city": "Port Harcourt",
+        "isFree": false,
+        "minPrice": 500000,
+        "currency": "NGN",
+        "status": "live",
+        "isSaved": true,
+        "isFeatured": true,
+        "isPromoted": false,
+        "visibility": "public",
+        "approvalRequired": false,
+        "guestLimit": 200,
+        "allowGuestInvites": true,
+        "maxAdditionalGuests": 5,
+        "isAdultOnly": false,
+        "organizer": {
+          "id": "usr_alex",
+          "displayName": "Alex Thompson",
+          "avatarUrl": "https://i.pravatar.cc/150?img=7",
+          "username": "alexthompson",
+          "isVerified": false,
+          "isVendor": false,
+          "bio": "Meet the mastermind Alex Thompson, where moments meet innovation!",
+          "eventsCount": 4
+        },
+        "schedules": [
+          {
+            "id": "evt_movie_sch1",
+            "label": null,
+            "startsAt": "2026-12-07T18:00:00+01:00",
+            "endsAt": "2026-12-07T22:00:00+01:00",
+            "attendanceMode": "physical",
+            "venue": {
+              "name": "The Jewel Aeida",
+              "address": "456 Maple Avenue, Lekki, IL 62704",
+              "city": "Port Harcourt",
+              "state": "Rivers State",
+              "countryCode": "NG",
+              "lat": 4.8156,
+              "lng": 7.0498
+            },
+            "online": null,
+            "hallLayoutId": "hall_1",
+            "menuId": "menu_1"
+          }
+        ],
+        "subEvents": [],
+        "ticketTypes": [
+          {
+            "id": "tt_mv_reg",
+            "name": "Regular",
+            "description": null,
+            "price": 500000,
+            "currency": "NGN",
+            "quantity": 300,
+            "sold": 125,
+            "salesStartAt": null,
+            "salesEndAt": "2026-12-06T16:00:00+01:00",
+            "perOrderLimit": 5,
+            "scheduleId": null,
+            "seatSelection": false,
+            "menuSelection": false,
+            "isEarlyBird": false,
+            "isActive": true
+          },
+          {
+            "id": "tt_mv_vip",
+            "name": "VIP",
+            "description": null,
+            "price": 1500000,
+            "currency": "NGN",
+            "quantity": 50,
+            "sold": 12,
+            "salesStartAt": null,
+            "salesEndAt": "2026-12-06T16:00:00+01:00",
+            "perOrderLimit": 5,
+            "scheduleId": null,
+            "seatSelection": false,
+            "menuSelection": false,
+            "isEarlyBird": false,
+            "isActive": true
+          }
+        ],
+        "menu": [
+          {
+            "id": "mi_1",
+            "name": "Jollof Rice",
+            "description": "Smoky party jollof with grilled chicken",
+            "price": 50000,
+            "currency": "NGN",
+            "imageUrl": "https://picsum.photos/seed/jollof/300/300",
+            "category": "Main dishes",
+            "isAvailable": true
+          },
+          {
+            "id": "mi_2",
+            "name": "Ofada Sauce",
+            "description": "Rich pepper sauce with assorted meat",
+            "price": 100000,
+            "currency": "NGN",
+            "imageUrl": "https://picsum.photos/seed/ofada/300/300",
+            "category": "Main dishes",
+            "isAvailable": true
+          }
+        ],
+        "promotion": {
+          "enabled": false,
+          "commissionPercent": 0,
+          "targetSignups": null,
+          "promoterLimit": null,
+          "promotersCount": 0
+        },
+        "stats": {
+          "registered": 137,
+          "checkedIn": 41,
+          "capacity": 2000,
+          "pendingRequests": 0,
+          "revenue": 80500000,
+          "ticketsSold": 137
+        },
+        "gallery": [
+          "https://picsum.photos/seed/evt_movie-g1/600/400",
+          "https://picsum.photos/seed/evt_movie-g2/600/400"
+        ],
+        "tags": [
+          "port harcourt",
+          "social"
+        ],
+        "communityId": null,
+        "myRequestStatus": "none",
+        "myTicketId": null,
+        "createdAt": "2026-10-25T10:00:00+01:00",
+        "updatedAt": "2026-11-14T10:00:00+01:00",
+        "publishedAt": "2026-11-05T10:00:00+01:00"
+      }
+    }
+  },
+  "ticketingQuote": {
+    "request": {
+      "eventId": "evt_movie",
+      "lines": [
+        {
+          "ticketTypeId": "tt_mv_reg",
+          "quantity": 2
+        }
+      ],
+      "foodLines": [],
+      "promoCode": null
+    },
+    "response": {
+      "data": {
+        "quoteId": "qt_rs",
+        "eventId": "evt_movie",
+        "currency": "NGN",
+        "lines": [
+          {
+            "ticketType": {
+              "id": "tt_mv_reg",
+              "name": "Regular",
+              "price": 500000,
+              "currency": "NGN"
+            },
+            "quantity": 2,
+            "subtotal": 1000000
+          }
+        ],
+        "foodLines": [],
+        "subtotal": 1000000,
+        "serviceFee": 40000,
+        "discount": 0,
+        "total": 1040000,
+        "promoCode": null,
+        "promoMessage": null,
+        "requiresSeatSelection": false,
+        "requiresMenuSelection": false,
+        "expiresAt": "2026-11-16T07:03:17.837Z"
+      }
+    }
+  },
+  "ticketingCreateOrder": {
+    "request": {
+      "quoteId": "qt_rs",
+      "attendee": {
+        "firstName": "John",
+        "lastName": "Brown",
+        "email": "johnbrown@gmail.com",
+        "phone": "+2348012345678"
+      },
+      "additionalGuests": [],
+      "seats": [],
+      "paymentMethod": "paystack",
+      "idempotencyKey": "0b6d3f4e-8a51-4c1e-9f0a-2d7b6c5e4a31",
+      "returnUrl": "https://wedpluz.com/checkout/return"
+    },
+    "response": {
+      "data": {
+        "order": {
+          "id": "ord_rt",
+          "reference": "WP-ORD-2431",
+          "event": {
+            "id": "evt_movie",
+            "slug": "movie-in-the-park-denim-edition",
+            "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+            "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+            "category": {
+              "id": "cat_social",
+              "name": "Social activities",
+              "slug": "social-activities"
+            },
+            "startsAt": "2026-12-07T18:00:00+01:00",
+            "endsAt": "2026-12-07T22:00:00+01:00",
+            "attendanceMode": "physical",
+            "city": "Port Harcourt",
+            "isFree": false,
+            "minPrice": 500000,
+            "currency": "NGN",
+            "status": "live",
+            "isSaved": true,
+            "isFeatured": true,
+            "isPromoted": false,
+            "approvalRequired": false,
+            "guestLimit": 200,
+            "allowGuestInvites": true,
+            "maxAdditionalGuests": 5,
+            "isAdultOnly": false,
+            "organizer": {
+              "id": "usr_alex",
+              "displayName": "Alex Thompson",
+              "avatarUrl": "https://i.pravatar.cc/150?img=7",
+              "username": "alexthompson",
+              "isVerified": false,
+              "isVendor": false
+            },
+            "promotion": null,
+            "communityId": null,
+            "myRequestStatus": "none",
+            "myTicketId": null,
+            "createdAt": "2026-10-25T10:00:00+01:00",
+            "updatedAt": "2026-11-14T10:00:00+01:00",
+            "publishedAt": "2026-11-05T10:00:00+01:00",
+            "ticketsSold": 137
+          },
+          "status": "awaiting_payment",
+          "paymentMethod": "paystack",
+          "attendee": {
+            "firstName": "John",
+            "lastName": "Brown",
+            "email": "johnbrown@gmail.com",
+            "phone": "+2348012345678"
+          },
+          "additionalGuests": [],
+          "lines": [
+            {
+              "ticketType": {
+                "id": "tt_mv_reg",
+                "name": "Regular",
+                "price": 500000,
+                "currency": "NGN"
+              },
+              "quantity": 2,
+              "subtotal": 1000000
+            }
+          ],
+          "foodLines": [],
+          "seats": [],
+          "subtotal": 1000000,
+          "serviceFee": 40000,
+          "discount": 0,
+          "total": 1040000,
+          "currency": "NGN",
+          "paidAt": null,
+          "createdAt": "2026-11-16T06:48:18.039Z",
+          "tickets": [
+            {
+              "id": "tkt_ru",
+              "code": "DT9E-5Z3-QS",
+              "orderId": "ord_rt",
+              "eventId": "evt_movie",
+              "event": {
+                "id": "evt_movie",
+                "slug": "movie-in-the-park-denim-edition",
+                "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+                "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+                "startsAt": "2026-12-07T18:00:00+01:00",
+                "endsAt": "2026-12-07T22:00:00+01:00",
+                "attendanceMode": "physical",
+                "city": "Port Harcourt"
+              },
+              "ticketTypeName": "Regular",
+              "holderName": "John Brown",
+              "qrPayload": "WP|tkt_ru|DT9E-5Z3-QS|evt_movie",
+              "status": "valid",
+              "checkedInAt": null,
+              "seat": null,
+              "scheduleId": "evt_movie_sch1",
+              "additionalGuests": [],
+              "foodLines": [],
+              "orderTotal": 1040000,
+              "currency": "NGN",
+              "refund": null,
+              "transferredTo": null,
+              "createdAt": "2026-11-16T06:48:18.039Z"
+            },
+            {
+              "id": "tkt_rv",
+              "code": "DTXZ-8BV-MH",
+              "orderId": "ord_rt",
+              "eventId": "evt_movie",
+              "event": {
+                "id": "evt_movie",
+                "slug": "movie-in-the-park-denim-edition",
+                "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+                "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+                "startsAt": "2026-12-07T18:00:00+01:00",
+                "endsAt": "2026-12-07T22:00:00+01:00",
+                "attendanceMode": "physical",
+                "city": "Port Harcourt"
+              },
+              "ticketTypeName": "Regular",
+              "holderName": "John Brown",
+              "qrPayload": "WP|tkt_rv|DTXZ-8BV-MH|evt_movie",
+              "status": "valid",
+              "checkedInAt": null,
+              "seat": null,
+              "scheduleId": "evt_movie_sch1",
+              "additionalGuests": [],
+              "foodLines": [],
+              "orderTotal": 1040000,
+              "currency": "NGN",
+              "refund": null,
+              "transferredTo": null,
+              "createdAt": "2026-11-16T06:48:18.039Z"
+            }
+          ],
+          "receiptUrl": null
+        },
+        "payment": {
+          "orderId": "ord_rt",
+          "reference": "WP-ORD-2431-PAY",
+          "provider": "paystack",
+          "status": "requires_action",
+          "clientParams": {
+            "publicKey": "pk_test_mock",
+            "email": "johnbrown@gmail.com"
+          },
+          "authorizationUrl": "/checkout/mock-gateway?order=ord_rt&provider=paystack",
+          "amount": 1040000,
+          "currency": "NGN"
+        }
+      }
+    }
+  },
+  "ticketingVerifyPayment": {
+    "request": {
+      "reference": "WP-ORD-2431-PAY"
+    },
+    "response": {
+      "data": {
+        "id": "ord_rt",
+        "reference": "WP-ORD-2431",
+        "event": {
+          "id": "evt_movie",
+          "slug": "movie-in-the-park-denim-edition",
+          "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+          "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+          "category": {
+            "id": "cat_social",
+            "name": "Social activities",
+            "slug": "social-activities"
+          },
+          "startsAt": "2026-12-07T18:00:00+01:00",
+          "endsAt": "2026-12-07T22:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Port Harcourt",
+          "isFree": false,
+          "minPrice": 500000,
+          "currency": "NGN",
+          "status": "live",
+          "isSaved": true,
+          "isFeatured": true,
+          "isPromoted": false,
+          "approvalRequired": false,
+          "guestLimit": 200,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": false,
+          "organizer": {
+            "id": "usr_alex",
+            "displayName": "Alex Thompson",
+            "avatarUrl": "https://i.pravatar.cc/150?img=7",
+            "username": "alexthompson",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": null,
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-10-25T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": "2026-11-05T10:00:00+01:00",
+          "ticketsSold": 137
+        },
+        "status": "paid",
+        "paymentMethod": "paystack",
+        "attendee": {
+          "firstName": "John",
+          "lastName": "Brown",
+          "email": "johnbrown@gmail.com",
+          "phone": "+2348012345678"
+        },
+        "additionalGuests": [],
+        "lines": [
+          {
+            "ticketType": {
+              "id": "tt_mv_reg",
+              "name": "Regular",
+              "price": 500000,
+              "currency": "NGN"
+            },
+            "quantity": 2,
+            "subtotal": 1000000
+          }
+        ],
+        "foodLines": [],
+        "seats": [],
+        "subtotal": 1000000,
+        "serviceFee": 40000,
+        "discount": 0,
+        "total": 1040000,
+        "currency": "NGN",
+        "paidAt": "2026-11-16T06:48:18.363Z",
+        "createdAt": "2026-11-16T06:48:18.039Z",
+        "tickets": [
+          {
+            "id": "tkt_ru",
+            "code": "DT9E-5Z3-QS",
+            "orderId": "ord_rt",
+            "eventId": "evt_movie",
+            "event": {
+              "id": "evt_movie",
+              "slug": "movie-in-the-park-denim-edition",
+              "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+              "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+              "startsAt": "2026-12-07T18:00:00+01:00",
+              "endsAt": "2026-12-07T22:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt"
+            },
+            "ticketTypeName": "Regular",
+            "holderName": "John Brown",
+            "qrPayload": "WP|tkt_ru|DT9E-5Z3-QS|evt_movie",
+            "status": "valid",
+            "checkedInAt": null,
+            "seat": null,
+            "scheduleId": "evt_movie_sch1",
+            "additionalGuests": [],
+            "foodLines": [],
+            "orderTotal": 1040000,
+            "currency": "NGN",
+            "refund": null,
+            "transferredTo": null,
+            "createdAt": "2026-11-16T06:48:18.039Z"
+          },
+          {
+            "id": "tkt_rv",
+            "code": "DTXZ-8BV-MH",
+            "orderId": "ord_rt",
+            "eventId": "evt_movie",
+            "event": {
+              "id": "evt_movie",
+              "slug": "movie-in-the-park-denim-edition",
+              "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+              "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+              "startsAt": "2026-12-07T18:00:00+01:00",
+              "endsAt": "2026-12-07T22:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt"
+            },
+            "ticketTypeName": "Regular",
+            "holderName": "John Brown",
+            "qrPayload": "WP|tkt_rv|DTXZ-8BV-MH|evt_movie",
+            "status": "valid",
+            "checkedInAt": null,
+            "seat": null,
+            "scheduleId": "evt_movie_sch1",
+            "additionalGuests": [],
+            "foodLines": [],
+            "orderTotal": 1040000,
+            "currency": "NGN",
+            "refund": null,
+            "transferredTo": null,
+            "createdAt": "2026-11-16T06:48:18.039Z"
+          }
+        ],
+        "receiptUrl": null
+      },
+      "message": "Payment confirmed"
+    }
+  },
+  "ticketingOrder": {
+    "response": {
+      "data": {
+        "id": "ord_rt",
+        "reference": "WP-ORD-2431",
+        "event": {
+          "id": "evt_movie",
+          "slug": "movie-in-the-park-denim-edition",
+          "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+          "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+          "category": {
+            "id": "cat_social",
+            "name": "Social activities",
+            "slug": "social-activities"
+          },
+          "startsAt": "2026-12-07T18:00:00+01:00",
+          "endsAt": "2026-12-07T22:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Port Harcourt",
+          "isFree": false,
+          "minPrice": 500000,
+          "currency": "NGN",
+          "status": "live",
+          "isSaved": true,
+          "isFeatured": true,
+          "isPromoted": false,
+          "approvalRequired": false,
+          "guestLimit": 200,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": false,
+          "organizer": {
+            "id": "usr_alex",
+            "displayName": "Alex Thompson",
+            "avatarUrl": "https://i.pravatar.cc/150?img=7",
+            "username": "alexthompson",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": null,
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-10-25T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": "2026-11-05T10:00:00+01:00",
+          "ticketsSold": 137
+        },
+        "status": "paid",
+        "paymentMethod": "paystack",
+        "attendee": {
+          "firstName": "John",
+          "lastName": "Brown",
+          "email": "johnbrown@gmail.com",
+          "phone": "+2348012345678"
+        },
+        "additionalGuests": [],
+        "lines": [
+          {
+            "ticketType": {
+              "id": "tt_mv_reg",
+              "name": "Regular",
+              "price": 500000,
+              "currency": "NGN"
+            },
+            "quantity": 2,
+            "subtotal": 1000000
+          }
+        ],
+        "foodLines": [],
+        "seats": [],
+        "subtotal": 1000000,
+        "serviceFee": 40000,
+        "discount": 0,
+        "total": 1040000,
+        "currency": "NGN",
+        "paidAt": "2026-11-16T06:48:18.363Z",
+        "createdAt": "2026-11-16T06:48:18.039Z",
+        "tickets": [
+          {
+            "id": "tkt_ru",
+            "code": "DT9E-5Z3-QS",
+            "orderId": "ord_rt",
+            "eventId": "evt_movie",
+            "event": {
+              "id": "evt_movie",
+              "slug": "movie-in-the-park-denim-edition",
+              "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+              "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+              "startsAt": "2026-12-07T18:00:00+01:00",
+              "endsAt": "2026-12-07T22:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt"
+            },
+            "ticketTypeName": "Regular",
+            "holderName": "John Brown",
+            "qrPayload": "WP|tkt_ru|DT9E-5Z3-QS|evt_movie",
+            "status": "valid",
+            "checkedInAt": null,
+            "seat": null,
+            "scheduleId": "evt_movie_sch1",
+            "additionalGuests": [],
+            "foodLines": [],
+            "orderTotal": 1040000,
+            "currency": "NGN",
+            "refund": null,
+            "transferredTo": null,
+            "createdAt": "2026-11-16T06:48:18.039Z"
+          },
+          {
+            "id": "tkt_rv",
+            "code": "DTXZ-8BV-MH",
+            "orderId": "ord_rt",
+            "eventId": "evt_movie",
+            "event": {
+              "id": "evt_movie",
+              "slug": "movie-in-the-park-denim-edition",
+              "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+              "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+              "startsAt": "2026-12-07T18:00:00+01:00",
+              "endsAt": "2026-12-07T22:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt"
+            },
+            "ticketTypeName": "Regular",
+            "holderName": "John Brown",
+            "qrPayload": "WP|tkt_rv|DTXZ-8BV-MH|evt_movie",
+            "status": "valid",
+            "checkedInAt": null,
+            "seat": null,
+            "scheduleId": "evt_movie_sch1",
+            "additionalGuests": [],
+            "foodLines": [],
+            "orderTotal": 1040000,
+            "currency": "NGN",
+            "refund": null,
+            "transferredTo": null,
+            "createdAt": "2026-11-16T06:48:18.039Z"
+          }
+        ],
+        "receiptUrl": null
+      }
+    }
+  },
+  "ticketingMyTickets": {
+    "response": {
+      "data": [
+        {
+          "id": "tkt_ru",
+          "code": "DT9E-5Z3-QS",
+          "orderId": "ord_rt",
+          "eventId": "evt_movie",
+          "event": {
+            "id": "evt_movie",
+            "slug": "movie-in-the-park-denim-edition",
+            "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+            "coverUrl": "https://picsum.photos/seed/movie-park-denim/1200/700",
+            "startsAt": "2026-12-07T18:00:00+01:00",
+            "endsAt": "2026-12-07T22:00:00+01:00",
+            "attendanceMode": "physical",
+            "city": "Port Harcourt"
+          },
+          "ticketTypeName": "Regular",
+          "holderName": "John Brown",
+          "qrPayload": "WP|tkt_ru|DT9E-5Z3-QS|evt_movie",
+          "status": "valid",
+          "checkedInAt": null,
+          "seat": null,
+          "scheduleId": "evt_movie_sch1",
+          "additionalGuests": [],
+          "foodLines": [],
+          "orderTotal": 1040000,
+          "currency": "NGN",
+          "refund": null,
+          "transferredTo": null,
+          "createdAt": "2026-11-16T06:48:18.039Z",
+          "ticketCount": 2,
+          "checkedInCount": 0
+        },
+        {
+          "id": "tkt_1",
+          "code": "DT78-216-M0",
+          "orderId": "ord_1",
+          "eventId": "evt_gala",
+          "event": {
+            "id": "evt_gala",
+            "slug": "luxury-wedding-gala",
+            "title": "Luxury Wedding Gala",
+            "coverUrl": "https://picsum.photos/seed/wedding-gala/1200/700",
+            "startsAt": "2027-01-12T17:00:00+01:00",
+            "endsAt": "2027-01-12T21:00:00+01:00",
+            "attendanceMode": "physical",
+            "city": "Port Harcourt"
+          },
+          "ticketTypeName": "Standard",
+          "holderName": "John Brown",
+          "qrPayload": "WP|tkt_1|DT78-216-M0|evt_gala",
+          "status": "valid",
+          "checkedInAt": null,
+          "seat": {
+            "tableLabel": "Table 1",
+            "seatLabel": "Seat 8"
+          },
+          "scheduleId": "evt_gala_sch1",
+          "additionalGuests": [
+            {
+              "firstName": "Tahilah",
+              "lastName": "Brown"
+            }
+          ],
+          "foodLines": [
+            {
+              "menuItem": {
+                "id": "mi_4",
+                "name": "Combo Platter",
+                "price": 150000
+              },
+              "quantity": 2,
+              "subtotal": 300000
+            },
+            {
+              "menuItem": {
+                "id": "mi_5",
+                "name": "Chicken Wings",
+                "price": 950000
+              },
+              "quantity": 1,
+              "subtotal": 950000
+            }
+          ],
+          "orderTotal": 3600000,
+          "currency": "NGN",
+          "refund": null,
+          "transferredTo": null,
+          "createdAt": "2026-11-12T10:00:00+01:00",
+          "ticketCount": 2,
+          "checkedInCount": 0
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 12,
+        "total": 3,
+        "lastPage": 1
+      }
+    }
+  },
+  "ticketingTicket": {
+    "response": {
+      "data": {
+        "id": "tkt_1",
+        "code": "DT78-216-M0",
+        "orderId": "ord_1",
+        "eventId": "evt_gala",
+        "event": {
+          "id": "evt_gala",
+          "slug": "luxury-wedding-gala",
+          "title": "Luxury Wedding Gala",
+          "coverUrl": "https://picsum.photos/seed/wedding-gala/1200/700",
+          "startsAt": "2027-01-12T17:00:00+01:00",
+          "endsAt": "2027-01-12T21:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Port Harcourt"
+        },
+        "ticketTypeName": "Standard",
+        "holderName": "John Brown",
+        "qrPayload": "WP|tkt_1|DT78-216-M0|evt_gala",
+        "status": "valid",
+        "checkedInAt": null,
+        "seat": {
+          "tableLabel": "Table 1",
+          "seatLabel": "Seat 8"
+        },
+        "scheduleId": "evt_gala_sch1",
+        "additionalGuests": [
+          {
+            "firstName": "Tahilah",
+            "lastName": "Brown"
+          }
+        ],
+        "foodLines": [
+          {
+            "menuItem": {
+              "id": "mi_4",
+              "name": "Combo Platter",
+              "price": 150000
+            },
+            "quantity": 2,
+            "subtotal": 300000
+          },
+          {
+            "menuItem": {
+              "id": "mi_5",
+              "name": "Chicken Wings",
+              "price": 950000
+            },
+            "quantity": 1,
+            "subtotal": 950000
+          }
+        ],
+        "orderTotal": 3600000,
+        "currency": "NGN",
+        "refund": null,
+        "transferredTo": null,
+        "createdAt": "2026-11-12T10:00:00+01:00",
+        "siblings": [
+          {
+            "id": "tkt_1",
+            "code": "DT78-216-M0",
+            "orderId": "ord_1",
+            "eventId": "evt_gala",
+            "event": {
+              "id": "evt_gala",
+              "slug": "luxury-wedding-gala",
+              "title": "Luxury Wedding Gala",
+              "coverUrl": "https://picsum.photos/seed/wedding-gala/1200/700",
+              "startsAt": "2027-01-12T17:00:00+01:00",
+              "endsAt": "2027-01-12T21:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt"
+            },
+            "ticketTypeName": "Standard",
+            "holderName": "John Brown",
+            "qrPayload": "WP|tkt_1|DT78-216-M0|evt_gala",
+            "status": "valid",
+            "checkedInAt": null,
+            "seat": {
+              "tableLabel": "Table 1",
+              "seatLabel": "Seat 8"
+            },
+            "scheduleId": "evt_gala_sch1",
+            "additionalGuests": [
+              {
+                "firstName": "Tahilah",
+                "lastName": "Brown"
+              }
+            ],
+            "foodLines": [
+              {
+                "menuItem": {
+                  "id": "mi_4",
+                  "name": "Combo Platter",
+                  "price": 150000
+                },
+                "quantity": 2,
+                "subtotal": 300000
+              },
+              {
+                "menuItem": {
+                  "id": "mi_5",
+                  "name": "Chicken Wings",
+                  "price": 950000
+                },
+                "quantity": 1,
+                "subtotal": 950000
+              }
+            ],
+            "orderTotal": 3600000,
+            "currency": "NGN",
+            "refund": null,
+            "transferredTo": null,
+            "createdAt": "2026-11-12T10:00:00+01:00"
+          },
+          {
+            "id": "tkt_2",
+            "code": "DT78-216-M1",
+            "orderId": "ord_1",
+            "eventId": "evt_gala",
+            "event": {
+              "id": "evt_gala",
+              "slug": "luxury-wedding-gala",
+              "title": "Luxury Wedding Gala",
+              "coverUrl": "https://picsum.photos/seed/wedding-gala/1200/700",
+              "startsAt": "2027-01-12T17:00:00+01:00",
+              "endsAt": "2027-01-12T21:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt"
+            },
+            "ticketTypeName": "Standard",
+            "holderName": "Tahilah Brown",
+            "qrPayload": "WP|tkt_2|DT78-216-M1|evt_gala",
+            "status": "valid",
+            "checkedInAt": null,
+            "seat": {
+              "tableLabel": "Table 1",
+              "seatLabel": "Seat 7"
+            },
+            "scheduleId": "evt_gala_sch1",
+            "additionalGuests": [],
+            "foodLines": [],
+            "orderTotal": 3600000,
+            "currency": "NGN",
+            "refund": null,
+            "transferredTo": null,
+            "createdAt": "2026-11-12T10:00:00+01:00"
+          }
+        ]
+      }
+    }
+  },
+  "vendorsList": {
+    "response": {
+      "data": [
+        {
+          "id": "ven_shotitmoi",
+          "userId": "usr_shotitmoi",
+          "businessName": "Shot it moi",
+          "slug": "shot-it-moi",
+          "category": {
+            "id": "vc_photo",
+            "name": "Photographer",
+            "slug": "photographer"
+          },
+          "location": "Portharcourt",
+          "avatarUrl": "https://i.pravatar.cc/150?img=33",
+          "rating": 4.9,
+          "ratingsCount": 128,
+          "likesCount": 1000,
+          "isVerified": true,
+          "isSaved": true,
+          "featuredWorks": [
+            {
+              "id": "m_ven_shotitmoi_0_0",
+              "type": "video",
+              "url": "https://picsum.photos/seed/ven_shotitmoi-w0-0/900/900",
+              "thumbnailUrl": "https://picsum.photos/seed/ven_shotitmoi-w0-0/400/400"
+            },
+            {
+              "id": "m_ven_shotitmoi_1_0",
+              "type": "image",
+              "url": "https://picsum.photos/seed/ven_shotitmoi-w1-0/900/900",
+              "thumbnailUrl": "https://picsum.photos/seed/ven_shotitmoi-w1-0/400/400"
+            }
+          ],
+          "availability": "available",
+          "worksCount": 6
+        },
+        {
+          "id": "ven_bestchefz",
+          "userId": "usr_bestchefz",
+          "businessName": "bestchefz",
+          "slug": "bestchefz",
+          "category": {
+            "id": "vc_cater",
+            "name": "Caterer",
+            "slug": "caterer"
+          },
+          "location": "Lagos",
+          "avatarUrl": "https://i.pravatar.cc/150?img=51",
+          "rating": 4.9,
+          "ratingsCount": 86,
+          "likesCount": 640,
+          "isVerified": true,
+          "isSaved": false,
+          "featuredWorks": [
+            {
+              "id": "m_ven_bestchefz_0_0",
+              "type": "video",
+              "url": "https://picsum.photos/seed/ven_bestchefz-w0-0/900/900",
+              "thumbnailUrl": "https://picsum.photos/seed/ven_bestchefz-w0-0/400/400"
+            },
+            {
+              "id": "m_ven_bestchefz_1_0",
+              "type": "image",
+              "url": "https://picsum.photos/seed/ven_bestchefz-w1-0/900/900",
+              "thumbnailUrl": "https://picsum.photos/seed/ven_bestchefz-w1-0/400/400"
+            }
+          ],
+          "availability": "busy",
+          "worksCount": 4
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 12,
+        "lastPage": 6
+      }
+    }
+  },
+  "vendorsBySlug": {
+    "response": {
+      "data": {
+        "id": "ven_shotitmoi",
+        "userId": "usr_shotitmoi",
+        "businessName": "Shot it moi",
+        "slug": "shot-it-moi",
+        "category": {
+          "id": "vc_photo",
+          "name": "Photographer",
+          "slug": "photographer"
+        },
+        "location": "Portharcourt",
+        "avatarUrl": "https://i.pravatar.cc/150?img=33",
+        "coverUrl": "https://picsum.photos/seed/shotitmoi-cover/1440/400",
+        "rating": 4.9,
+        "ratingsCount": 128,
+        "likesCount": 1000,
+        "isVerified": true,
+        "isSaved": true,
+        "featuredWorks": [
+          {
+            "id": "m_ven_shotitmoi_0_0",
+            "type": "video",
+            "url": "https://picsum.photos/seed/ven_shotitmoi-w0-0/900/900",
+            "thumbnailUrl": "https://picsum.photos/seed/ven_shotitmoi-w0-0/400/400"
+          },
+          {
+            "id": "m_ven_shotitmoi_1_0",
+            "type": "image",
+            "url": "https://picsum.photos/seed/ven_shotitmoi-w1-0/900/900",
+            "thumbnailUrl": "https://picsum.photos/seed/ven_shotitmoi-w1-0/400/400"
+          }
+        ],
+        "availability": "available",
+        "description": "Editorial wedding and portrait photographer based in Port Harcourt. We tell stories through light.",
+        "contactEmail": "hello@shotitmoi.com",
+        "contactPhone": "+2348000000001",
+        "website": "https://shotitmoi.com",
+        "socials": {
+          "instagram": "shotitmoi"
+        },
+        "status": "active",
+        "worksCount": 6,
+        "reviews": [
+          {
+            "id": "rev_ven_shotitmoi_0",
+            "author": {
+              "id": "usr_alice",
+              "displayName": "Alice Smith",
+              "avatarUrl": "https://i.pravatar.cc/150?img=47",
+              "username": "alicesmith",
+              "isVerified": false,
+              "isVendor": false
+            },
+            "rating": 5,
+            "comment": "Absolutely stunning photos, delivered on time!",
+            "createdAt": "2026-11-13T10:00:00+01:00",
+            "updatedAt": null,
+            "isMine": false
+          },
+          {
+            "id": "rev_ven_shotitmoi_1",
+            "author": {
+              "id": "usr_me",
+              "displayName": "John Brown",
+              "avatarUrl": "https://i.pravatar.cc/150?img=12",
+              "username": "johnbrown",
+              "isVerified": false,
+              "isVendor": false
+            },
+            "rating": 4,
+            "comment": "Great eye for detail. Would book again.",
+            "createdAt": "2026-11-07T10:00:00+01:00",
+            "updatedAt": null,
+            "isMine": true
+          }
+        ],
+        "promos": [
+          {
+            "id": "promo_1",
+            "title": "December weddings 15% off",
+            "description": "Book before Nov 30 for any December date.",
+            "discountPercent": 15,
+            "validUntil": "2026-11-30T10:00:00+01:00",
+            "coverUrl": "https://picsum.photos/seed/promo-1/600/300"
+          }
+        ],
+        "joinedAt": "2025-10-11T10:00:00+01:00",
+        "isMine": false
+      }
+    }
+  },
+  "messagingConversations": {
+    "response": {
+      "data": {
+        "items": [
+          {
+            "id": "cv_shotitmoi",
+            "type": "direct",
+            "title": "Shot it moi",
+            "avatarUrl": "https://i.pravatar.cc/150?img=33",
+            "participants": [
+              {
+                "id": "usr_shotitmoi",
+                "displayName": "Shot it moi",
+                "avatarUrl": "https://i.pravatar.cc/150?img=33",
+                "username": "shot itmoi",
+                "isVerified": true,
+                "isVendor": true
+              }
+            ],
+            "communityId": null,
+            "lastMessage": {
+              "id": "cv_shotitmoi_last",
+              "body": "That’s great! It’s on the 19th. We’d like full-day coverage.",
+              "type": "text",
+              "sender": {
+                "id": "usr_shotitmoi",
+                "displayName": "Shot it moi",
+                "avatarUrl": "https://i.pravatar.cc/150?img=33",
+                "username": "shot itmoi",
+                "isVerified": true,
+                "isVendor": true
+              },
+              "createdAt": "2026-11-15T09:55:00+01:00"
+            },
+            "unreadCount": 2,
+            "isPinned": true,
+            "isMuted": true,
+            "isArchived": false,
+            "isRequest": false,
+            "updatedAt": "2026-11-15T09:55:00+01:00"
+          },
+          {
+            "id": "cv_bea",
+            "type": "direct",
+            "title": "Bea-you-wedz",
+            "avatarUrl": "https://i.pravatar.cc/150?img=45",
+            "participants": [
+              {
+                "id": "usr_beayouwedz",
+                "displayName": "Bea Youwedz",
+                "avatarUrl": "https://i.pravatar.cc/150?img=45",
+                "username": "beayouwedz",
+                "isVerified": false,
+                "isVendor": true
+              }
+            ],
+            "communityId": null,
+            "lastMessage": {
+              "id": "cv_bea_last",
+              "body": "The pink dress will be perfect for the bridesmaids.",
+              "type": "text",
+              "sender": {
+                "id": "usr_beayouwedz",
+                "displayName": "Bea Youwedz",
+                "avatarUrl": "https://i.pravatar.cc/150?img=45",
+                "username": "beayouwedz",
+                "isVerified": false,
+                "isVendor": true
+              },
+              "createdAt": "2026-11-15T08:00:00+01:00"
+            },
+            "unreadCount": 0,
+            "isPinned": true,
+            "isMuted": false,
+            "isArchived": false,
+            "isRequest": false,
+            "updatedAt": "2026-11-15T08:00:00+01:00"
+          }
+        ],
+        "requestsCount": 2
+      }
+    }
+  },
+  "messagingMessages": {
+    "response": {
+      "data": [
+        {
+          "id": "m1",
+          "conversationId": "cv_com_tessy",
+          "sender": {
+            "id": "usr_me",
+            "displayName": "John Brown",
+            "avatarUrl": "https://i.pravatar.cc/150?img=12",
+            "username": "johnbrown",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "type": "text",
+          "body": "Hey guys! Just confirming — we’re all set for Tessy’s wedding this Saturday, right?",
+          "attachments": [],
+          "replyTo": null,
+          "reactions": [],
+          "event": null,
+          "isPinned": true,
+          "isStarred": true,
+          "isMine": true,
+          "deletedBy": "none",
+          "status": "read",
+          "createdAt": "2026-11-15T08:50:00+01:00"
+        },
+        {
+          "id": "m2",
+          "conversationId": "cv_com_tessy",
+          "sender": {
+            "id": "usr_shotitmoi",
+            "displayName": "Shot it moi",
+            "avatarUrl": "https://i.pravatar.cc/150?img=33",
+            "username": "shot itmoi",
+            "isVerified": true,
+            "isVendor": true
+          },
+          "type": "text",
+          "body": "Yup! My team and I will be there by 8AM for setup and bridal prep shots 📸",
+          "attachments": [],
+          "replyTo": null,
+          "reactions": [
+            {
+              "emoji": "👏",
+              "count": 1,
+              "reactedByMe": true
+            }
+          ],
+          "event": null,
+          "isPinned": false,
+          "isStarred": true,
+          "isMine": false,
+          "deletedBy": "none",
+          "status": "read",
+          "createdAt": "2026-11-15T08:54:00+01:00"
+        }
+      ],
+      "meta": {
+        "nextCursor": null,
+        "prevCursor": null,
+        "perPage": 30
+      }
+    }
+  },
+  "messagingSend": {
+    "request": {
+      "clientId": "c7a1f3b2-5d4e-4f6a-8b9c-0d1e2f3a4b5c",
+      "type": "text",
+      "body": "See you all on Saturday! 🎉",
+      "replyToId": null
+    },
+    "response": {
+      "data": {
+        "id": "m_rx",
+        "conversationId": "cv_com_tessy",
+        "sender": {
+          "id": "usr_me",
+          "displayName": "John Brown",
+          "avatarUrl": "https://i.pravatar.cc/150?img=12",
+          "username": "johnbrown",
+          "isVerified": false,
+          "isVendor": false
+        },
+        "type": "text",
+        "body": "See you all on Saturday! 🎉",
+        "attachments": [],
+        "replyTo": null,
+        "reactions": [],
+        "event": null,
+        "isPinned": false,
+        "isStarred": false,
+        "isMine": true,
+        "deletedBy": "none",
+        "status": "sent",
+        "createdAt": "2026-11-16T06:48:21.229Z",
+        "clientId": "c7a1f3b2-5d4e-4f6a-8b9c-0d1e2f3a4b5c"
+      }
+    }
+  },
+  "notificationsList": {
+    "response": {
+      "data": [
+        {
+          "id": "n_rw",
+          "type": "ticket_purchased",
+          "actor": null,
+          "title": "Ticket confirmed",
+          "body": "",
+          "segments": [
+            {
+              "text": "Your ticket for "
+            },
+            {
+              "text": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+              "emphasis": true
+            }
+          ],
+          "action": "view",
+          "actionState": null,
+          "data": {
+            "ticketId": "tkt_ru"
+          },
+          "isRequest": false,
+          "readAt": null,
+          "createdAt": "2026-11-16T06:48:18.363Z",
+          "link": "/tickets/tkt_ru"
+        },
+        {
+          "id": "n1",
+          "type": "manager_invite_accepted",
+          "actor": {
+            "id": "usr_belema",
+            "displayName": "Belema Harry",
+            "avatarUrl": null,
+            "username": "belemaharry",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "title": "Belema accepted your manager invite",
+          "body": "",
+          "segments": [
+            {
+              "text": "Belema",
+              "emphasis": true
+            },
+            {
+              "text": " accepted your manager invite"
+            }
+          ],
+          "action": "none",
+          "actionState": null,
+          "data": {
+            "eventId": "evt_tolu_shower"
+          },
+          "isRequest": false,
+          "readAt": null,
+          "createdAt": "2026-11-15T09:00:00+01:00",
+          "link": "/manage/events/evt_tolu_shower/managers"
+        }
+      ],
+      "meta": {
+        "nextCursor": null,
+        "prevCursor": null,
+        "perPage": 20
+      }
+    }
+  },
+  "notificationsUnreadCount": {
+    "response": {
+      "data": {
+        "count": 4,
+        "requests": 2
+      }
+    }
+  },
+  "walletGet": {
+    "response": {
+      "data": {
+        "id": "wal_1",
+        "balance": 1000000,
+        "pendingBalance": 240000,
+        "currency": "NGN",
+        "isActive": true,
+        "pinSet": true,
+        "bankAccount": {
+          "id": "ba_1",
+          "bankCode": "058",
+          "bankName": "GTBank",
+          "accountNumber": "0123456789",
+          "accountName": "JOHN BROWN",
+          "isDefault": true
+        },
+        "dailyWithdrawalLimit": 50000000
+      }
+    }
+  },
+  "walletTransactions": {
+    "response": {
+      "data": [
+        {
+          "id": "wt_1",
+          "reference": "WP-TU-1001",
+          "type": "top_up",
+          "direction": "credit",
+          "amount": 500000,
+          "fee": 0,
+          "currency": "NGN",
+          "status": "successful",
+          "description": "Top up",
+          "counterparty": "Paystack card ****4242",
+          "provider": "paystack",
+          "createdAt": "2026-06-22T09:00:00+01:00",
+          "completedAt": "2026-06-22T09:00:00+01:00",
+          "metadata": {}
+        },
+        {
+          "id": "wt_2",
+          "reference": "WP-TU-1002",
+          "type": "top_up",
+          "direction": "credit",
+          "amount": 500000,
+          "fee": 0,
+          "currency": "NGN",
+          "status": "successful",
+          "description": "Top up",
+          "counterparty": "Bank transfer",
+          "provider": "monnify",
+          "createdAt": "2026-06-22T11:00:00+01:00",
+          "completedAt": "2026-06-22T11:00:00+01:00",
+          "metadata": {}
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 10,
+        "total": 6,
+        "lastPage": 1
+      }
+    }
+  },
+  "walletPlans": {
+    "response": {
+      "data": [
+        {
+          "id": "plan_free",
+          "tier": "free",
+          "name": "Free",
+          "tagline": "For everyone",
+          "priceMonthly": 0,
+          "priceYearly": 0,
+          "currency": "NGN",
+          "features": [
+            "Unlimited work uploads",
+            "Higher placement in vendor search"
+          ],
+          "inheritsFrom": null,
+          "isPopular": false
+        },
+        {
+          "id": "plan_basic",
+          "tier": "basic",
+          "name": "Basic",
+          "tagline": "For Organisers and vendors",
+          "priceMonthly": 300000,
+          "priceYearly": 3000000,
+          "currency": "NGN",
+          "features": [
+            "Unlimited work uploads",
+            "Higher placement in vendor search"
+          ],
+          "inheritsFrom": "Free",
+          "isPopular": false
+        }
+      ]
+    }
+  },
+  "organizerList": {
+    "response": {
+      "data": [
+        {
+          "id": "evt_tolu_shower",
+          "slug": "tolus-bridal-shower",
+          "title": "Tolu’s Bridal Shower",
+          "coverUrl": "https://picsum.photos/seed/tolu-shower/1200/700",
+          "category": {
+            "id": "cat_social",
+            "name": "Social activities",
+            "slug": "social-activities"
+          },
+          "startsAt": "2026-12-28T12:00:00+01:00",
+          "endsAt": "2026-12-29T16:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Port Harcourt",
+          "isFree": false,
+          "minPrice": 1500000,
+          "currency": "NGN",
+          "status": "live",
+          "isSaved": false,
+          "isFeatured": false,
+          "isPromoted": false,
+          "approvalRequired": true,
+          "guestLimit": 2000,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": true,
+          "organizer": {
+            "id": "usr_me",
+            "displayName": "John Brown",
+            "avatarUrl": "https://i.pravatar.cc/150?img=12",
+            "username": "johnbrown",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": "com_evt_tolu_shower",
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-10-26T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": "2026-11-05T10:00:00+01:00",
+          "ticketsSold": 1004,
+          "myRole": "organizer",
+          "stats": {
+            "registered": 1004,
+            "checkedIn": 312,
+            "capacity": 2000,
+            "pendingRequests": 12,
+            "revenue": 4355000000,
+            "ticketsSold": 1004
+          },
+          "collaboratorsCount": 4
+        },
+        {
+          "id": "evt_tolu_wed",
+          "slug": "tolu-weds-femi",
+          "title": "Tolu weds Femi",
+          "coverUrl": "https://picsum.photos/seed/tolu-femi/1200/700",
+          "category": {
+            "id": "cat_weddings",
+            "name": "Weddings",
+            "slug": "weddings"
+          },
+          "startsAt": "2027-02-16T10:00:00+01:00",
+          "endsAt": "2027-02-18T14:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Port Harcourt",
+          "isFree": false,
+          "minPrice": 500000,
+          "currency": "NGN",
+          "status": "draft",
+          "isSaved": false,
+          "isFeatured": false,
+          "isPromoted": false,
+          "approvalRequired": false,
+          "guestLimit": 200,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": false,
+          "organizer": {
+            "id": "usr_me",
+            "displayName": "John Brown",
+            "avatarUrl": "https://i.pravatar.cc/150?img=12",
+            "username": "johnbrown",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": "com_evt_tolu_wed",
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-11-13T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": null,
+          "ticketsSold": 0,
+          "myRole": "organizer",
+          "stats": {
+            "registered": 0,
+            "checkedIn": 0,
+            "capacity": 2000,
+            "pendingRequests": 0,
+            "revenue": 0,
+            "ticketsSold": 0
+          },
+          "collaboratorsCount": 0
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 12,
+        "total": 4,
+        "lastPage": 1
+      }
+    }
+  },
+  "organizerAnalytics": {
+    "response": {
+      "data": {
+        "revenue": 4355000000,
+        "ticketsSold": 1004,
+        "checkedIn": 312,
+        "capacity": 2000,
+        "byTicketType": [
+          {
+            "ticketTypeId": "tt_ts_early",
+            "name": "Early Birds Ticket",
+            "price": 1500000,
+            "sold": 850,
+            "quantity": 1000,
+            "revenue": 1275000000,
+            "salesEndAt": "2026-12-20T16:00:00+01:00"
+          },
+          {
+            "ticketTypeId": "tt_ts_prem",
+            "name": "Premium Ticket",
+            "price": 20000000,
+            "sold": 154,
+            "quantity": 1000,
+            "revenue": 3080000000,
+            "salesEndAt": "2026-12-26T16:00:00+01:00"
+          }
+        ],
+        "salesByDay": [
+          {
+            "date": "2026-11-03",
+            "tickets": 34,
+            "revenue": 34500000
+          },
+          {
+            "date": "2026-11-04",
+            "tickets": 46,
+            "revenue": 87000000
+          }
+        ],
+        "recentBuyers": [
+          {
+            "user": {
+              "id": "usr_alice",
+              "displayName": "Alice Smith",
+              "avatarUrl": "https://i.pravatar.cc/150?img=47",
+              "username": "alicesmith",
+              "isVerified": false,
+              "isVendor": false
+            },
+            "ticketTypeName": "Platinum",
+            "purchasedAt": "2026-11-16T06:48:22.911Z"
+          },
+          {
+            "user": {
+              "id": "usr_michael",
+              "displayName": "Michael Johnson",
+              "avatarUrl": "https://i.pravatar.cc/150?img=14",
+              "username": "michaeljohnson",
+              "isVerified": false,
+              "isVendor": false
+            },
+            "ticketTypeName": "Diamond",
+            "purchasedAt": "2026-11-15T06:48:22.911Z"
+          }
+        ]
+      }
+    }
+  },
+  "organizerGuests": {
+    "response": {
+      "data": [
+        {
+          "id": "gl_0",
+          "user": {
+            "id": "usr_alice",
+            "displayName": "Alice Smith",
+            "avatarUrl": "https://i.pravatar.cc/150?img=47",
+            "username": "alicesmith",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "ticketTypeName": "Platinum",
+          "ticketStatus": "checked_in",
+          "checkedInAt": "2026-11-15T10:00:00+01:00",
+          "requestStatus": "pending",
+          "paymentStatus": "unpaid",
+          "subEventTitle": "After Party"
+        },
+        {
+          "id": "gl_1",
+          "user": {
+            "id": "usr_michael",
+            "displayName": "Michael Johnson",
+            "avatarUrl": "https://i.pravatar.cc/150?img=14",
+            "username": "michaeljohnson",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "ticketTypeName": "Diamond",
+          "ticketStatus": "valid",
+          "checkedInAt": null,
+          "requestStatus": "approved",
+          "paymentStatus": "paid",
+          "subEventTitle": null
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 10,
+        "total": 48,
+        "lastPage": 5
+      }
+    }
+  },
+  "organizerTasks": {
+    "response": {
+      "data": [
+        {
+          "id": "task_0",
+          "eventId": "evt_tolu_shower",
+          "title": "Organize Floral Arrangements",
+          "description": "Coordinate with the vendor and confirm final numbers 48 hours before the event.",
+          "status": "todo",
+          "dueAt": "2026-11-10T10:00:00+01:00",
+          "assignees": [
+            {
+              "id": "usr_alice",
+              "displayName": "Alice Smith",
+              "avatarUrl": "https://i.pravatar.cc/150?img=47",
+              "username": "alicesmith",
+              "isVerified": false,
+              "isVendor": false
+            }
+          ],
+          "attachments": [
+            {
+              "id": "att_0_0",
+              "name": "brief-1.pdf",
+              "url": "#"
+            },
+            {
+              "id": "att_0_1",
+              "name": "brief-2.pdf",
+              "url": "#"
+            }
+          ],
+          "createdBy": {
+            "id": "usr_me",
+            "displayName": "John Brown",
+            "avatarUrl": "https://i.pravatar.cc/150?img=12",
+            "username": "johnbrown",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "createdAt": "2026-11-05T10:00:00+01:00",
+          "completedAt": null,
+          "isOverdue": true
+        },
+        {
+          "id": "task_1",
+          "eventId": "evt_tolu_shower",
+          "title": "Bake Wedding Cake",
+          "description": "Coordinate with the vendor and confirm final numbers 48 hours before the event.",
+          "status": "todo",
+          "dueAt": "2026-12-05T10:00:00+01:00",
+          "assignees": [
+            {
+              "id": "usr_bestchefz",
+              "displayName": "Best Chefz",
+              "avatarUrl": "https://i.pravatar.cc/150?img=51",
+              "username": "bestchefz",
+              "isVerified": false,
+              "isVendor": true
+            },
+            {
+              "id": "usr_michael",
+              "displayName": "Michael Johnson",
+              "avatarUrl": "https://i.pravatar.cc/150?img=14",
+              "username": "michaeljohnson",
+              "isVerified": false,
+              "isVendor": false
+            }
+          ],
+          "attachments": [
+            {
+              "id": "att_1_0",
+              "name": "brief-1.pdf",
+              "url": "#"
+            }
+          ],
+          "createdBy": {
+            "id": "usr_me",
+            "displayName": "John Brown",
+            "avatarUrl": "https://i.pravatar.cc/150?img=12",
+            "username": "johnbrown",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "createdAt": "2026-11-06T10:00:00+01:00",
+          "completedAt": null,
+          "isOverdue": false
+        }
+      ]
+    }
+  },
+  "communityGet": {
+    "response": {
+      "data": {
+        "id": "com_tessy",
+        "eventId": "evt_gala",
+        "event": {
+          "id": "evt_gala",
+          "slug": "luxury-wedding-gala",
+          "title": "Tessy’s wedding",
+          "coverUrl": "https://picsum.photos/seed/wedding-gala/400/300",
+          "startsAt": "2027-01-12T17:00:00+01:00",
+          "isPromoted": true
+        },
+        "name": "Tessy’s Wedding",
+        "description": null,
+        "avatarUrl": "https://i.pravatar.cc/150?img=29",
+        "membersCount": 48,
+        "onlineCount": 6,
+        "myRole": "co_admin",
+        "permissions": {
+          "membersCanSendMessages": true,
+          "membersCanPostStatus": true,
+          "membersCanInvite": false,
+          "membersCanGoLive": false,
+          "requireApprovalToJoin": false
+        },
+        "inviteLink": "https://wedpluz.com/c/join/TESSY2026",
+        "isArchived": false,
+        "isMuted": true,
+        "isPinned": true,
+        "createdAt": "2026-10-26T10:00:00+01:00"
+      }
+    }
+  },
+  "adminAuthLogin": {
+    "request": {
+      "email": "admin@wedpluz.com",
+      "password": "password123",
+      "otp": "123456"
+    },
+    "response": {
+      "data": {
+        "requiresTwoFactor": false,
+        "admin": {
+          "id": "adm_me",
+          "firstName": "Geoffery",
+          "lastName": "Admin",
+          "email": "admin@wedpluz.com",
+          "avatarUrl": "https://i.pravatar.cc/150?img=12",
+          "roles": [
+            {
+              "id": "role_super",
+              "name": "Super Admin",
+              "slug": "super-admin"
+            }
+          ],
+          "permissions": [
+            "dashboard.view",
+            "users.view"
+          ],
+          "status": "active",
+          "twoFactorEnabled": true,
+          "lastLoginAt": "2026-11-16T06:48:25.118Z",
+          "createdAt": "2025-10-11T10:00:00+01:00"
+        },
+        "tokens": {
+          "accessToken": "mock-admin-adm_me",
+          "refreshToken": null,
+          "tokenType": "Bearer",
+          "expiresIn": 3600
+        }
+      }
+    }
+  },
+  "adminAuthMe": {
+    "response": {
+      "data": {
+        "id": "adm_me",
+        "firstName": "Geoffery",
+        "lastName": "Admin",
+        "email": "admin@wedpluz.com",
+        "avatarUrl": "https://i.pravatar.cc/150?img=12",
+        "roles": [
+          {
+            "id": "role_super",
+            "name": "Super Admin",
+            "slug": "super-admin"
+          }
+        ],
+        "permissions": [
+          "dashboard.view",
+          "users.view"
+        ],
+        "status": "active",
+        "twoFactorEnabled": true,
+        "lastLoginAt": "2026-11-16T06:48:25.272Z",
+        "createdAt": "2025-10-11T10:00:00+01:00"
+      }
+    }
+  },
+  "adminDashboard": {
+    "response": {
+      "data": {
+        "period": {
+          "from": "2026-10-17",
+          "to": "2026-11-16"
+        },
+        "users": {
+          "total": 48286,
+          "active": 31200,
+          "inactive": 17010,
+          "newInPeriod": {
+            "value": 4047,
+            "previous": 4262,
+            "changePercent": -5,
+            "trend": [
+              {
+                "date": "2026-10-17",
+                "value": 116
+              },
+              {
+                "date": "2026-10-18",
+                "value": 102
+              }
+            ]
+          },
+          "verified": 12400
+        },
+        "events": {
+          "total": 1844,
+          "upcoming": 260,
+          "ongoing": 18,
+          "completed": 1511,
+          "pendingReview": 2,
+          "createdInPeriod": {
+            "value": 469,
+            "previous": 395,
+            "changePercent": 18.7,
+            "trend": [
+              {
+                "date": "2026-10-17",
+                "value": 17
+              },
+              {
+                "date": "2026-10-18",
+                "value": 13
+              }
+            ]
+          }
+        },
+        "tickets": {
+          "sold": {
+            "value": 27389,
+            "previous": 27292,
+            "changePercent": 0.4,
+            "trend": [
+              {
+                "date": "2026-10-17",
+                "value": 673
+              },
+              {
+                "date": "2026-10-18",
+                "value": 947
+              }
+            ]
+          },
+          "bookings": {
+            "value": 10365,
+            "previous": 9494,
+            "changePercent": 9.2,
+            "trend": [
+              {
+                "date": "2026-10-17",
+                "value": 277
+              },
+              {
+                "date": "2026-10-18",
+                "value": 371
+              }
+            ]
+          },
+          "checkIns": 18400
+        },
+        "finance": {
+          "gtv": {
+            "value": 1608196785,
+            "previous": 1429423421,
+            "changePercent": 12.5,
+            "trend": [
+              {
+                "date": "2026-10-17",
+                "value": 39060852
+              },
+              {
+                "date": "2026-10-18",
+                "value": 49390354
+              }
+            ]
+          },
+          "platformRevenue": {
+            "value": 81787175,
+            "previous": 74352390,
+            "changePercent": 10,
+            "trend": [
+              {
+                "date": "2026-10-17",
+                "value": 2268590
+              },
+              {
+                "date": "2026-10-18",
+                "value": 3094993
+              }
+            ]
+          },
+          "pendingSettlements": 18232381500,
+          "refundsAmount": 49800000,
+          "refundsCount": 23,
+          "currency": "NGN"
+        },
+        "community": {
+          "communities": 907,
+          "messagesInPeriod": 182000,
+          "postsInPeriod": 9100,
+          "reportsOpen": 13
+        },
+        "recentActivity": [
+          {
+            "id": "aud_54",
+            "actor": {
+              "id": "adm_5",
+              "firstName": "Seun",
+              "lastName": "Lawal",
+              "email": "seun@wedpluz.com",
+              "avatarUrl": "https://i.pravatar.cc/150?img=59"
+            },
+            "action": "event.rejected",
+            "module": "events",
+            "targetType": "event",
+            "targetId": "event_66",
+            "targetLabel": "Bole Festival",
+            "before": null,
+            "after": null,
+            "ip": "105.112.22.137",
+            "userAgent": "Mozilla/5.0 Chrome/131",
+            "correlationId": "corr_207752",
+            "createdAt": "2026-11-14T19:44:00+01:00"
+          },
+          {
+            "id": "aud_30",
+            "actor": {
+              "id": "adm_5",
+              "firstName": "Seun",
+              "lastName": "Lawal",
+              "email": "seun@wedpluz.com",
+              "avatarUrl": "https://i.pravatar.cc/150?img=59"
+            },
+            "action": "role.updated",
+            "module": "access",
+            "targetType": "role",
+            "targetId": "role_7",
+            "targetLabel": "role #34",
+            "before": null,
+            "after": null,
+            "ip": "105.112.87.241",
+            "userAgent": "Mozilla/5.0 Chrome/131",
+            "correlationId": "corr_483854",
+            "createdAt": "2026-11-14T15:25:00+01:00"
+          }
+        ],
+        "alerts": [
+          {
+            "id": "al_1",
+            "severity": "critical",
+            "title": "PayPal success rate dropped to 81%",
+            "description": "19 failed captures in the last hour. Provider status page reports degraded performance.",
+            "link": "/finance/gateways",
+            "createdAt": "2026-11-16T06:48:25.838Z"
+          },
+          {
+            "id": "al_2",
+            "severity": "warning",
+            "title": "2 events awaiting review for more than 24h",
+            "description": "Organizers are notified of SLA breaches after 48h.",
+            "link": "/events?status=pending_review",
+            "createdAt": "2026-11-15T06:48:25.838Z"
+          }
+        ],
+        "topEvents": [
+          {
+            "event": {
+              "id": "evt_obudu",
+              "slug": "a-trip-to-obudu-cattle-ranch",
+              "title": "A trip to Obudu Cattle ranch",
+              "coverUrl": "https://picsum.photos/seed/obudu-ranch/1200/700",
+              "category": {
+                "id": "cat_travel",
+                "name": "Travel & Outdoor",
+                "slug": "travel-outdoor"
+              },
+              "startsAt": "2026-12-16T08:00:00+01:00",
+              "endsAt": "2026-12-18T12:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt",
+              "isFree": false,
+              "minPrice": 11000000,
+              "currency": "NGN",
+              "status": "live",
+              "isSaved": false,
+              "isFeatured": false,
+              "isPromoted": true,
+              "approvalRequired": true,
+              "guestLimit": 200,
+              "allowGuestInvites": true,
+              "maxAdditionalGuests": 5,
+              "isAdultOnly": true,
+              "organizer": {
+                "id": "usr_travelbeta",
+                "displayName": "Travel Beta",
+                "avatarUrl": "https://i.pravatar.cc/150?img=60",
+                "username": "travelbeta",
+                "isVerified": true,
+                "isVendor": false
+              },
+              "promotion": {
+                "commissionPercent": 10,
+                "promotersCount": 141
+              },
+              "communityId": null,
+              "myRequestStatus": "none",
+              "myTicketId": null,
+              "createdAt": "2026-10-19T10:00:00+01:00",
+              "updatedAt": "2026-11-14T10:00:00+01:00",
+              "publishedAt": "2026-11-05T10:00:00+01:00",
+              "ticketsSold": 1004
+            },
+            "ticketsSold": 1004,
+            "revenue": 12430000000
+          },
+          {
+            "event": {
+              "id": "evt_tolu_shower",
+              "slug": "tolus-bridal-shower",
+              "title": "Tolu’s Bridal Shower",
+              "coverUrl": "https://picsum.photos/seed/tolu-shower/1200/700",
+              "category": {
+                "id": "cat_social",
+                "name": "Social activities",
+                "slug": "social-activities"
+              },
+              "startsAt": "2026-12-28T12:00:00+01:00",
+              "endsAt": "2026-12-29T16:00:00+01:00",
+              "attendanceMode": "physical",
+              "city": "Port Harcourt",
+              "isFree": false,
+              "minPrice": 1500000,
+              "currency": "NGN",
+              "status": "live",
+              "isSaved": false,
+              "isFeatured": false,
+              "isPromoted": false,
+              "approvalRequired": true,
+              "guestLimit": 2000,
+              "allowGuestInvites": true,
+              "maxAdditionalGuests": 5,
+              "isAdultOnly": true,
+              "organizer": {
+                "id": "usr_me",
+                "displayName": "John Brown",
+                "avatarUrl": "https://i.pravatar.cc/150?img=12",
+                "username": "johnbrown",
+                "isVerified": false,
+                "isVendor": false
+              },
+              "promotion": null,
+              "communityId": "com_evt_tolu_shower",
+              "myRequestStatus": "none",
+              "myTicketId": null,
+              "createdAt": "2026-10-26T10:00:00+01:00",
+              "updatedAt": "2026-11-14T10:00:00+01:00",
+              "publishedAt": "2026-11-05T10:00:00+01:00",
+              "ticketsSold": 1004
+            },
+            "ticketsSold": 1004,
+            "revenue": 4355000000
+          }
+        ],
+        "acquisitionBySource": [
+          {
+            "source": "android",
+            "users": 21400
+          },
+          {
+            "source": "web",
+            "users": 15800
+          }
+        ],
+        "gatewayHealth": [
+          {
+            "provider": "paystack",
+            "successRate": 97.8,
+            "avgLatencyMs": 820,
+            "volume": 14200,
+            "failures": 312,
+            "status": "operational"
+          },
+          {
+            "provider": "monnify",
+            "successRate": 96.1,
+            "avgLatencyMs": 1100,
+            "volume": 6100,
+            "failures": 238,
+            "status": "operational"
+          }
+        ]
+      }
+    }
+  },
+  "adminUsersList": {
+    "response": {
+      "data": [
+        {
+          "id": "usr_g23",
+          "firstName": "Amaka",
+          "lastName": "Bello",
+          "displayName": "Amaka Bello",
+          "username": "amakabello",
+          "email": "amaka.bello23@example.com",
+          "phone": null,
+          "avatarUrl": null,
+          "dateOfBirth": "1995-08-08",
+          "emailVerifiedAt": "2026-04-29T10:00:00+01:00",
+          "phoneVerifiedAt": null,
+          "identityStatus": "pending",
+          "interests": [],
+          "roles": [
+            "user"
+          ],
+          "status": "active",
+          "plan": "free",
+          "locale": "en",
+          "city": "Abuja",
+          "countryCode": "NG",
+          "businessProfileId": null,
+          "walletEnabled": false,
+          "createdAt": "2026-11-05T10:00:00+01:00",
+          "lastSeenAt": "2026-11-15T08:45:00+01:00",
+          "isVerified": false,
+          "isVendor": false,
+          "ticketsCount": 0,
+          "eventsCount": 0,
+          "reportsCount": 1,
+          "totalSpent": 750000,
+          "signupSource": "web",
+          "suspendedReason": null,
+          "deletionRequest": null
+        },
+        {
+          "id": "usr_g8",
+          "firstName": "Bola",
+          "lastName": "Ogunleye",
+          "displayName": "Bola Ogunleye",
+          "username": "bolaogunleye",
+          "email": "bola.ogunleye8@example.com",
+          "phone": null,
+          "avatarUrl": "https://i.pravatar.cc/150?img=30",
+          "dateOfBirth": "1995-08-08",
+          "emailVerifiedAt": "2026-04-29T10:00:00+01:00",
+          "phoneVerifiedAt": null,
+          "identityStatus": "pending",
+          "interests": [],
+          "roles": [
+            "user"
+          ],
+          "status": "active",
+          "plan": "free",
+          "locale": "en",
+          "city": "Ibadan",
+          "countryCode": "NG",
+          "businessProfileId": null,
+          "walletEnabled": false,
+          "createdAt": "2026-11-02T10:00:00+01:00",
+          "lastSeenAt": "2026-11-13T18:27:00+01:00",
+          "isVerified": false,
+          "isVendor": false,
+          "ticketsCount": 5,
+          "eventsCount": 0,
+          "reportsCount": 0,
+          "totalSpent": 800000,
+          "signupSource": "web",
+          "suspendedReason": null,
+          "deletionRequest": null
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 76,
+        "lastPage": 38
+      }
+    }
+  },
+  "adminEventsList": {
+    "response": {
+      "data": [
+        {
+          "id": "evt_pending2",
+          "slug": "abuja-food-fair",
+          "title": "Abuja Food Fair",
+          "coverUrl": "https://picsum.photos/seed/food-fair/1200/700",
+          "category": {
+            "id": "cat_food",
+            "name": "Food & Drinks",
+            "slug": "food-drinks"
+          },
+          "startsAt": "2027-01-09T12:00:00+01:00",
+          "endsAt": "2027-01-09T16:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Abuja",
+          "isFree": false,
+          "minPrice": 200000,
+          "currency": "NGN",
+          "status": "pending_review",
+          "isSaved": false,
+          "isFeatured": false,
+          "isPromoted": false,
+          "approvalRequired": false,
+          "guestLimit": 200,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": false,
+          "organizer": {
+            "id": "usr_g7",
+            "displayName": "Chioma Obi",
+            "avatarUrl": "https://i.pravatar.cc/150?img=42",
+            "username": "chiomaobi",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": null,
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-11-15T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": "2026-11-05T10:00:00+01:00",
+          "ticketsSold": 0,
+          "revenue": 0,
+          "reportsCount": 0,
+          "submittedAt": "2026-11-15T10:00:00+01:00",
+          "reviewedBy": null,
+          "rejectionReason": null,
+          "source": "ios"
+        },
+        {
+          "id": "evt_pending",
+          "slug": "lagos-tech-mixer",
+          "title": "Lagos Tech Mixer",
+          "coverUrl": "https://picsum.photos/seed/tech-mixer/1200/700",
+          "category": {
+            "id": "cat_tech",
+            "name": "Technology",
+            "slug": "technology"
+          },
+          "startsAt": "2026-12-20T17:00:00+01:00",
+          "endsAt": "2026-12-20T21:00:00+01:00",
+          "attendanceMode": "physical",
+          "city": "Lagos",
+          "isFree": false,
+          "minPrice": 300000,
+          "currency": "NGN",
+          "status": "pending_review",
+          "isSaved": false,
+          "isFeatured": false,
+          "isPromoted": false,
+          "approvalRequired": false,
+          "guestLimit": 200,
+          "allowGuestInvites": true,
+          "maxAdditionalGuests": 5,
+          "isAdultOnly": false,
+          "organizer": {
+            "id": "usr_g3",
+            "displayName": "Bola Bello",
+            "avatarUrl": null,
+            "username": "bolabello",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "promotion": null,
+          "communityId": null,
+          "myRequestStatus": "none",
+          "myTicketId": null,
+          "createdAt": "2026-11-14T10:00:00+01:00",
+          "updatedAt": "2026-11-14T10:00:00+01:00",
+          "publishedAt": "2026-11-05T10:00:00+01:00",
+          "ticketsSold": 0,
+          "revenue": 0,
+          "reportsCount": 0,
+          "submittedAt": "2026-11-14T10:00:00+01:00",
+          "reviewedBy": null,
+          "rejectionReason": null,
+          "source": "android"
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 2,
+        "lastPage": 1
+      }
+    }
+  },
+  "adminBookingsList": {
+    "response": {
+      "data": [
+        {
+          "id": "bk_72",
+          "reference": "WP-ORD-8072",
+          "event": {
+            "id": "evt_g12",
+            "title": "Yoga in the Park 13",
+            "slug": "generated-event-12",
+            "coverUrl": "https://picsum.photos/seed/gen-12/1200/700",
+            "startsAt": "2027-01-24T10:00:00+01:00"
+          },
+          "buyer": {
+            "id": "usr_g49",
+            "displayName": "Ifeoma Balogun",
+            "avatarUrl": null,
+            "username": "ifeomabalogun",
+            "isVerified": false,
+            "isVendor": false,
+            "email": "ifeoma.balogun49@example.com"
+          },
+          "ticketsCount": 4,
+          "total": 0,
+          "serviceFee": 0,
+          "currency": "NGN",
+          "status": "paid",
+          "paymentMethod": "free",
+          "provider": "none",
+          "providerReference": null,
+          "checkedInCount": 0,
+          "source": "ios",
+          "createdAt": "2026-11-14T03:00:00+01:00",
+          "disputeId": null
+        },
+        {
+          "id": "bk_114",
+          "reference": "WP-ORD-8114",
+          "event": {
+            "id": "evt_g16",
+            "title": "Book Fair 17",
+            "slug": "generated-event-16",
+            "coverUrl": "https://picsum.photos/seed/gen-16/1200/700",
+            "startsAt": "2026-08-30T10:00:00+01:00"
+          },
+          "buyer": {
+            "id": "usr_g51",
+            "displayName": "Fatima Obi",
+            "avatarUrl": "https://i.pravatar.cc/150?img=50",
+            "username": "fatimaobi",
+            "isVerified": false,
+            "isVendor": false,
+            "email": "fatima.obi51@example.com"
+          },
+          "ticketsCount": 1,
+          "total": 500000,
+          "serviceFee": 15000,
+          "currency": "NGN",
+          "status": "paid",
+          "paymentMethod": "paystack",
+          "provider": "stripe",
+          "providerReference": "PRV_938171",
+          "checkedInCount": 0,
+          "source": "ios",
+          "createdAt": "2026-11-13T22:00:00+01:00",
+          "disputeId": null
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 120,
+        "lastPage": 60
+      }
+    }
+  },
+  "adminBookingsRefund": {
+    "request": {
+      "amount": 0,
+      "reason": "Customer could not attend; partial refund approved by support lead."
+    },
+    "response": {
+      "data": {
+        "id": "rfd_s0",
+        "reference": "WP-RF-6011",
+        "booking": {
+          "id": "bk_72",
+          "reference": "WP-ORD-8072",
+          "event": {
+            "id": "evt_g12",
+            "title": "Yoga in the Park 13",
+            "slug": "generated-event-12",
+            "coverUrl": "https://picsum.photos/seed/gen-12/1200/700",
+            "startsAt": "2027-01-24T10:00:00+01:00"
+          },
+          "buyer": {
+            "id": "usr_g49",
+            "displayName": "Ifeoma Balogun",
+            "avatarUrl": null,
+            "username": "ifeomabalogun",
+            "isVerified": false,
+            "isVendor": false,
+            "email": "ifeoma.balogun49@example.com"
+          }
+        },
+        "amount": 0,
+        "currency": "NGN",
+        "reason": "Customer could not attend; partial refund approved by support lead.",
+        "status": "processing",
+        "requestedAt": "2026-11-16T06:48:26.927Z",
+        "decidedBy": {
+          "id": "adm_me",
+          "firstName": "Geoffery",
+          "lastName": "Admin"
+        },
+        "decidedAt": "2026-11-16T06:48:26.927Z",
+        "provider": "none"
+      },
+      "message": "Refund initiated"
+    }
+  },
+  "adminFinanceSummary": {
+    "response": {
+      "data": {
+        "period": {
+          "from": "2026-10-17",
+          "to": "2026-11-16"
+        },
+        "currency": "NGN",
+        "gtv": {
+          "value": 1558048690,
+          "previous": 1247667675,
+          "changePercent": 24.9,
+          "trend": [
+            {
+              "date": "2026-10-17",
+              "value": 40984881
+            },
+            {
+              "date": "2026-10-18",
+              "value": 36955998
+            }
+          ]
+        },
+        "platformRevenue": {
+          "value": 77599568,
+          "previous": 83240387,
+          "changePercent": -6.8,
+          "trend": [
+            {
+              "date": "2026-10-17",
+              "value": 1770594
+            },
+            {
+              "date": "2026-10-18",
+              "value": 2269300
+            }
+          ]
+        },
+        "gatewayFees": 18400000,
+        "refunds": 49800000,
+        "pendingSettlements": 18564526500,
+        "paidOut": 1001925000,
+        "walletFloat": 412000000,
+        "byProvider": [
+          {
+            "provider": "paystack",
+            "volume": 820000000,
+            "count": 14200,
+            "successRate": 97.8
+          },
+          {
+            "provider": "monnify",
+            "volume": 310000000,
+            "count": 6100,
+            "successRate": 96.1
+          }
+        ],
+        "revenueByDay": [
+          {
+            "date": "2026-10-17",
+            "gtv": 54847771,
+            "revenue": 2742389
+          },
+          {
+            "date": "2026-10-18",
+            "gtv": 57012627,
+            "revenue": 2850631
+          }
+        ]
+      }
+    }
+  },
+  "adminFinanceSettlements": {
+    "response": {
+      "data": [
+        {
+          "id": "stl_0",
+          "reference": "WP-STL-3000",
+          "organizer": {
+            "id": "usr_alex",
+            "displayName": "Alex Thompson",
+            "avatarUrl": "https://i.pravatar.cc/150?img=7",
+            "username": "alexthompson",
+            "isVerified": false,
+            "isVendor": false,
+            "email": "alex@example.com",
+            "businessName": "Your Next Event"
+          },
+          "event": {
+            "id": "evt_movie",
+            "title": "Movie in the park - Denim Edition (Verge Gardens, stadium road, Portharcourt)",
+            "startsAt": "2026-12-07T18:00:00+01:00"
+          },
+          "grossSales": 80500000,
+          "refunds": 1610000,
+          "platformCommission": 4025000,
+          "gatewayFees": 1207500,
+          "netPayable": 73657500,
+          "currency": "NGN",
+          "status": "pending",
+          "holdReason": null,
+          "eligibleAt": "2026-12-10T22:00:00+01:00",
+          "paidAt": null,
+          "payoutId": null
+        },
+        {
+          "id": "stl_1",
+          "reference": "WP-STL-3001",
+          "organizer": {
+            "id": "usr_travelbeta",
+            "displayName": "Travel Beta",
+            "avatarUrl": "https://i.pravatar.cc/150?img=60",
+            "username": "travelbeta",
+            "isVerified": true,
+            "isVendor": false,
+            "email": "hello@travelbeta.com",
+            "businessName": null
+          },
+          "event": {
+            "id": "evt_obudu",
+            "title": "A trip to Obudu Cattle ranch",
+            "startsAt": "2026-12-16T08:00:00+01:00"
+          },
+          "grossSales": 12430000000,
+          "refunds": 248600000,
+          "platformCommission": 621500000,
+          "gatewayFees": 186450000,
+          "netPayable": 11373450000,
+          "currency": "NGN",
+          "status": "pending",
+          "holdReason": null,
+          "eligibleAt": "2026-12-21T12:00:00+01:00",
+          "paidAt": null,
+          "payoutId": null
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 24,
+        "lastPage": 12
+      }
+    }
+  },
+  "adminFinancePayouts": {
+    "response": {
+      "data": [
+        {
+          "id": "po_0",
+          "reference": "WP-PO-7000",
+          "settlementIds": [
+            "stl_4"
+          ],
+          "organizer": {
+            "id": "usr_me",
+            "displayName": "John Brown",
+            "avatarUrl": "https://i.pravatar.cc/150?img=12",
+            "username": "johnbrown",
+            "isVerified": false,
+            "isVendor": false,
+            "email": "johnbrown@gmail.com",
+            "businessName": null
+          },
+          "bankAccount": {
+            "bankName": "GTBank",
+            "accountNumber": "0123456789",
+            "accountName": "JOHN BROWN"
+          },
+          "amount": 57187500,
+          "currency": "NGN",
+          "provider": "monnify",
+          "status": "approved",
+          "requestedBy": {
+            "id": "adm_3",
+            "firstName": "Tunde",
+            "lastName": "Bello"
+          },
+          "approvedBy": null,
+          "failureReason": null,
+          "createdAt": "2026-11-14T10:00:00+01:00",
+          "completedAt": null
+        },
+        {
+          "id": "po_1",
+          "reference": "WP-PO-7001",
+          "settlementIds": [
+            "stl_10"
+          ],
+          "organizer": {
+            "id": "usr_g2",
+            "displayName": "Tunde Chukwu",
+            "avatarUrl": "https://i.pravatar.cc/150?img=44",
+            "username": "tundechukwu",
+            "isVerified": false,
+            "isVendor": false,
+            "email": "tunde.chukwu2@example.com",
+            "businessName": "Tunde's Rentals Studio"
+          },
+          "bankAccount": {
+            "bankName": "GTBank",
+            "accountNumber": "0123456789",
+            "accountName": "TUNDE CHUKWU"
+          },
+          "amount": 487237500,
+          "currency": "NGN",
+          "provider": "paystack",
+          "status": "paid",
+          "requestedBy": {
+            "id": "adm_3",
+            "firstName": "Tunde",
+            "lastName": "Bello"
+          },
+          "approvedBy": {
+            "id": "adm_me",
+            "firstName": "Geoffery",
+            "lastName": "Admin"
+          },
+          "failureReason": null,
+          "createdAt": "2026-11-13T10:00:00+01:00",
+          "completedAt": "2026-11-14T10:00:00+01:00"
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 8,
+        "lastPage": 4
+      }
+    }
+  },
+  "adminModerationReports": {
+    "response": {
+      "data": [
+        {
+          "id": "rep_9",
+          "targetType": "message",
+          "targetId": "message_9",
+          "targetPreview": {
+            "title": "message by Emeka Abubakar",
+            "excerpt": "Click this link to claim your free tickets!!!",
+            "imageUrl": null,
+            "link": null
+          },
+          "reporter": {
+            "id": "usr_belema",
+            "displayName": "Belema Harry",
+            "avatarUrl": null,
+            "username": "belemaharry",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "reportedUser": {
+            "id": "usr_g56",
+            "displayName": "Emeka Abubakar",
+            "avatarUrl": null,
+            "username": "emekaabubakar",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "reason": "spam",
+          "details": "This account keeps sending phishing links to community members.",
+          "status": "open",
+          "priority": "medium",
+          "assignedTo": {
+            "id": "adm_4",
+            "firstName": "Amaka",
+            "lastName": "Eze"
+          },
+          "resolution": null,
+          "createdAt": "2026-11-13T19:00:00+01:00"
+        },
+        {
+          "id": "rep_15",
+          "targetType": "message",
+          "targetId": "message_15",
+          "targetPreview": {
+            "title": "message by Seun Okoye",
+            "excerpt": "Click this link to claim your free tickets!!!",
+            "imageUrl": null,
+            "link": null
+          },
+          "reporter": {
+            "id": "usr_g6",
+            "displayName": "Yemi Abubakar",
+            "avatarUrl": "https://i.pravatar.cc/150?img=47",
+            "username": "yemiabubakar",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "reportedUser": {
+            "id": "usr_g17",
+            "displayName": "Seun Okoye",
+            "avatarUrl": null,
+            "username": "seunokoye",
+            "isVerified": false,
+            "isVendor": false
+          },
+          "reason": "false_information",
+          "details": "This account keeps sending phishing links to community members.",
+          "status": "open",
+          "priority": "medium",
+          "assignedTo": {
+            "id": "adm_4",
+            "firstName": "Amaka",
+            "lastName": "Eze"
+          },
+          "resolution": null,
+          "createdAt": "2026-11-12T01:00:00+01:00"
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 13,
+        "lastPage": 7
+      }
+    }
+  },
+  "adminAccessRoles": {
+    "response": {
+      "data": [
+        {
+          "id": "role_super",
+          "name": "Super Admin",
+          "slug": "super-admin",
+          "description": "Full access to every module",
+          "permissions": [
+            "dashboard.view",
+            "users.view"
+          ],
+          "isSystem": true,
+          "membersCount": 2,
+          "createdAt": "2025-10-11T10:00:00+01:00"
+        },
+        {
+          "id": "role_ops",
+          "name": "Operations",
+          "slug": "operations",
+          "description": "Users, events, organizers, bookings and support",
+          "permissions": [
+            "dashboard.view",
+            "users.view"
+          ],
+          "isSystem": false,
+          "membersCount": 4,
+          "createdAt": "2026-01-19T10:00:00+01:00"
+        }
+      ]
+    }
+  },
+  "adminAccessAuditLogs": {
+    "response": {
+      "data": [
+        {
+          "id": "aud_s1",
+          "actor": {
+            "id": "adm_me",
+            "firstName": "Geoffery",
+            "lastName": "Admin",
+            "email": "admin@wedpluz.com",
+            "avatarUrl": "https://i.pravatar.cc/150?img=12"
+          },
+          "action": "refund.initiated",
+          "module": "finance",
+          "targetType": "booking",
+          "targetId": "bk_72",
+          "targetLabel": "WP-ORD-8072",
+          "before": null,
+          "after": {
+            "amount": 0,
+            "reason": "Customer could not attend; partial refund approved by support lead."
+          },
+          "ip": "105.112.33.1",
+          "userAgent": "Mozilla/5.0 Chrome/131",
+          "correlationId": "corr_s2",
+          "createdAt": "2026-11-16T06:48:26.927Z"
+        },
+        {
+          "id": "aud_54",
+          "actor": {
+            "id": "adm_5",
+            "firstName": "Seun",
+            "lastName": "Lawal",
+            "email": "seun@wedpluz.com",
+            "avatarUrl": "https://i.pravatar.cc/150?img=59"
+          },
+          "action": "event.rejected",
+          "module": "events",
+          "targetType": "event",
+          "targetId": "event_66",
+          "targetLabel": "Bole Festival",
+          "before": null,
+          "after": null,
+          "ip": "105.112.22.137",
+          "userAgent": "Mozilla/5.0 Chrome/131",
+          "correlationId": "corr_207752",
+          "createdAt": "2026-11-14T19:44:00+01:00"
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "perPage": 2,
+        "total": 81,
+        "lastPage": 41
+      }
+    }
+  },
+  "adminReportsRun": {
+    "request": {
+      "from": "2026-10-17",
+      "to": "2026-11-16",
+      "groupBy": "week"
+    },
+    "response": {
+      "data": {
+        "key": "revenue",
+        "period": {
+          "from": "2026-10-17",
+          "to": "2026-11-16"
+        },
+        "groupBy": "week",
+        "columns": [
+          {
+            "key": "week",
+            "label": "Week",
+            "type": "string"
+          },
+          {
+            "key": "commission",
+            "label": "Commission",
+            "type": "money"
+          }
+        ],
+        "rows": [
+          {
+            "week": "2026-09-28",
+            "commission": 61200000,
+            "serviceFees": 34100000,
+            "subscriptions": 61600000,
+            "promotions": 68700000
+          },
+          {
+            "week": "2026-10-05",
+            "commission": 17500000,
+            "serviceFees": 78000000,
+            "subscriptions": 26200000,
+            "promotions": 37400000
+          }
+        ],
+        "totals": {
+          "commission": 356400000,
+          "serviceFees": 361100000,
+          "subscriptions": 389600000,
+          "promotions": 225500000
+        },
+        "series": [
+          {
+            "name": "Commission",
+            "points": [
+              {
+                "date": "2026-09-28",
+                "value": 61200000
+              },
+              {
+                "date": "2026-10-05",
+                "value": 17500000
+              }
+            ]
+          },
+          {
+            "name": "Service fees",
+            "points": [
+              {
+                "date": "2026-09-28",
+                "value": 34100000
+              },
+              {
+                "date": "2026-10-05",
+                "value": 78000000
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "adminReportsExport": {
+    "request": {
+      "from": "2026-10-17",
+      "to": "2026-11-16",
+      "groupBy": "week",
+      "format": "csv"
+    },
+    "response": {
+      "data": {
+        "id": "exp_s3",
+        "status": "ready",
+        "format": "csv",
+        "downloadUrl": "data:text/plain;charset=utf-8,Wedpluz%20export%20revenue%20(csv)",
+        "expiresAt": "2026-11-17T06:48:28.822Z"
+      }
+    }
+  },
+  "adminSettingsGet": {
+    "response": {
+      "data": {
+        "general": {
+          "platformName": "Wedpluz",
+          "supportEmail": "support@wedpluz.com",
+          "supportPhone": "+234 800 000 0000",
+          "supportWhatsapp": "+234 800 000 0001",
+          "defaultCurrency": "NGN",
+          "defaultCountry": "NG",
+          "timezone": "Africa/Lagos",
+          "maintenanceMode": false
+        },
+        "payments": {
+          "enabledProviders": [
+            "paystack",
+            "stripe"
+          ],
+          "defaultProvider": "paystack",
+          "serviceFeePercent": 3,
+          "serviceFeeFixed": 10000,
+          "passFeesToBuyer": true,
+          "refundWindowHours": 48,
+          "settlementDelayDays": 3,
+          "minWithdrawal": 100000,
+          "maxWithdrawal": 500000000
+        },
+        "features": {
+          "communities": true,
+          "liveStreams": true,
+          "pluzPlanner": true,
+          "aiDesigns": true,
+          "eventPromotion": true,
+          "wallet": true,
+          "subEvents": true,
+          "seatSelection": true,
+          "vendorPromos": true,
+          "identityVerification": true
+        },
+        "app": {
+          "minAndroidVersion": "2.3.0",
+          "minIosVersion": "2.3.0",
+          "forceUpdate": false,
+          "androidStoreUrl": "https://play.google.com/store/apps/details?id=com.wedpluz.app",
+          "iosStoreUrl": "https://apps.apple.com/app/wedpluz"
+        },
+        "legal": {
+          "termsUrl": "https://wedpluz.com/terms",
+          "privacyUrl": "https://wedpluz.com/privacy",
+          "termsUpdatedAt": "2026-08-17T10:00:00+01:00",
+          "privacyUpdatedAt": "2026-08-17T10:00:00+01:00"
+        }
+      }
+    }
+  }
+}

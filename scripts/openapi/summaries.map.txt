@@ -1,0 +1,309 @@
+authLogin | Sign in with email and password
+authRegister | Create a customer account
+authSocial | Sign in or sign up with Google
+authSendOtp | Send a one-time code by email
+authVerifyOtp | Verify a one-time code
+authForgotPassword | Start password reset
+authResetPassword | Reset password with a one-time code
+authRefresh | Rotate access and refresh tokens
+authLogout | Revoke the current token
+authMe | Get the signed-in user (session restore)
+accountMe | Get my profile
+accountUpdate | Update my profile
+accountProfileSetup | Complete onboarding profile setup
+accountInterests | List selectable interests
+accountUpdateInterests | Replace my interests
+accountChangePassword | Change my password
+accountPrivacy | Get my privacy settings
+accountUpdatePrivacy | Update my privacy settings
+accountNotificationPreferences | Get my notification preferences
+accountUpdateNotificationPreferences | Update my notification preferences
+accountSessions | List my active sessions
+accountRevokeSession | Revoke one session
+accountRevokeOtherSessions | Revoke all other sessions
+accountIdentityVerification | Get my identity verification status
+accountSubmitIdentity | Submit identity verification (ID + selfie)
+accountDeletionRequest | Get my pending account deletion request
+accountRequestDeletion | Request account deletion (30-day grace period)
+accountCancelDeletion | Cancel my account deletion request
+accountUpload | Upload a file (multipart)
+accountUploadSignature | Get a signed direct-upload form
+accountPublicProfile | Get a user's public profile
+accountPage | Get a CMS page (about, terms, privacy, FAQs, help, contact)
+accountCreateSupportTicket | Open a support ticket
+accountSupportTickets | List my support tickets
+accountReport | Report content or a user
+accountConfig | Get public platform configuration and feature flags
+accountRegisterDevice | Register a web push token
+eventsCategories | List event categories
+eventsList | Search and filter events
+eventsFeatured | List featured events
+eventsUpcoming | List upcoming events
+eventsPopular | List popular events
+eventsPromoted | List events open for promotion (earn commission)
+eventsBySlug | Get event details by slug
+eventsRelated | List related events
+eventsOrganizerEvents | List other events by the same organizer
+eventsSave | Save an event
+eventsUnsave | Remove a saved event
+eventsSaved | List my saved events
+eventsRequestToAttend | Request to attend an approval-only event
+eventsSuggestions | Search-as-you-type suggestions
+eventsLocationSuggest | Location autocomplete
+ticketingQuote | Create a checkout quote (server-priced, holds inventory)
+ticketingReleaseQuote | Release a checkout quote hold
+ticketingSeats | Get the seat map for an event schedule
+ticketingCreateOrder | Create an order and payment intent
+ticketingOrder | Get an order
+ticketingVerifyPayment | Verify payment after provider redirect
+ticketingReceipt | Get a signed receipt download URL
+ticketingMyTickets | List my tickets
+ticketingTicket | Get a ticket with its QR payload
+ticketingCancel | Cancel a ticket (refund decided by backend)
+ticketingTransfer | Transfer a ticket to another person
+ticketingDownload | Get a signed ticket PDF download URL
+organizerList | List events I organize or help manage
+organizerCreateDraft | Create an event draft
+organizerGet | Get a managed event
+organizerUpdate | Update a managed event draft or live event
+organizerPublish | Publish an event (or submit for review)
+organizerRemove | Delete an event draft
+organizerSetStatus | Mark an event completed or cancelled
+organizerAnalytics | Get event sales analytics
+organizerGuests | List the guest list
+organizerRequests | List attendance requests
+organizerDecideRequest | Approve or decline an attendance request
+organizerBulkDecide | Approve or decline attendance requests in bulk
+organizerCheckIns | List check-ins
+organizerValidateTicket | Validate and check in a ticket (QR scan or manual code)
+organizerManagers | List event managers
+organizerInviteManager | Invite an event manager
+organizerUpdateManager | Change a manager's access
+organizerRemoveManager | Remove an event manager
+organizerVendors | List vendors assigned to the event
+organizerInviteVendor | Invite a vendor to the event
+organizerRemoveVendor | Remove a vendor from the event
+organizerTasks | List event tasks
+organizerCreateTask | Create an event task
+organizerUpdateTask | Update an event task
+organizerDeleteTask | Delete an event task
+organizerActivity | List the event activity log
+organizerPromotion | Get promotion (affiliate) settings
+organizerUpdatePromotion | Update promotion (affiliate) settings
+organizerPromoters | Get the promoter leaderboard
+organizerCommunity | Get the event community
+organizerUpdateCommunity | Enable, disable or configure the event community
+organizerCollaborations | List my collaboration invites
+organizerRespondCollaboration | Accept or decline a collaboration invite
+organizerPromotions | List events I promote
+organizerPromotionDetail | Get one of my promotion enrollments
+organizerJoinPromotion | Join an event's promotion programme
+vendorsCategories | List vendor categories
+vendorsBusinessCategories | List business categories (business onboarding)
+vendorsList | Search and filter vendors
+vendorsFeatured | List featured vendors
+vendorsBySlug | Get a vendor profile by slug
+vendorsWorks | List a vendor's portfolio works
+vendorsWork | Get a portfolio work
+vendorsLikeWork | Toggle like on a portfolio work
+vendorsReviews | List vendor reviews with rating summary
+vendorsAddReview | Review a vendor
+vendorsUpdateReview | Edit my vendor review
+vendorsDeleteReview | Delete my vendor review
+vendorsSave | Save a vendor
+vendorsUnsave | Remove a saved vendor
+vendorsSaved | List my saved vendors
+vendorsContact | Start a conversation with a vendor
+vendorsMyProfile | Get my vendor (business) profile
+vendorsCreateProfile | Create my vendor profile
+vendorsUpdateProfile | Update my vendor profile
+vendorsDeleteProfile | Delete my vendor profile
+vendorsAddWork | Add a portfolio work
+vendorsUpdateWork | Update a portfolio work
+vendorsDeleteWork | Delete a portfolio work
+vendorsAddPromo | Add a vendor promo
+vendorsDeletePromo | Delete a vendor promo
+communityList | List my communities
+communityCreate | Create a community
+communityGet | Get a community
+communityUpdate | Update community details or permissions
+communitySetFlags | Mute, pin or archive a community for me
+communityJoin | Join a community
+communityJoinByCode | Join a community by invite code
+communityLeave | Leave a community
+communityRegenerateInvite | Regenerate the invite link
+communityMembers | List community members
+communityInvite | Invite members
+communitySetRole | Change a member's role
+communityRemoveMember | Remove a member
+communityStatuses | List active statuses (24h stories)
+communityPostStatus | Post a status
+communityLikeStatus | Toggle like on a status
+communityViewStatus | Mark a status as viewed
+communityDeleteStatus | Delete a status
+communityMedia | List shared media and documents
+communityLive | Get the current live session
+communityStartLive | Start a live session
+communityUpdateLive | Toggle host audio/video
+communityEndLive | End a live session
+communityJoinLive | Join a live session (returns provider room token)
+communityLiveRequests | List requests to join the live stage
+communityRequestToJoinLive | Request to join the live stage
+communityDecideLiveRequest | Accept or decline a live stage request
+messagingConversations | List my conversations
+messagingStart | Start or reuse a direct conversation
+messagingConversation | Get a conversation
+messagingMessages | List messages (cursor)
+messagingSend | Send a message
+messagingDeleteMessage | Delete a message
+messagingReact | Toggle a reaction on a message
+messagingStar | Toggle star on a message
+messagingPin | Toggle pin on a message
+messagingSetFlags | Mute, pin or archive a conversation
+messagingRemove | Delete a conversation for me
+messagingMarkRead | Mark a conversation as read
+messagingRespondRequest | Accept or decline a message request
+messagingMedia | List media shared in a conversation
+messagingUnreadCount | Get unread message count
+notificationsList | List notifications (cursor)
+notificationsUnreadCount | Get unread notification and request counts
+notificationsMarkAllRead | Mark all notifications as read
+notificationsMarkRead | Mark one notification as read
+notificationsAct | Act on a notification (accept, decline, register)
+notificationsRemove | Delete a notification
+walletGet | Get my wallet
+walletActivate | Activate my wallet (OTP)
+walletSetPin | Set or change the wallet PIN
+walletTransactions | List wallet transactions
+walletTransaction | Get a wallet transaction
+walletBanks | List supported banks
+walletBankAccounts | List my payout bank accounts
+walletResolveAccount | Resolve a bank account name
+walletAddBankAccount | Add a payout bank account
+walletRemoveBankAccount | Remove a payout bank account
+walletTopUp | Start a wallet top-up
+walletVerifyTopUp | Verify a wallet top-up
+walletWithdraw | Withdraw to a bank account
+walletPlans | List subscription plans
+walletSubscription | Get my subscription
+walletSubscriptionPayments | List my subscription payments
+walletSubscribe | Subscribe to or change plan
+walletCancelSubscription | Cancel my subscription
+plannerAssets | List my planner assets
+plannerDeleteAsset | Delete a planner asset
+plannerChats | List planner chats
+plannerCreateChat | Create a planner chat
+plannerChat | Get a planner chat
+plannerDeleteChat | Delete a planner chat
+plannerSend | Send a message to the planner assistant
+plannerMenus | List my menus
+plannerMenu | Get a menu
+plannerCreateMenu | Create a menu
+plannerUpdateMenu | Update a menu
+plannerHallLayouts | List my hall layouts
+plannerHallLayout | Get a hall layout
+plannerCreateHallLayout | Create a hall layout
+plannerUpdateHallLayout | Update a hall layout
+plannerGenerate | Generate a cake or branding design
+adminAuthLogin | Admin sign in (password, then 2FA code)
+adminAuthMe | Get the signed-in admin with permissions
+adminAuthLogout | Admin sign out
+adminDashboard | Get executive dashboard metrics
+adminUsersList | List users
+adminUsersGet | Get a user
+adminUsersActivity | List a user's activity
+adminUsersTickets | List a user's bookings
+adminUsersReports | List reports involving a user
+adminUsersSuspend | Suspend a user
+adminUsersReactivate | Reactivate a user
+adminUsersSetRoles | Set a user's platform roles
+adminUsersDecideDeletionApprove | Approve an account deletion early
+adminUsersDecideDeletionReject | Reject an account deletion request
+adminUsersDeletionRequests | List account deletion requests
+adminEventsList | List events
+adminEventsGet | Get an event with bookings and reports
+adminEventsActApprove | Approve an event pending review
+adminEventsActReject | Reject an event pending review
+adminEventsActSuspend | Suspend a live event
+adminEventsActRestore | Restore a suspended event
+adminEventsActFeature | Feature an event
+adminEventsActUnfeature | Unfeature an event
+adminEventsCategories | List event categories (admin)
+adminEventsCreateCategory | Create an event category
+adminEventsUpdateCategory | Update an event category
+adminEventsDeleteCategory | Delete an event category
+adminOrganizersList | List organizers and vendors
+adminOrganizersGet | Get an organizer or vendor
+adminOrganizersActVerify | Verify an organizer or vendor
+adminOrganizersActReject | Reject an organizer or vendor verification
+adminOrganizersActSuspend | Suspend an organizer or vendor
+adminOrganizersActReactivate | Reactivate an organizer or vendor
+adminOrganizersSetCommission | Set an organizer commission override
+adminBookingsList | List bookings
+adminBookingsGet | Get a booking with tickets and timeline
+adminBookingsRefund | Issue a full or partial refund
+adminBookingsResend | Resend booking confirmation and tickets
+adminBookingsDisputes | List disputes
+adminBookingsUpdateDispute | Update a dispute
+adminBookingsCheckIns | List QR validations across events
+adminBookingsInventory | List ticket inventory
+adminFinanceSummary | Get finance summary
+adminFinanceTransactions | List financial transactions
+adminFinanceReconcile | Reconcile a transaction
+adminFinanceSettlements | List organizer settlements
+adminFinanceHoldSettlement | Put a settlement on hold
+adminFinanceReleaseSettlement | Release a held settlement
+adminFinancePayouts | List payouts
+adminFinanceRequestPayout | Create a payout from settlements
+adminFinanceApprovePayout | Approve a payout (2FA)
+adminFinanceRejectPayout | Reject a payout
+adminFinanceRefunds | List refunds
+adminFinanceDecideRefundApprove | Approve a refund request
+adminFinanceDecideRefundReject | Reject a refund request
+adminFinanceCommissions | List commission rules
+adminFinanceUpdateCommission | Update a commission rule
+adminFinanceCreateCommission | Create a commission rule
+adminFinanceGateways | Get payment gateway health
+adminModerationReports | List content reports
+adminModerationReport | Get a content report with history
+adminModerationUpdateReport | Assign or reprioritise a report
+adminModerationAct | Take moderation action on a report
+adminModerationCommunities | List communities (moderation)
+adminModerationCommunityActSuspend | Suspend a community
+adminModerationCommunityActRestore | Restore a community
+adminModerationCommunityActArchive | Archive a community
+adminNotificationsCampaigns | List notification campaigns
+adminNotificationsCampaign | Get a campaign with delivery stats
+adminNotificationsCreateCampaign | Create a campaign
+adminNotificationsSendCampaign | Send or schedule a campaign
+adminNotificationsCancelCampaign | Cancel a scheduled campaign
+adminNotificationsTest | Send a test notification to myself
+adminNotificationsTemplates | List notification templates
+adminNotificationsUpdateTemplate | Update a notification template
+adminNotificationsCreateTemplate | Create a notification template
+adminSettingsGet | Get platform settings
+adminSettingsUpdate | Update platform settings
+adminSettingsBanners | List promotional banners
+adminSettingsCreateBanner | Create a banner
+adminSettingsUpdateBanner | Update a banner
+adminSettingsDeleteBanner | Delete a banner
+adminSettingsPages | List CMS pages
+adminSettingsUpdatePage | Update a CMS page
+adminAccessPermissions | List the permission catalogue
+adminAccessRoles | List admin roles
+adminAccessCreateRole | Create an admin role
+adminAccessUpdateRole | Update an admin role
+adminAccessDeleteRole | Delete an admin role
+adminAccessAdmins | List administrators
+adminAccessInviteAdmin | Invite an administrator
+adminAccessUpdateAdmin | Change an administrator's roles or status
+adminAccessAuditLogs | List audit logs
+adminAccessSecurityLogs | List security logs
+adminReportsDefinitions | List report definitions
+adminReportsRun | Run a report
+adminReportsExport | Export a report (async job)
+adminReportsExportJob | Get an export job
+adminSupportTickets | List support tickets
+adminSupportTicket | Get a support ticket with messages
+adminSupportUpdate | Update a support ticket
+adminSupportReply | Reply to a support ticket

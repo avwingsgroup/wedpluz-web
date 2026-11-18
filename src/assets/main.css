@@ -1,0 +1,168 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Wedpluz design tokens — extracted from docs/Wedpluz Web Designs
+   Primary magenta #9B119B · Plum #270427 · Lavender tint #F5E8F5
+   Pink tint #FADDEC · Border #EAEBEC · Ink #21242A
+------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-chip: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #fdf4fd;
+  --color-brand-100: #f5e8f5;
+  --color-brand-200: #ecc9ec;
+  --color-brand-300: #dd9ddd;
+  --color-brand-400: #c766c7;
+  --color-brand-500: #b03ab0;
+  --color-brand-600: #9b119b;
+  --color-brand-700: #7e0e7e;
+  --color-brand-800: #5e0a5e;
+  --color-brand-900: #470047;
+  --color-brand-950: #270427;
+
+  --color-pink-50: #fff0f8;
+  --color-pink-100: #faddec;
+  --color-pink-500: #e7257f;
+  --color-pink-600: #d1116b;
+
+  --color-ink-900: #21242a;
+  --color-ink-700: #3c4048;
+  --color-ink-500: #6b7079;
+  --color-ink-400: #8f949c;
+  --color-ink-300: #bcbdc0;
+  --color-ink-200: #eaebec;
+  --color-ink-100: #f4f4f5;
+  --color-ink-50: #f9f9f9;
+
+  --color-success-50: #ecfdf1;
+  --color-success-500: #22a847;
+  --color-success-600: #178a37;
+  --color-warning-50: #fff7e6;
+  --color-warning-500: #f5b544;
+  --color-danger-50: #fdeeee;
+  --color-danger-500: #d93838;
+  --color-danger-600: #b92c2c;
+  --color-info-50: #eef4ff;
+  --color-info-500: #3b6ff2;
+  --color-seat: #ff6a2a;
+
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+  --radius-3xl: 1.5rem;
+  --shadow-card: 0 1px 2px rgb(33 36 42 / 0.04), 0 8px 24px -12px rgb(33 36 42 / 0.12);
+  --shadow-float: 0 12px 40px -12px rgb(39 4 39 / 0.25);
+  --shadow-dialog: 0 24px 64px -16px rgb(39 4 39 / 0.35);
+}
+
+@layer base {
+  html {
+    @apply antialiased scroll-smooth;
+    color-scheme: light;
+  }
+  body {
+    @apply bg-white font-sans text-ink-900;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    @apply bg-brand-100 text-brand-900;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-600 ring-offset-2 ring-offset-white;
+  }
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+  button:disabled,
+  [role='button'][aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display font-bold tracking-tight text-ink-900;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-ink-400;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
+  }
+  .card {
+    @apply rounded-2xl border border-ink-200 bg-white;
+  }
+  .card-hover {
+    @apply transition-shadow duration-200 hover:shadow-card;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-ink-200 bg-white px-3 py-1 font-chip text-xs text-ink-700;
+  }
+  .pill-tab {
+    @apply rounded-full px-4 py-1.5 text-sm font-medium text-ink-500 transition-colors hover:text-ink-900;
+  }
+  .pill-tab-active {
+    @apply border border-brand-600 bg-brand-50 text-brand-600;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink-900;
+  }
+  .field {
+    @apply block w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm text-ink-900 transition-colors placeholder:text-ink-400 focus:border-brand-600 focus:ring-0 disabled:bg-ink-50 disabled:text-ink-400;
+  }
+  .field-error {
+    @apply border-danger-500 focus:border-danger-500;
+  }
+  .plum-footer {
+    background-color: #270427;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgb(255 255 255 / 0.08) 1px, transparent 1.5px),
+      radial-gradient(circle at 70% 60%, rgb(255 255 255 / 0.06) 1px, transparent 1.5px),
+      radial-gradient(circle at 40% 85%, rgb(255 255 255 / 0.07) 1px, transparent 1.5px),
+      radial-gradient(circle at 90% 20%, rgb(255 255 255 / 0.05) 1px, transparent 1.5px);
+    background-size: 160px 160px, 220px 220px, 190px 190px, 260px 260px;
+  }
+  .texture-band {
+    background-color: #fbfbfc;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgb(155 17 155 / 0.07) 0 2px, transparent 3px),
+      radial-gradient(circle at 65% 70%, rgb(231 37 127 / 0.06) 0 2px, transparent 3px),
+      radial-gradient(circle at 85% 25%, rgb(155 17 155 / 0.05) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 40% 80%, rgb(39 4 39 / 0.05) 0 1.5px, transparent 2.5px);
+    background-size: 90px 90px, 130px 130px, 70px 70px, 110px 110px;
+  }
+  .brand-pattern {
+    background-color: #9b119b;
+    background-image:
+      radial-gradient(ellipse at 85% 20%, rgb(255 255 255 / 0.18) 0 40px, transparent 41px),
+      radial-gradient(ellipse at 70% 80%, rgb(255 255 255 / 0.12) 0 60px, transparent 61px),
+      radial-gradient(ellipse at 95% 70%, rgb(255 255 255 / 0.1) 0 30px, transparent 31px);
+  }
+  .skeleton {
+    @apply animate-pulse rounded-lg bg-ink-100;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

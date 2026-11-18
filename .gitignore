@@ -1,0 +1,16 @@
+node_modules
+dist
+dist-admin
+coverage
+playwright-report
+test-results
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+
+# OpenAPI generator scratch output
+scripts/openapi/endpoint-index.json
