@@ -59,6 +59,50 @@ Overrides:
 
 Reports and traces land in `playwright-report/` and `test-results/` (both git-ignored). CI retries failures twice and records a trace on the first retry.
 
+## Live API checks
+
+`npm run test:api` calls a running Laravel API as a guest and as a newly registered customer. It validates every status code and response body against `docs/backend-handoff/openapi.yaml`.
+
+```bash
+npm run test:api -- https://wedpluz-api.test/api/v1        # local Laragon API
+API_BASE_URL=https://api-staging.wedpluz.com/api/v1 npm run test:api
+```
+
+- Each run registers one throwaway account (`qa.frontend.<timestamp>@wedpluz.test`). The script refuses to run against `api.wedpluz.com`.
+- It covers the public catalogue, CMS pages, registration, login, refresh rotation and reuse detection, logout, profile and settings, sessions, saved items, tickets, notifications, messaging, communities, organizer and planner lists, the email-verification gate, and token-audience separation.
+- Checkout, organizer writes, the wallet and the admin console need a verified customer or an admin account, so this script does not cover them.
+
+To run the web app against the local API, create `.env.development.local` (git-ignored):
+
+```bash
+VITE_API_MODE=live
+VITE_API_BASE_URL=https://wedpluz-api.test/api/v1
+VITE_WEB_ORIGIN=http://localhost:5174
+```
+
+Then start it with `npm run dev -- --port 5174`. The backend's local CORS list allows only ports 5173 and 5174.
+
+### Results against the local API (19 Nov 2026)
+
+| Check | Result |
+|---|---|
+| Route coverage | All 317 operations the frontend calls exist on the backend, with matching admin permissions. The 12 proposed social endpoints are not implemented. |
+| `npm run test:api` | 71/71 passing |
+| Live browser smoke (32 pages, guest and signed in, sign-up through the UI) | No page or console errors. All failing API calls were expected (404, wrong password, unverified wallet). |
+
+Fixes made from the run:
+
+- `UserSummary.username` is now nullable, because it stays null until profile setup.
+- The health check may return `degraded`.
+- The email-verification `403` now offers a "Verify email" button. `EMAIL_UNVERIFIED` is proposed as a dedicated error code.
+
+Not covered yet:
+
+- **Checkout, events and wallet.** These need a verified email. The backend sends codes through ZeptoMail, and no development code (`AUTH_DEV_FIXED_OTP`) is set.
+- **Admin console.** The database has no admin account yet.
+
+**Local environment issue.** On Laragon's Apache with mod_php, Windows threads can lose `.env` values when config is not cached. Under parallel requests, `env('APP_ENV')` then falls back to `production`, the localhost CORS origins vanish, and the browser blocks some calls. In a burst of 30 parallel preflights, 19 failed. To fix it, run `php artisan config:cache` in the API (re-run it after changing `.env`), or switch Laragon to Nginx.
+
 ## Manual QA checklist (live API)
 
 Mock tests cannot cover these; run them on staging once the backend is available:

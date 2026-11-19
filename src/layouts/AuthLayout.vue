@@ -33,7 +33,7 @@ onUnmounted(() => timer && window.clearInterval(timer))
       </Transition>
       <div class="absolute inset-x-0 top-10 flex justify-center"><BrandLogo variant="light" /></div>
       <div class="absolute inset-x-0 bottom-20 flex flex-col items-center gap-5 text-white">
-        <h2 class="text-4xl font-bold">{{ slides[active]?.title }}</h2>
+        <h2 class="text-4xl font-bold text-white drop-shadow-[0_2px_12px_rgba(39,4,39,0.45)]">{{ slides[active]?.title }}</h2>
         <div class="flex gap-2">
           <button v-for="(s, i) in slides" :key="s.title" type="button" :aria-label="`Slide ${i + 1}`" class="h-2.5 rounded-full transition-all" :class="i === active ? 'w-8 bg-brand-400' : 'w-2.5 bg-white/60'" @click="active = i" />
         </div>

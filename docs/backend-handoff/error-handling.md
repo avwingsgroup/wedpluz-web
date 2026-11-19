@@ -61,6 +61,7 @@ X-Correlation-Id: 21077ae4-bb0a-4d39-929a-98c87022457d
 | 403 | `FORBIDDEN` | Authenticated but not allowed (event role, admin permission, privacy setting). | Toast. Admin console redirects to the dashboard if a whole module is forbidden. |
 | 403 | `ACCOUNT_SUSPENDED` | User or admin suspended. | The HTTP layer clears that audience's session (customer or admin) and the `message` is shown. On login, the message shows on the form. |
 | 403 | `IDENTITY_UNVERIFIED` | Action requires a verified identity (withdrawals, some event types). | Toast with `message`. Users verify from their profile page. Opening the verification modal automatically is a planned improvement. |
+| 403 | `EMAIL_UNVERIFIED` (proposed) | Email not yet verified: checkout, event creation, wallet. The backend currently sends `FORBIDDEN` with the message "Verify your email to continue.", and the frontend recognises both. | The error state shows "Verify your email" with a button to the verification screen. |
 | 404 | `NOT_FOUND` | Missing, or not visible to the caller. Use 404 rather than 403 for private resources, to avoid leaking existence. | Page-level "not found" state or toast. |
 | 409 | `CONFLICT` | State conflict: already cancelled, already checked in, duplicate review, idempotency key reused with a different payload, request in progress. | Toast; refresh the resource. |
 | 409 | `TICKETS_UNAVAILABLE` | Sold out, sale window closed, or quantity above remaining or per-order limit, at quote or order time. | Checkout returns to the ticket step and re-quotes. |

@@ -9,7 +9,8 @@ export type Audience = 'individuals' | 'businesses'
 export interface UserSummary {
   id: Id
   displayName: string
-  username?: string
+  /** Null until the user completes profile setup. */
+  username?: string | null
   avatarUrl: string | null
   isVerified?: boolean
   isVendor?: boolean

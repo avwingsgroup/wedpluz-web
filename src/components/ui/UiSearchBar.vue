@@ -80,7 +80,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onDoc))
 </script>
 
 <template>
-  <div ref="root" class="relative w-full">
+  <div ref="root" class="relative w-full text-left">
     <form
       :class="cn('flex w-full items-stretch rounded-full border border-ink-200 bg-white shadow-card transition-shadow focus-within:shadow-float', compact ? 'h-12' : 'h-14 md:h-16')"
       role="search"
@@ -89,7 +89,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onDoc))
       <label class="flex min-w-0 flex-1 cursor-text items-center gap-3 pl-5 pr-2">
         <Search class="h-5 w-5 shrink-0 text-ink-700" />
         <span class="min-w-0 flex-1">
-          <span v-if="!compact" class="block text-xs font-semibold text-ink-900">{{ mode === 'vendors' ? 'Hire a vendor' : 'Events' }}</span>
+          <span v-if="!compact" class="block text-[13px] font-medium leading-5 text-ink-900">{{ mode === 'vendors' ? 'Hire a vendor' : 'Events' }}</span>
           <input v-model="q" type="search" :placeholder="placeholder" class="block w-full border-0 bg-transparent p-0 text-sm text-ink-900 placeholder:text-ink-400 focus:ring-0" autocomplete="off" @focus="focus = 'query'; fetchSuggestions()" />
         </span>
         <button v-if="q" type="button" class="text-ink-400 hover:text-ink-700" aria-label="Clear search" @click="q = ''"><X class="h-4 w-4" /></button>
@@ -98,7 +98,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onDoc))
       <label class="flex min-w-0 flex-1 cursor-text items-center gap-3 px-4">
         <MapPin class="h-5 w-5 shrink-0 text-ink-700" />
         <span class="min-w-0 flex-1">
-          <span v-if="!compact" class="block text-xs font-semibold text-ink-900">Where</span>
+          <span v-if="!compact" class="block text-[13px] font-medium leading-5 text-ink-900">Where</span>
           <input v-model="loc" type="text" :placeholder="locationPlaceholder" class="block w-full border-0 bg-transparent p-0 text-sm text-ink-900 placeholder:text-ink-400 focus:ring-0" autocomplete="off" @focus="focus = 'location'; fetchLocations()" />
         </span>
       </label>

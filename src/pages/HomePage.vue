@@ -111,20 +111,37 @@ function scrollTop() {
 
   <!-- ================= Guest landing ================= -->
   <div v-else>
-    <section class="relative overflow-hidden">
+    <!-- `isolate` keeps the decorative layer (-z-10) inside the hero instead of behind the page background. -->
+    <section class="relative isolate overflow-hidden">
       <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-        <svg class="absolute left-0 top-0 h-full w-full opacity-60" viewBox="0 0 1440 520" fill="none" preserveAspectRatio="none"><path d="M-50 120C200 40 400 220 650 140S1100 60 1500 160" stroke="#f3d9ef" stroke-width="2" /><path d="M-50 300C250 200 450 420 700 300s450-180 800-60" stroke="#f3d9ef" stroke-width="2" /></svg>
-        <span class="absolute left-[8%] top-16 h-10 w-10 rounded-full bg-pink-100" /><span class="absolute right-[12%] top-28 h-14 w-14 rounded-full bg-brand-100" /><span class="absolute left-[30%] top-40 h-5 w-5 rounded-full bg-brand-200" />
-        <p class="absolute -bottom-24 left-1/2 -translate-x-1/2 select-none whitespace-nowrap font-display text-[220px] font-bold leading-none text-brand-100/70 md:text-[320px]">Wedpluz</p>
+        <!-- Soft ribbons -->
+        <svg class="absolute inset-0 h-full w-full" viewBox="0 0 1440 880" fill="none" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#fbf1ec" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M-40 20C90 110 200 170 240 290S330 480 520 470C690 460 740 340 690 250C640 160 520 150 430 70S330-60 300-80" />
+            <path d="M940 900C1010 790 1110 700 1190 590S1240 340 1340 320S1470 360 1500 400" />
+            <path d="M1500 560C1450 660 1380 760 1330 900" />
+          </g>
+        </svg>
+        <!-- Left-edge speckled circle -->
+        <span class="speckle-blob speckle-blob-lilac absolute -left-4 top-[41%] hidden h-10 w-10 sm:block md:h-12 md:w-12" />
+        <!-- Giant watermark, cropped by the bottom of the hero -->
+        <p class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[40%] select-none whitespace-nowrap font-display text-[28vw] font-semibold leading-none tracking-tight text-[#f3e6f3]">
+          Wedpluz
+          <span class="speckle-blob absolute left-[56%] top-[0.13em] h-[0.13em] w-[0.13em] max-h-14 max-w-14" />
+        </p>
       </div>
-      <div class="container-app flex flex-col items-center pb-40 pt-24 text-center md:pt-32">
-        <h1 class="max-w-3xl text-4xl md:text-6xl">Discover events in your area</h1>
-        <p class="mt-4 max-w-xl text-ink-500">Find, plan, discover vendors, and experience moments that connect you with friends and community</p>
-        <div class="mt-8 w-full max-w-2xl"><UiSearchBar placeholder="Search events..." location-placeholder="Choose a location" @search="onSearch" /></div>
+      <div class="container-app flex flex-col items-center pb-[calc(14vw+6rem)] pt-24 text-center md:pt-48 xl:pt-60">
+        <!-- Single line at every width, as in the design: fluid size from 22px (phones) to 56px (desktop). -->
+        <h1 class="relative whitespace-nowrap text-[clamp(1.375rem,5.4vw,3.5rem)] font-bold leading-tight tracking-tight">
+          <span class="speckle-blob absolute -top-[0.66em] left-1/2 -z-10 h-[0.92em] w-[0.92em] -translate-x-[78%]" aria-hidden="true" />
+          Discover events in your area
+        </h1>
+        <p class="mt-3 max-w-xl text-sm text-ink-600 md:max-w-none md:whitespace-nowrap md:text-[15px]">Find, plan, discover vendors, and experience moments that connect you with friends and community</p>
+        <div class="mt-8 w-full max-w-3xl"><UiSearchBar placeholder="Search events..." location-placeholder="Choose a location" @search="onSearch" /></div>
       </div>
     </section>
 
-    <section class="container-app">
+    <section class="container-app mt-12 md:mt-20">
       <UiSectionHeader title="Upcoming events" :to="{ name: 'events' }" link-label="See all events" />
       <EventGrid :events="upcoming.slice(0, 4)" :loading="loading" variant="compact" :skeleton-count="4" />
     </section>

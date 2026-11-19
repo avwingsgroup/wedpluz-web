@@ -215,7 +215,10 @@ paths:
                     - 'null'
                   format: uri
                 username:
-                  type: string
+                  type:
+                    - string
+                    - 'null'
+                  description: Null until the user completes profile setup.
                 locale:
                   type: string
             example:
@@ -2660,7 +2663,10 @@ paths:
                       displayName:
                         type: string
                       username:
-                        type: string
+                        type:
+                          - string
+                          - 'null'
+                        description: Null until the user completes profile setup.
                       avatarUrl:
                         type:
                           - string
@@ -3865,7 +3871,10 @@ paths:
                           displayName:
                             type: string
                           username:
-                            type: string
+                            type:
+                              - string
+                              - 'null'
+                            description: Null until the user completes profile setup.
                           avatarUrl:
                             type:
                               - string
@@ -5388,7 +5397,10 @@ paths:
                           displayName:
                             type: string
                           username:
-                            type: string
+                            type:
+                              - string
+                              - 'null'
+                            description: Null until the user completes profile setup.
                           avatarUrl:
                             type:
                               - string
@@ -6382,7 +6394,10 @@ paths:
                           displayName:
                             type: string
                           username:
-                            type: string
+                            type:
+                              - string
+                              - 'null'
+                            description: Null until the user completes profile setup.
                           avatarUrl:
                             type:
                               - string
@@ -13718,7 +13733,10 @@ paths:
                           displayName:
                             type: string
                           username:
-                            type: string
+                            type:
+                              - string
+                              - 'null'
+                            description: Null until the user completes profile setup.
                           avatarUrl:
                             type:
                               - string
@@ -29692,18 +29710,32 @@ paths:
       security: []
       responses:
         '200':
-          description: Healthy.
+          description: Up. `degraded` means the API serves requests but a background dependency (queue worker, scheduler) is behind.
           content:
             application/json:
               schema:
                 type: object
+                required:
+                  - status
                 properties:
                   status:
                     type: string
                     enum:
                       - ok
+                      - degraded
+                  checks:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    description: 'Per-dependency state, e.g. `database: ok`, `queue: stale`.'
               example:
                 status: ok
+                checks:
+                  database: ok
+                  redis: ok
+                  cache: ok
+                  queue: ok
+                  scheduler: ok
   /feed:
     get:
       operationId: socialFeed
@@ -30634,6 +30666,7 @@ components:
             - OTP_EXPIRED
             - ACCOUNT_SUSPENDED
             - IDENTITY_UNVERIFIED
+            - EMAIL_UNVERIFIED
             - INSUFFICIENT_FUNDS
             - PIN_INVALID
             - SERVER_ERROR
@@ -30748,7 +30781,10 @@ components:
             displayName:
               type: string
             username:
-              type: string
+              type:
+                - string
+                - 'null'
+              description: Null until the user completes profile setup.
             avatarUrl:
               type:
                 - string
@@ -31019,7 +31055,10 @@ components:
             displayName:
               type: string
             username:
-              type: string
+              type:
+                - string
+                - 'null'
+              description: Null until the user completes profile setup.
             avatarUrl:
               type:
                 - string
@@ -31298,7 +31337,10 @@ components:
         displayName:
           type: string
         username:
-          type: string
+          type:
+            - string
+            - 'null'
+          description: Null until the user completes profile setup.
         avatarUrl:
           type:
             - string
@@ -32832,7 +32874,10 @@ components:
         displayName:
           type: string
         username:
-          type: string
+          type:
+            - string
+            - 'null'
+          description: Null until the user completes profile setup.
         avatarUrl:
           type:
             - string
@@ -35058,7 +35103,10 @@ components:
             displayName:
               type: string
             username:
-              type: string
+              type:
+                - string
+                - 'null'
+              description: Null until the user completes profile setup.
             avatarUrl:
               type:
                 - string
@@ -35856,7 +35904,10 @@ components:
         displayName:
           type: string
         username:
-          type: string
+          type:
+            - string
+            - 'null'
+          description: Null until the user completes profile setup.
         avatarUrl:
           type:
             - string
@@ -35972,7 +36023,10 @@ components:
                 displayName:
                   type: string
                 username:
-                  type: string
+                  type:
+                    - string
+                    - 'null'
+                  description: Null until the user completes profile setup.
                 avatarUrl:
                   type:
                     - string
@@ -36539,7 +36593,10 @@ components:
             displayName:
               type: string
             username:
-              type: string
+              type:
+                - string
+                - 'null'
+              description: Null until the user completes profile setup.
             avatarUrl:
               type:
                 - string
@@ -36839,7 +36896,10 @@ components:
             displayName:
               type: string
             username:
-              type: string
+              type:
+                - string
+                - 'null'
+              description: Null until the user completes profile setup.
             avatarUrl:
               type:
                 - string
@@ -37678,7 +37738,10 @@ components:
         displayName:
           type: string
         username:
-          type: string
+          type:
+            - string
+            - 'null'
+          description: Null until the user completes profile setup.
         avatarUrl:
           type:
             - string
@@ -37756,7 +37819,10 @@ components:
         displayName:
           type: string
         username:
-          type: string
+          type:
+            - string
+            - 'null'
+          description: Null until the user completes profile setup.
         avatarUrl:
           type:
             - string

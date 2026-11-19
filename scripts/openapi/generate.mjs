@@ -474,7 +474,7 @@ const doc = {
   security: [{ customerBearer: [] }],
 }
 
-const ERROR_ENUM = ['VALIDATION_ERROR', 'UNAUTHENTICATED', 'FORBIDDEN', 'NOT_FOUND', 'CONFLICT', 'RATE_LIMITED', 'PAYMENT_REQUIRED', 'PAYMENT_FAILED', 'TICKETS_UNAVAILABLE', 'SEAT_TAKEN', 'PROMO_INVALID', 'OTP_INVALID', 'OTP_EXPIRED', 'ACCOUNT_SUSPENDED', 'IDENTITY_UNVERIFIED', 'INSUFFICIENT_FUNDS', 'PIN_INVALID', 'SERVER_ERROR']
+const ERROR_ENUM = ['VALIDATION_ERROR', 'UNAUTHENTICATED', 'FORBIDDEN', 'NOT_FOUND', 'CONFLICT', 'RATE_LIMITED', 'PAYMENT_REQUIRED', 'PAYMENT_FAILED', 'TICKETS_UNAVAILABLE', 'SEAT_TAKEN', 'PROMO_INVALID', 'OTP_INVALID', 'OTP_EXPIRED', 'ACCOUNT_SUSPENDED', 'IDENTITY_UNVERIFIED', 'EMAIL_UNVERIFIED', 'INSUFFICIENT_FUNDS', 'PIN_INVALID', 'SERVER_ERROR']
 const fixedSchemas = {
   PaginationMeta: { type: 'object', required: ['page', 'perPage', 'total', 'lastPage'], properties: { page: { type: 'integer', minimum: 1 }, perPage: { type: 'integer', minimum: 1, maximum: 100 }, total: { type: 'integer', minimum: 0 }, lastPage: { type: 'integer', minimum: 1 } } },
   CursorMeta: { type: 'object', required: ['nextCursor', 'perPage'], properties: { nextCursor: { type: ['string', 'null'], description: 'Opaque cursor for the next (older) page; null when exhausted.' }, prevCursor: { type: ['string', 'null'] }, perPage: { type: 'integer' } } },
@@ -697,7 +697,7 @@ doc.paths['/broadcasting/auth'] = {
     responses: { 200: { description: 'Channel signature.', content: { 'application/json': { schema: { type: 'object', properties: { auth: { type: 'string' }, channel_data: { type: 'string' } } }, example: { auth: 'app-key:signature' } } } }, 401: { $ref: '#/components/responses/Unauthenticated' }, 403: { $ref: '#/components/responses/Forbidden' } },
   },
 }
-doc.paths['/health'] = { get: { operationId: 'health', summary: 'Liveness/readiness probe', tags: ['System'], 'x-wedpluz-status': 'optional', description: '**Status:** `optional`. Used by uptime monitoring and deploy checks. Must not expose versions of dependencies.', security: [], responses: { 200: { description: 'Healthy.', content: { 'application/json': { schema: { type: 'object', properties: { status: { type: 'string', enum: ['ok'] } } }, example: { status: 'ok' } } } } } } }
+doc.paths['/health'] = { get: { operationId: 'health', summary: 'Liveness/readiness probe', tags: ['System'], 'x-wedpluz-status': 'optional', description: '**Status:** `optional`. Used by uptime monitoring and deploy checks. Must not expose versions of dependencies.', security: [], responses: { 200: { description: 'Up. `degraded` means the API serves requests but a background dependency (queue worker, scheduler) is behind.', content: { 'application/json': { schema: { type: 'object', required: ['status'], properties: { status: { type: 'string', enum: ['ok', 'degraded'] }, checks: { type: 'object', additionalProperties: { type: 'string' }, description: 'Per-dependency state, e.g. `database: ok`, `queue: stale`.' } } }, example: { status: 'ok', checks: { database: 'ok', redis: 'ok', cache: 'ok', queue: 'ok', scheduler: 'ok' } } } } } } } }
 for (const t of ['Webhooks (backend-only)', 'System']) tagSet.set(t, true)
 
 /* ------------------------------------------------------------------ proposed social contracts */

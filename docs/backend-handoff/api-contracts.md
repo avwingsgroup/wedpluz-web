@@ -818,7 +818,7 @@ No Wedpluz client calls these. Each one verifies the provider signature before t
 | Method | Path | Summary | Auth | Status | Request | Response | Domain errors |
 |---|---|---|---|---|---|---|---|
 | POST | `/broadcasting/auth` | Authorise a private realtime channel | customer | proposed | { socket_id, channel_name } | Channel signature. | — |
-| GET | `/health` | Liveness/readiness probe | public | optional | — | Healthy. | — |
+| GET | `/health` | Liveness/readiness probe | public | optional | — | Up. `degraded` means the API serves requests but a background dependency (queue worker, scheduler) is behind. | — |
 <!-- /endpoints -->
 
 ---
