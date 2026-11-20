@@ -17,6 +17,8 @@ export interface AppRouteMeta {
   textured?: boolean
   /** Float the header over a full-bleed cover (vendor profile design). */
   overlayHeader?: boolean
+  /** Admin page reachable without an admin session (accept invitation). */
+  adminPublic?: boolean
   layout?: 'public' | 'auth' | 'admin' | 'blank'
 }
 

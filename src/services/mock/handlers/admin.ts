@@ -4,7 +4,18 @@ import * as db from '../db'
 import { body, dateInRange, requireAdmin, requireFields, sortBy, textMatch } from './shared'
 import type { AdminUser, AuditLogEntry, ExecutiveDashboard, FinanceSummary, KpiValue, PermissionKey, ReportResult, Role, TrendPoint } from '@/types'
 
-const VALID_OTP = '1234'
+// Admin two-factor codes are 6-digit authenticator (TOTP) codes. Mock mode accepts a fixed code, plus the
+// backend's local dev code padded to 6 digits.
+const ADMIN_TOTP_CODES = new Set(['123456', '000000'])
+const validAdminOtp = (otp?: string) => !!otp && ADMIN_TOTP_CODES.has(otp.replace(/\D/g, ''))
+/** Invitation tokens (mock): mock-invite-<adminId> for any admin whose status is still 'invited'. */
+const invitedAdmin = (token?: string) => {
+  const id = token?.startsWith('mock-invite-') ? token.slice('mock-invite-'.length) : ''
+  const a = db.adminUsers.find((x) => x.id === id && x.status === 'invited')
+  if (!a) fail(403, 'FORBIDDEN', 'This invitation is invalid or has expired.')
+  return a
+}
+const enrolledSecrets = new Map<string, string>()
 const exportJobs = new Map<string, { id: string; status: 'ready'; format: 'csv' | 'xlsx' | 'pdf'; downloadUrl: string; expiresAt: string }>()
 
 function can(admin: AdminUser, perm: PermissionKey) {
@@ -46,10 +57,29 @@ export function registerAdminHandlers() {
     if (!admin || b.password.length < 6 || b.password === 'wrongpass') fail(401, 'UNAUTHENTICATED', 'Incorrect email or password.')
     if (admin.status !== 'active') fail(403, 'ACCOUNT_SUSPENDED', 'This admin account is not active.')
     if (admin.twoFactorEnabled && !b.otp) return data({ requiresTwoFactor: true, admin: null, tokens: null })
-    if (admin.twoFactorEnabled && b.otp !== VALID_OTP) fail(422, 'OTP_INVALID', 'Invalid authentication code.', { otp: ['Invalid code'] })
+    if (admin.twoFactorEnabled && !validAdminOtp(b.otp)) fail(422, 'OTP_INVALID', 'Invalid authentication code.', { otp: ['Invalid authentication code.'] })
     admin.lastLoginAt = new Date().toISOString()
     db.securityLogs.unshift({ id: db.nextId('sec'), actor: { id: admin.id, email: admin.email }, event: 'login_success', ip: '105.112.33.1', location: 'Port Harcourt, NG', userAgent: 'Chrome 131 / Windows', createdAt: new Date().toISOString() })
     return data({ requiresTwoFactor: false, admin, tokens: { accessToken: `mock-admin-${admin.id}`, refreshToken: null, tokenType: 'Bearer', expiresIn: 3600 } })
+  })
+  route('POST', '/admin/auth/invitations/accept', (req) => {
+    const b = body<{ token: string; password: string }>(req)
+    requireFields(b, ['token', 'password'])
+    const a = invitedAdmin(b.token)
+    if (b.password.length < 12 || !/[A-Za-z]/.test(b.password) || !/\d/.test(b.password)) fail(422, 'VALIDATION_ERROR', 'Please check the highlighted fields.', { password: ['Use at least 12 characters with letters and numbers.'] })
+    const secret = 'JBSWY3DPEHPK3PXP' + a.id.toUpperCase().replace(/[^A-Z2-7]/g, '').slice(0, 8)
+    enrolledSecrets.set(a.id, secret)
+    return data({ secret, otpauthUri: `otpauth://totp/Wedpluz%20Admin:${encodeURIComponent(a.email)}?secret=${secret}&issuer=Wedpluz%20Admin&digits=6&period=30` }, 'Scan the code with your authenticator app, then confirm.')
+  })
+  route('POST', '/admin/auth/invitations/confirm', (req) => {
+    const b = body<{ token: string; otp: string }>(req)
+    requireFields(b, ['token', 'otp'])
+    const a = invitedAdmin(b.token)
+    if (!enrolledSecrets.has(a.id) || !validAdminOtp(b.otp)) fail(422, 'OTP_INVALID', 'Invalid authentication code.', { otp: ['Invalid authentication code.'] })
+    a.status = 'active'
+    a.twoFactorEnabled = true
+    a.lastLoginAt = new Date().toISOString()
+    return data({ requiresTwoFactor: false, admin: a, tokens: { accessToken: `mock-admin-${a.id}`, refreshToken: null, tokenType: 'Bearer', expiresIn: 3600 } })
   })
   route('GET', '/admin/me', (req) => data(requireAdmin(req)))
   route('POST', '/admin/auth/logout', () => noContent())
@@ -450,7 +480,7 @@ export function registerAdminHandlers() {
     if (!p) fail(404, 'NOT_FOUND', 'Payout not found')
     if (p.requestedBy?.id === admin.id) fail(403, 'FORBIDDEN', 'Four-eyes rule: the requester cannot approve their own payout.')
     const b = body<{ otp: string }>(req)
-    if (b.otp !== VALID_OTP) fail(422, 'OTP_INVALID', 'Enter your authenticator code to approve.', { otp: ['Invalid code'] })
+    if (!validAdminOtp(b.otp)) fail(422, 'OTP_INVALID', 'Invalid authentication code.', { otp: ['Invalid authentication code.'] })
     p.status = 'processing'
     p.approvedBy = { id: admin.id, firstName: admin.firstName, lastName: admin.lastName }
     setTimeout(() => { p.status = 'paid'; p.completedAt = new Date().toISOString(); for (const s of db.settlements) if (p.settlementIds.includes(s.id)) { s.status = 'paid'; s.paidAt = p.completedAt } }, 5000)
@@ -753,7 +783,8 @@ export function registerAdminHandlers() {
     db.adminUsers.push(a)
     for (const r of rs) r.membersCount += 1
     audit(admin, 'admin.invited', 'access', 'admin', a.id, a.email, null, { roles: rs.map((r) => r.name) })
-    return created(a, 'Invitation sent')
+    // Mock mode has no email: the invitation link is mock-invite-<id> (see invitedAdmin above).
+    return created(a, `Invitation sent. Mock link: /admin/accept-invite?token=mock-invite-${a.id}`)
   })
   route('PATCH', '/admin/admins/:id', (req) => {
     const admin = requireAdmin(req)

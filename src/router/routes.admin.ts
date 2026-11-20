@@ -12,6 +12,8 @@ export function adminRoutes(base: string): RouteRecordRaw {
     meta: { admin: true, layout: 'admin' },
     children: [
       { path: 'login', name: 'admin.login', component: () => import('@/pages/admin/AdminLoginPage.vue'), meta: { title: 'Admin login', layout: 'blank' } },
+      // Linked from the invitation email (<admin origin>/accept-invite?token=…): open without a session.
+      { path: 'accept-invite', name: 'admin.accept-invite', component: () => import('@/pages/admin/AdminAcceptInvitePage.vue'), meta: { title: 'Accept invitation', layout: 'blank', adminPublic: true } },
       { path: '', name: 'admin.dashboard', component: () => import('@/pages/admin/DashboardPage.vue'), meta: { title: 'Dashboard', permissions: ['dashboard.view'] } },
 
       { path: 'users', name: 'admin.users', component: () => import('@/pages/admin/users/UsersPage.vue'), meta: { title: 'Users', permissions: ['users.view'] } },

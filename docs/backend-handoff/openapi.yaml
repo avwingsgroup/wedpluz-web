@@ -2081,6 +2081,151 @@ paths:
           $ref: '#/components/responses/RateLimited'
         '500':
           $ref: '#/components/responses/ServerError'
+  /admin/auth/invitations/accept:
+    post:
+      operationId: adminAuthAcceptInvitation
+      summary: Accept invitation
+      description: |-
+        **Status:** `required`. Not implemented until confirmed by the backend team.
+
+        **Auth:** public.
+
+        **Audit:** write an audit log entry (actor, action, target, before/after, IP, correlation id).
+
+        _Frontend call: `admin.api → auth.acceptInvitation`_
+      tags:
+        - Admin · Auth
+      x-wedpluz-status: required
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/ClientPlatform'
+        - $ref: '#/components/parameters/ClientVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+              required:
+                - token
+                - password
+            example:
+              token: eyJhbGciOi...redacted
+              password: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AdminInvitationEnrolment'
+                  message:
+                    type: string
+              example:
+                data:
+                  secret: string
+                  otpauthUri: string
+                message: Example text
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /admin/auth/invitations/confirm:
+    post:
+      operationId: adminAuthConfirmInvitation
+      summary: Confirm invitation
+      description: |-
+        **Status:** `required`. Not implemented until confirmed by the backend team.
+
+        **Auth:** public.
+
+        **Audit:** write an audit log entry (actor, action, target, before/after, IP, correlation id).
+
+        _Frontend call: `admin.api → auth.confirmInvitation`_
+      tags:
+        - Admin · Auth
+      x-wedpluz-status: required
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/ClientPlatform'
+        - $ref: '#/components/parameters/ClientVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                otp:
+                  type: string
+              required:
+                - token
+                - otp
+            example:
+              token: eyJhbGciOi...redacted
+              otp: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AdminLoginResult'
+                  message:
+                    type: string
+              example:
+                data:
+                  requiresTwoFactor: false
+                  admin:
+                    id: res_01J9Z8K3
+                    firstName: Ada Obi
+                    lastName: Ada Obi
+                    email: ada.obi@example.com
+                    avatarUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
+                    roles:
+                      - id: res_01J9Z8K3
+                        slug: luxury-wedding-gala
+                        name: Ada Obi
+                    permissions:
+                      - dashboard.view
+                    status: suspended
+                    twoFactorEnabled: true
+                    lastLoginAt: '2026-12-12T18:00:00Z'
+                    createdAt: '2026-12-12T18:00:00Z'
+                  tokens:
+                    accessToken: eyJhbGciOi...redacted
+                    refreshToken: eyJhbGciOi...redacted
+                    tokenType: Bearer
+                    expiresIn: 12
+                    expiresAt: '2026-12-12T18:00:00Z'
+                message: Example text
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/ServerError'
   /admin/dashboard:
     get:
       operationId: adminDashboard
@@ -10451,9 +10596,9 @@ paths:
                         Copies an array, then overwrites the value at the provided index with the
                         given value. If the index is negative, then it replaces from the end
                         of the array.
-                    __@iterator@472:
+                    __@iterator@481:
                       description: Iterator
-                    __@unscopables@474:
+                    __@unscopables@483:
                       type: object
                       properties:
                         length:
@@ -10617,10 +10762,10 @@ paths:
                             Copies an array, then overwrites the value at the provided index with the
                             given value. If the index is negative, then it replaces from the end
                             of the array.
-                        __@iterator@472:
+                        __@iterator@481:
                           type: boolean
                           description: Iterator
-                        __@unscopables@474:
+                        __@unscopables@483:
                           type: boolean
                           description: |-
                             Is an object whose properties have the value 'true'
@@ -10678,8 +10823,8 @@ paths:
                     - toSorted
                     - toSpliced
                     - with
-                    - __@iterator@472
-                    - __@unscopables@474
+                    - __@iterator@481
+                    - __@unscopables@483
                 audience:
                   type: object
                   properties:
@@ -10814,8 +10959,8 @@ paths:
                 toSorted: null
                 toSpliced: null
                 with: null
-                __@iterator@472: null
-                __@unscopables@474:
+                __@iterator@481: null
+                __@unscopables@483:
                   length: true
                   toString: true
                   toLocaleString: true
@@ -10855,8 +11000,8 @@ paths:
                   toSorted: true
                   toSpliced: true
                   with: true
-                  __@iterator@472: true
-                  __@unscopables@474: true
+                  __@iterator@481: true
+                  __@unscopables@483: true
               audience:
                 type: segment
                 filters: {}
@@ -31160,6 +31305,17 @@ components:
         - isFeatured
         - isPromoted
         - organizer
+    AdminInvitationEnrolment:
+      type: object
+      properties:
+        secret:
+          type: string
+        otpauthUri:
+          type: string
+      required:
+        - secret
+        - otpauthUri
+      description: 'POST /admin/auth/invitations/accept: the invited admin''s authenticator secret, to scan or type in.'
     AdminLoginResult:
       type: object
       properties:

@@ -54,11 +54,23 @@ export interface AdminLoginResult {
   tokens: AuthTokens | null
 }
 
+/** POST /admin/auth/invitations/accept: the invited admin's authenticator secret, to scan or type in. */
+export interface AdminInvitationEnrolment {
+  secret: string
+  otpauthUri: string
+}
+
 export const adminApi = {
   auth: {
     login: (payload: { email: string; password: string; otp?: string }) => request.post<AdminLoginResult>('/admin/auth/login', payload, { skipAuth: true, skipRefresh: true }),
     me: () => request.get<AdminUser>('/admin/me', undefined, { skipRefresh: true }),
     logout: () => request.post<void>('/admin/auth/logout', undefined, { skipRefresh: true }),
+    /** Invited admin sets a password (12+ characters, letters and numbers) and receives a TOTP secret to enrol. */
+    acceptInvitation: (payload: { token: string; password: string }) =>
+      request.post<AdminInvitationEnrolment>('/admin/auth/invitations/accept', payload, { skipAuth: true, skipRefresh: true }),
+    /** Confirms enrolment with a 6-digit authenticator code; activates the admin and signs them in. */
+    confirmInvitation: (payload: { token: string; otp: string }) =>
+      request.post<AdminLoginResult>('/admin/auth/invitations/confirm', payload, { skipAuth: true, skipRefresh: true }),
   },
   dashboard: (params: { from?: string; to?: string }) => request.get<ExecutiveDashboard>('/admin/dashboard', params),
 

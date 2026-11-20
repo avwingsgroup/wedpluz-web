@@ -2,7 +2,7 @@ import { expect, type Page } from '@playwright/test'
 
 /** Mock-mode credentials (see src/services/mock). Never valid against a live API. */
 export const USER = { email: 'johnbrown@gmail.com', password: 'password123' }
-export const ADMIN = { email: 'admin@wedpluz.com', password: 'password123', otp: '1234' }
+export const ADMIN = { email: 'admin@wedpluz.com', password: 'password123', otp: '123456' }
 
 export async function loginAsUser(page: Page, redirect?: string) {
   await page.goto(`/auth/login/email${redirect ? `?redirect=${encodeURIComponent(redirect)}` : ''}`)

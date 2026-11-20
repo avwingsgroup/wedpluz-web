@@ -124,13 +124,25 @@
   .field-error {
     @apply border-danger-500 focus:border-danger-500;
   }
-  /* Footer plum with the design's scattered white specks (scripts/generate-footer-stars.mjs, measured from the design). */
-  .plum-footer {
+  /* Plum with the design's scattered white specks (scripts/generate-footer-stars.mjs, measured from the footer design). */
+  .plum-footer,
+  .plum-stars {
     background-color: #270427;
     background-image: url('./patterns/footer-stars.svg');
     background-position: center top;
     background-size: 1440px 720px;
     background-repeat: repeat;
+  }
+  /* Admin sign-in screens: the same specks over two soft brand glows. */
+  .plum-stars-glow {
+    background-color: #270427;
+    background-image:
+      url('./patterns/footer-stars.svg'),
+      radial-gradient(circle at 20% 20%, rgb(155 17 155 / 0.35), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgb(231 37 127 / 0.25), transparent 40%);
+    background-position: center top, center, center;
+    background-size: 1440px 720px, 100% 100%, 100% 100%;
+    background-repeat: repeat, no-repeat, no-repeat;
   }
   .texture-band {
     background-color: #fbfbfc;

@@ -561,6 +561,8 @@ Every `/admin/*` route needs an **admin token** (separate audience, issued after
 | POST | `/admin/auth/login` | Admin sign in (password, then 2FA code) | public | required | { email, password, otp? } | AdminLoginResult | `UNAUTHENTICATED` `OTP_INVALID` `ACCOUNT_SUSPENDED` `RATE_LIMITED` |
 | GET | `/admin/me` | Get the signed-in admin with permissions | admin | required | — | AdminUser | — |
 | POST | `/admin/auth/logout` | Admin sign out | admin | required | — | 204 No Content | — |
+| POST | `/admin/auth/invitations/accept` | Accept invitation | public | required | { token, password } | AdminInvitationEnrolment | — |
+| POST | `/admin/auth/invitations/confirm` | Confirm invitation | public | required | { token, otp } | AdminLoginResult | — |
 <!-- /endpoints -->
 
 ### 3.2 Executive dashboard

@@ -13,6 +13,8 @@ export function installGuards(router: Router): void {
       const admin = useAdminStore()
       await admin.bootstrap()
       const isLogin = to.name === 'admin.login'
+      // Public admin pages (accepting an invitation) work with or without a session.
+      if (to.matched.some((r) => r.meta.adminPublic)) return true
       if (!admin.isAuthenticated && !isLogin) {
         return { name: 'admin.login', query: { redirect: to.fullPath } }
       }

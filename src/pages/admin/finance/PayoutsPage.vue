@@ -13,6 +13,8 @@ import AdminFilterBar from '@/modules/admin/AdminFilterBar.vue'
 import KeyValueList from '@/modules/admin/KeyValueList.vue'
 import Can from '@/modules/admin/Can.vue'
 import { useAdminList } from '@/modules/admin/useAdminList'
+import { REUSED_CODE_MESSAGE, adminOtpOutcome, cleanOtp } from '@/modules/admin/adminOtp'
+import { ADMIN_OTP_LENGTH } from '@/config/app'
 import { adminApi } from '@/services/api/admin.api'
 import { useAdminStore } from '@/stores/admin.store'
 import { useUiStore } from '@/stores/ui.store'
@@ -26,19 +28,30 @@ const approving = ref<Payout | null>(null)
 const otp = ref('')
 const otpError = ref<string | null>(null)
 const busy = ref(false)
+const otpInput = ref<InstanceType<typeof UiOtpInput> | null>(null)
 
 async function approve() {
-  if (!approving.value) return
+  if (!approving.value || busy.value) return
+  const code = cleanOtp(otp.value)
+  if (code.length !== ADMIN_OTP_LENGTH) return void (otpError.value = `Enter the ${ADMIN_OTP_LENGTH}-digit code from your authenticator app.`)
+  // Each code works once: the one just used to sign in (or approve) is refused, so say so before asking the API.
+  if (admin.isRecentlyUsedOtp(code)) {
+    otpError.value = REUSED_CODE_MESSAGE()
+    otpInput.value?.clear()
+    return
+  }
   busy.value = true
   otpError.value = null
   try {
-    await adminApi.finance.approvePayout(approving.value.id, otp.value)
+    await adminApi.finance.approvePayout(approving.value.id, code)
+    admin.rememberOtp(code)
     ui.success('Payout approved', 'Transfer sent to the provider. Status updates via webhook.')
     approving.value = null
     void list.refresh()
   } catch (e) {
-    otpError.value = (e as Error).message
-    otp.value = ''
+    const outcome = adminOtpOutcome(e)
+    otpError.value = outcome.kind === 'invalid_code' ? `${outcome.message} If you used a code moments ago, wait for the next one.` : outcome.message
+    otpInput.value?.clear()
   } finally {
     busy.value = false
   }
@@ -69,9 +82,9 @@ async function reject(p: Payout) {
     <UiModal :open="!!approving" title="Approve payout" size="sm" @update:open="approving = null">
       <div v-if="approving" class="space-y-4">
         <KeyValueList :items="[{ label: 'Organizer', value: approving.organizer.businessName ?? approving.organizer.displayName }, { label: 'Amount', value: formatMoney(approving.amount) }, { label: 'Account', value: `${approving.bankAccount.accountName} · ${approving.bankAccount.bankName} ${approving.bankAccount.accountNumber}` }, { label: 'Settlements', value: approving.settlementIds.length }]" />
-        <div class="text-center"><ShieldCheck class="mx-auto h-8 w-8 text-brand-600" /><p class="mt-2 text-sm text-ink-600">Enter your authenticator code to release funds</p><UiOtpInput v-model="otp" class="mt-4" :error="otpError ?? undefined" /></div>
+        <div class="text-center"><ShieldCheck class="mx-auto h-8 w-8 text-brand-600" /><p class="mt-2 text-sm text-ink-600">Enter the {{ ADMIN_OTP_LENGTH }}-digit code from your authenticator app to release funds</p><UiOtpInput ref="otpInput" v-model="otp" :length="ADMIN_OTP_LENGTH" label="Authentication code" class="mt-4" :disabled="busy" :error="otpError ?? undefined" @complete="approve" /></div>
       </div>
-      <template #footer><UiButton block :disabled="otp.length < 4" :loading="busy" @click="approve">Approve &amp; send</UiButton></template>
+      <template #footer><UiButton block :disabled="otp.length < ADMIN_OTP_LENGTH" :loading="busy" @click="approve">Approve &amp; send</UiButton></template>
     </UiModal>
   </div>
 </template>

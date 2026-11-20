@@ -28,7 +28,7 @@ beforeAll(async () => {
   adapter = createMockAdapter()
   const login = await call<{ data: { tokens: { accessToken: string } } }>('post', '/auth/login', { body: { email: 'johnbrown@gmail.com', password: 'password123' } })
   userToken = login.data.data.tokens.accessToken
-  const admin = await call<{ data: { tokens: { accessToken: string } } }>('post', '/admin/auth/login', { body: { email: 'admin@wedpluz.com', password: 'password123', otp: '1234' } })
+  const admin = await call<{ data: { tokens: { accessToken: string } } }>('post', '/admin/auth/login', { body: { email: 'admin@wedpluz.com', password: 'password123', otp: '123456' } })
   adminToken = admin.data.data.tokens.accessToken
 }, 30_000)
 

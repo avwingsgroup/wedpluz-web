@@ -24,7 +24,11 @@ export const PAGE_SIZES = {
 } as const
 
 export const MAX_INTERESTS = 5
+/** Customer codes (email verification, password reset, wallet setup, PIN) are 4 digits. */
 export const OTP_LENGTH = 4
+/** Admin two-factor codes come from an authenticator app (TOTP): always 6 digits, a new one every 30 seconds. */
+export const ADMIN_OTP_LENGTH = 6
+export const TOTP_PERIOD_SECONDS = 30
 export const OTP_RESEND_SECONDS = 60
 export const MAX_UPLOAD_MB = 5
 
