@@ -1,25 +1,35 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowRight, ArrowUp, ShieldCheck, CreditCard, Zap, X } from 'lucide-vue-next'
+import { ArrowRight, ArrowUp, X } from 'lucide-vue-next'
 import UiSearchBar from '@/components/ui/UiSearchBar.vue'
 import UiSectionHeader from '@/components/ui/UiSectionHeader.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiSkeleton from '@/components/ui/UiSkeleton.vue'
+import UiAvatar from '@/components/ui/UiAvatar.vue'
+import { InstantConfirmIcon, SecurePaymentIcon, VerifiedIcon } from '@/components/icons/FeatureIcons'
+import AppDownloadBanner from '@/components/marketing/AppDownloadBanner.vue'
 import EventGrid from '@/modules/events/EventGrid.vue'
 import VendorCard from '@/modules/vendors/VendorCard.vue'
 import { eventsApi } from '@/services/api/events.api'
 import { vendorsApi } from '@/services/api/vendors.api'
 import { useAuthStore } from '@/stores/auth.store'
 import { useSeo } from '@/composables/useSeo'
-import { ILLUSTRATIONS } from '@/assets/illustrations'
+import { organizationLd, websiteLd } from '@/utils/structuredData'
+import createManageEventsArt from '@/assets/illustrations/create-manage-events.webp'
+import howDiscover from '@/assets/illustrations/how-discover.webp'
+import howConnect from '@/assets/illustrations/how-connect.webp'
+import howCreate from '@/assets/illustrations/how-create.webp'
+import howAttend from '@/assets/illustrations/how-attend.webp'
+import appBannerArt from '@/assets/illustrations/app-banner.webp'
+import { cn } from '@/utils/cn'
 import { STORAGE_KEYS } from '@/config/app'
 import { safeStorage } from '@/utils/storage'
 import type { EventSummary, VendorSummary } from '@/types'
 
 const router = useRouter()
 const auth = useAuthStore()
-useSeo({ title: 'Discover events in your area', description: 'Find, plan, discover vendors, and experience moments that connect you with friends and community.' })
+useSeo({ jsonLd: [organizationLd(), websiteLd()] })
 
 const upcoming = ref<EventSummary[]>([])
 const popular = ref<EventSummary[]>([])
@@ -50,14 +60,30 @@ function dismiss(key: string) {
 }
 const showHost = computed(() => !dismissed.value.includes('host'))
 const showVendor = computed(() => !dismissed.value.includes('vendor') && !auth.isVendor)
-const phoneImage = ILLUSTRATIONS.homePhone
-const steps = [
-  { n: 1, title: 'Discover', text: 'Search vendors, venues, and events in your city or beyond.' },
-  { n: 2, title: 'Connect', text: 'Message organizers and vendors directly.' },
-  { n: 3, title: 'Create', text: 'Publish your event and sell digital tickets.' },
-  { n: 4, title: 'Attend', text: 'Check in with your QR ticket and enjoy.' },
+// "Discover Creative Professionals" cards: the first five featured vendors (backend note: headline + coverUrl).
+const featuredPros = computed(() =>
+  vendors.value.slice(0, 5).map((v) => ({
+    id: v.id,
+    slug: v.slug,
+    name: v.businessName,
+    label: v.headline || v.category.name,
+    image: v.coverUrl ?? v.featuredWorks[0]?.thumbnailUrl ?? (v.featuredWorks[0]?.type === 'image' ? v.featuredWorks[0].url : null),
+    avatarUrl: v.avatarUrl,
+  })),
+)
+const features = [
+  { icon: VerifiedIcon, title: 'Verified Events Only', text: 'Buy tickets exclusively from trusted organizers on Wedpluz. Your safety and security are our top priorities.' },
+  { icon: SecurePaymentIcon, title: 'Secure Payments', text: 'Every ticket purchase is securely encrypted and safeguarded, ensuring your safety and peace of mind.' },
+  { icon: InstantConfirmIcon, title: 'Instant Confirmation', text: 'No waiting. No middleman. Purchase your tickets straight from trusted organizers on Wedpluz.' },
 ]
-const activeStep = ref(0)
+// "How Wedpluz Works": app-screen illustrations extracted from the design handoff (homepage - individuals).
+// The design shows Discover expanded and the other steps as narrow cards that crop their screens.
+const steps = [
+  { n: 1, title: 'Discover', text: 'Search vendors, venues, and events in your city or beyond.', image: howDiscover, width: 398, height: 388, alt: 'Wedpluz app Find Events screen' },
+  { n: 2, title: 'Connect', text: 'Message organizers and vendors directly.', image: howConnect, width: 159, height: 386, alt: 'Wedpluz app messages screen' },
+  { n: 3, title: 'Create', text: 'Publish your event and sell digital tickets.', image: howCreate, width: 159, height: 386, alt: 'Wedpluz app create event screen' },
+  { n: 4, title: 'Attend', text: 'Check in with your QR ticket and enjoy.', image: howAttend, width: 159, height: 386, alt: 'Wedpluz app event ticket screen' },
+]
 function scrollTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -111,9 +137,9 @@ function scrollTop() {
 
   <!-- ================= Guest landing ================= -->
   <div v-else>
-    <!-- `isolate` keeps the decorative layer (-z-10) inside the hero instead of behind the page background. -->
-    <section class="relative isolate overflow-hidden">
-      <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <!-- `isolate` keeps the decorative layer (-z-10) inside the hero instead of behind the page background. Clipping lives on that layer, not the section, so the search suggestions can extend below the hero (z-10 keeps them above the next sections). -->
+    <section class="relative isolate z-10">
+      <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <!-- Soft ribbons -->
         <svg class="absolute inset-0 h-full w-full" viewBox="0 0 1440 880" fill="none" preserveAspectRatio="xMidYMid slice">
           <g stroke="#fbf1ec" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
@@ -158,50 +184,91 @@ function scrollTop() {
           </ul>
           <RouterLink :to="{ name: 'auth.signup' }" class="mt-6 inline-flex items-center gap-2 font-semibold text-brand-600 hover:underline">Get started <ArrowRight class="h-4 w-4" /></RouterLink>
         </div>
-        <div class="relative mx-auto w-full max-w-md -rotate-3">
-          <div v-for="(card, i) in [['Generate Digital tickets', 'bg-brand-600'], ['Create Memories', 'bg-success-600'], ['Hire Professionals', 'bg-pink-500']]" :key="i" :class="['mb-3 flex items-center justify-between rounded-2xl p-5 text-white shadow-float', card[1]]"><span class="text-lg font-semibold">{{ card[0] }}</span><span class="h-14 w-20 rounded-lg bg-white/25" /></div>
-        </div>
+        <!-- Artwork extracted from the design handoff (homepage - individuals), transparent background. -->
+        <img
+          :src="createManageEventsArt"
+          alt="Wedpluz cards: generate digital tickets, create memories and hire professionals"
+          width="461"
+          height="454"
+          loading="lazy"
+          decoding="async"
+          class="mx-auto block h-auto w-full max-w-[461px] md:ml-auto md:mr-2"
+        />
       </div>
     </section>
 
     <section class="mt-24 overflow-hidden">
-      <div class="container-app text-center"><h2 class="text-3xl md:text-4xl">Discover Creative Professionals with Ease</h2><p class="mx-auto mt-3 max-w-xl text-ink-500">Find the right person that matches your needs. From event planners, to photographers, chefs, entertainers and even more vendors</p></div>
-      <div class="mt-10 flex gap-4 overflow-x-auto px-4 pb-4 scrollbar-none md:justify-center">
-        <RouterLink v-for="p in ILLUSTRATIONS.professionals" :key="p.handle" :to="{ name: 'vendors' }" class="group relative h-72 w-52 shrink-0 overflow-hidden rounded-2xl bg-ink-100 odd:-rotate-2 even:rotate-2 transition-transform hover:rotate-0">
-          <img :src="p.image" :alt="p.label" loading="lazy" class="h-full w-full object-cover transition-transform group-hover:scale-105" />
-          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 p-4 text-white"><p class="font-semibold">{{ p.label }}</p><p class="text-xs text-white/80">{{ p.handle }}</p></div>
-        </RouterLink>
+      <div class="container-app text-center"><h2 class="mx-auto max-w-[780px] text-3xl leading-tight md:text-[48px] md:leading-[1.2] md:tracking-[-0.012em]">Discover Creative Professionals with Ease</h2><p class="mx-auto mt-4 max-w-[720px] text-base leading-6 text-ink-500">Find the right person that matches your needs. From event planners, to photographers, chefs, entertainers and even more vendors</p></div>
+      <!-- Featured vendors from GET /vendors/featured. Design at 1440px: 300×325 cards tilted −1°, 319px apart, each 11px
+           higher than the previous; the strip bleeds off both edges (the first card starts at the left edge). Phones scroll it. -->
+      <ul
+        v-if="loading || featuredPros.length"
+        class="mt-14 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-6 pt-12 scrollbar-none md:mt-[52px] md:w-max md:snap-none md:gap-[19px] md:overflow-visible md:px-0 md:pb-0 md:pt-[44px] md:ml-[calc(50%-720px)]"
+        aria-label="Featured vendors"
+      >
+        <template v-if="loading && !featuredPros.length">
+          <li v-for="i in 5" :key="i" class="shrink-0" :style="{ transform: `translateY(${-11 * (i - 1)}px) rotate(-1deg)` }"><UiSkeleton class="h-[325px] w-[300px] rounded-2xl" /></li>
+        </template>
+        <li v-for="(p, i) in featuredPros" v-else :key="p.id" class="shrink-0 snap-start" :style="{ transform: `translateY(${-11 * i}px) rotate(-1deg)` }">
+          <RouterLink :to="{ name: 'vendor', params: { slug: p.slug } }" class="group relative block h-[325px] w-[300px] overflow-hidden rounded-2xl bg-ink-800 shadow-sm transition-transform duration-300 hover:-translate-y-1.5 hover:rotate-1 focus-visible:-translate-y-1.5">
+            <img v-if="p.image" :src="p.image" alt="" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <span class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#1a0419]/90 via-[#1a0419]/45 to-transparent" aria-hidden="true" />
+            <span class="absolute bottom-[14px] left-[22px] right-4 flex items-center gap-3 text-white">
+              <UiAvatar :src="p.avatarUrl" :name="p.name" class="h-[46px]! w-[46px]! rounded-full ring-2 ring-white" />
+              <span class="min-w-0">
+                <span class="block truncate text-[17px] font-medium leading-6">{{ p.label }}</span>
+                <span class="mt-1.5 block truncate text-sm text-white/85">@{{ p.slug }}</span>
+              </span>
+            </span>
+            <span class="sr-only">— {{ p.name }}</span>
+          </RouterLink>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Trust row. Design at 1440px: three 433px columns (centres 286/720/1153), 64px duo-tone icons, 20px titles. -->
+    <section class="mx-auto mt-24 grid max-w-[1332px] gap-12 px-4 text-center md:mt-[122px] md:grid-cols-3 md:gap-0">
+      <div v-for="f in features" :key="f.title" class="flex flex-col items-center">
+        <component :is="f.icon" class="h-16 w-16" />
+        <h3 class="mt-8 text-xl font-semibold leading-7 tracking-normal text-[#333740] md:mt-[51px]">{{ f.title }}</h3>
+        <p class="mt-[18px] max-w-[290px] text-base leading-6 text-[#333740]">{{ f.text }}</p>
       </div>
     </section>
 
-    <section class="container-app mt-24 grid gap-10 text-center md:grid-cols-3">
-      <div v-for="f in [{ icon: ShieldCheck, title: 'Verified Events Only', text: 'Buy tickets exclusively from trusted organizers on Wedpluz. Your safety and security are our top priorities.' }, { icon: CreditCard, title: 'Secure Payments', text: 'Every ticket purchase is securely encrypted and safeguarded, ensuring your safety and peace of mind.' }, { icon: Zap, title: 'Instant Confirmation', text: 'No waiting. No middleman. Purchase your tickets straight from trusted organizers on Wedpluz.' }]" :key="f.title">
-        <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-brand-600"><component :is="f.icon" class="h-6 w-6" /></span>
-        <h3 class="mt-4 text-lg">{{ f.title }}</h3>
-        <p class="mt-2 text-sm text-ink-500">{{ f.text }}</p>
-      </div>
-    </section>
-
-    <section class="mt-24 bg-ink-50 py-20">
-      <div class="container-app text-center"><h2 class="text-3xl md:text-4xl">How Wedpluz Works</h2><p class="mx-auto mt-3 max-w-xl text-ink-500">From finding the right vendor to creating your own event, we make the process smooth, fast, and fun.</p></div>
-      <div class="container-app mt-10 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-        <button v-for="(s, i) in steps" :key="s.n" type="button" :class="['shrink-0 rounded-2xl border bg-white p-6 text-left transition-all', activeStep === i ? 'w-80 border-brand-400 shadow-card' : 'w-44 border-ink-200 opacity-80 hover:opacity-100']" @click="activeStep = i">
-          <div class="flex items-center gap-3"><span :class="['flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold', activeStep === i ? 'bg-brand-100 text-brand-600' : 'bg-ink-100 text-ink-500']">{{ s.n }}</span><span class="font-semibold">{{ s.title }}</span></div>
-          <p v-if="activeStep === i" class="mt-2 text-sm text-ink-500">{{ s.text }}</p>
-          <div class="mt-6 h-40 rounded-t-3xl border-x-4 border-t-4 border-ink-200 bg-ink-50" />
-        </button>
-      </div>
-      <div class="mt-8 text-center"><UiButton :to="{ name: 'auth.signup' }">Join the Experience</UiButton></div>
-    </section>
-
-    <section class="container-app mt-20">
-      <div class="grid items-center gap-8 overflow-hidden rounded-3xl bg-brand-100 p-8 md:grid-cols-2 md:p-14">
-        <div><h2 class="text-3xl md:text-4xl">Events Don’t Wait,<br />Neither Should You</h2><p class="mt-3 text-ink-700">Download the Wedpluz app and discover events wherever you are.</p>
-          <div class="mt-6 flex flex-wrap gap-3"><UiButton variant="outline" href="https://play.google.com/store/apps/details?id=com.wedpluz.app" rounded="xl">▶ GooglePlay</UiButton><UiButton variant="outline" href="https://apps.apple.com/app/wedpluz" rounded="xl"> App Store</UiButton></div>
+    <!-- Measured from the design at 1440px: 1194px content, Discover card 524×554, other cards 200 wide, 24px gaps. -->
+    <section class="mt-24 bg-ink-50 pb-16 pt-[62px]" aria-labelledby="how-title">
+      <div class="mx-auto max-w-[1226px] px-4">
+        <div class="text-center">
+          <h2 id="how-title" class="text-3xl leading-tight text-[#333740] md:text-[48px] md:leading-[1.2] md:tracking-[0.008em]">How Wedpluz Works</h2>
+          <p class="mx-auto mt-4 max-w-[660px] text-base text-[#333740] md:text-xl md:leading-8">From finding the right vendor to creating your own event, we make the process smooth, fast, and fun.</p>
         </div>
-        <img :src="phoneImage" alt="Wedpluz mobile app" loading="lazy" class="mx-auto max-h-80 rounded-2xl object-cover shadow-float" />
+        <ol class="-mx-4 mt-[41px] flex snap-x snap-mandatory scroll-px-4 gap-6 overflow-x-auto px-4 pb-2 scrollbar-none min-[1226px]:mx-0 min-[1226px]:overflow-visible min-[1226px]:px-0 min-[1226px]:pb-0">
+          <li
+            v-for="(s, i) in steps"
+            :key="s.n"
+            :class="cn('relative h-[554px] shrink-0 snap-start overflow-hidden rounded-2xl border', i === 0 ? 'w-[min(524px,calc(100vw-2rem))] border-[#b44db4]' : 'w-[200px] border-[#e6c3e6]')"
+          >
+            <div class="flex items-center gap-4 pl-6 pt-10">
+              <span :class="cn('flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full text-[15px] font-medium', i === 0 ? 'bg-[#e6c3e6] text-brand-600' : 'bg-[#ecedee] text-[#333740]')" aria-hidden="true">{{ s.n }}</span>
+              <h3 class="relative top-[2px] text-xl font-semibold tracking-normal text-[#333740]"><span class="sr-only">Step {{ s.n }}: </span>{{ s.title }}</h3>
+            </div>
+            <p :class="i === 0 ? 'ml-[70px] mt-[5px] pr-6 text-base text-[#333740]' : 'sr-only'">{{ s.text }}</p>
+            <img
+              :src="s.image"
+              :alt="s.alt"
+              :width="s.width"
+              :height="s.height"
+              loading="lazy"
+              decoding="async"
+              :class="i === 0 ? 'absolute bottom-0 left-1/2 h-auto w-[398px] max-w-[calc(100%-2rem)] -translate-x-1/2' : 'absolute bottom-0 right-0 h-auto w-[159px]'"
+            />
+          </li>
+        </ol>
+        <div class="mt-[41px] text-center"><UiButton size="lg" class="px-6! font-medium!" :to="{ name: 'auth.signup' }">Join the Experience</UiButton></div>
       </div>
     </section>
+
+    <AppDownloadBanner class="mt-20 md:mt-[100px]" :lines="['Events Don’t Wait,', 'Neither Should You']" text="Download the Wedpluz app and discover events wherever you are." :art="appBannerArt" />
   </div>
 
   <button v-if="showTop" type="button" class="fixed bottom-6 right-6 z-30 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 text-white shadow-float" aria-label="Back to top" @click="scrollTop"><ArrowUp class="h-5 w-5" /></button>

@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
+import { seoPlugin } from './build/seo-plugin.ts'
 
 /**
  * Wedpluz build configuration.
@@ -23,7 +24,12 @@ export default defineConfig(({ command, mode }) => {
   }
 
   return {
-    plugins: [vue(), tailwindcss()],
+    plugins: [
+      vue(),
+      tailwindcss(),
+      // robots.txt, sitemap.xml and pre-rendered page heads (docs/seo.md)
+      seoPlugin({ target, mode, origin: env.VITE_WEB_ORIGIN || 'https://wedpluz.com', extraSitemaps: env.VITE_SITEMAP_EXTRA }),
+    ],
     define: {
       __APP_TARGET__: JSON.stringify(target),
       __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? '0.0.0'),

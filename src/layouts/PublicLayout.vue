@@ -12,12 +12,14 @@ const auth = useAuthStore()
 const checkout = useCheckoutStore()
 const hideFooter = computed(() => route.matched.some((r) => r.meta.hideFooter))
 const textured = computed(() => route.matched.some((r) => r.meta.textured))
+// Pages with a full-bleed cover (vendor profile) float the header over it, as in the design.
+const overlayHeader = computed(() => route.matched.some((r) => r.meta.overlayHeader))
 </script>
 
 <template>
   <div class="flex min-h-screen flex-col bg-white">
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
-    <AppHeader />
+    <AppHeader :overlay="overlayHeader" />
     <div v-if="textured" class="texture-band h-24 md:h-32" aria-hidden="true" />
     <main id="main" class="flex-1">
       <RouterView v-slot="{ Component }">

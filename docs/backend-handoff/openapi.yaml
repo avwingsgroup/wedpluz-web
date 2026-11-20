@@ -5678,6 +5678,7 @@ paths:
                         height: 12
                         durationSeconds: 12
                     availability: available
+                    headline: string
                 message: Example text
         '401':
           $ref: '#/components/responses/Unauthenticated'
@@ -26569,6 +26570,8 @@ paths:
                         height: 12
                         durationSeconds: 12
                     availability: available
+                    headline: string
+                    coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                 message: Example text
         '500':
           $ref: '#/components/responses/ServerError'
@@ -26886,6 +26889,8 @@ paths:
                         height: 12
                         durationSeconds: 12
                     availability: available
+                    headline: string
+                    coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                 message: Example text
         '404':
           $ref: '#/components/responses/NotFound'
@@ -27357,6 +27362,8 @@ paths:
                         height: 12
                         durationSeconds: 12
                     availability: available
+                    headline: string
+                    coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                 meta:
                   page: 1
                   perPage: 1
@@ -27515,6 +27522,7 @@ paths:
                       height: 12
                       durationSeconds: 12
                   availability: available
+                  headline: string
                 message: Example text
         '401':
           $ref: '#/components/responses/Unauthenticated'
@@ -27627,6 +27635,7 @@ paths:
                       height: 12
                       durationSeconds: 12
                   availability: available
+                  headline: string
                 message: Example text
         '401':
           $ref: '#/components/responses/Unauthenticated'
@@ -27774,6 +27783,7 @@ paths:
                       height: 12
                       durationSeconds: 12
                   availability: available
+                  headline: string
                 message: Example text
         '401':
           $ref: '#/components/responses/Unauthenticated'
@@ -37844,6 +37854,7 @@ components:
             - string
             - 'null'
           format: uri
+          description: Portrait/landscape cover used by featured cards. Included by /vendors/featured.
         description:
           type: string
         contactEmail:
@@ -37924,6 +37935,11 @@ components:
             - available
             - busy
             - unavailable
+        headline:
+          type:
+            - string
+            - 'null'
+          description: Short marketing label shown on featured cards, e.g. "Bridal wear rentals". Falls back to the category name.
       required:
         - coverUrl
         - description
@@ -38102,6 +38118,17 @@ components:
             - available
             - busy
             - unavailable
+        headline:
+          type:
+            - string
+            - 'null'
+          description: Short marketing label shown on featured cards, e.g. "Bridal wear rentals". Falls back to the category name.
+        coverUrl:
+          type:
+            - string
+            - 'null'
+          format: uri
+          description: Portrait/landscape cover used by featured cards. Included by /vendors/featured.
       required:
         - id
         - userId

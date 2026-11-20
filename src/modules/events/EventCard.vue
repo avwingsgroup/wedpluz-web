@@ -56,15 +56,16 @@ function onShare(e: Event) {
 </script>
 
 <template>
-  <!-- Compact: homepage (guest) layout -->
+  <!-- Compact: guest home + events list. Design at 1440px: 280px wide, 280×194 image (8px radius), grey category pill, 16px title. -->
   <RouterLink v-if="variant === 'compact'" :to="link" class="group block">
-    <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink-100">
+    <div class="relative aspect-[280/194] overflow-hidden rounded-lg bg-ink-100">
       <img :src="event.coverUrl" :alt="event.title" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="chip absolute left-3 top-3 border-0 bg-white/90">{{ modeLabel }}</span>
+      <span class="absolute left-4 top-4 rounded-full bg-white/75 px-2.5 py-1 text-sm leading-5 text-[#333740] backdrop-blur-sm">{{ modeLabel }}</span>
+      <UiBadge v-if="event.isPromoted" tone="brand" size="sm" class="absolute right-3 top-3 shadow-sm">✦ Promoted</UiBadge>
     </div>
-    <span class="chip mt-3">{{ event.category.name }}</span>
-    <h3 class="mt-2 line-clamp-2 text-[15px] font-semibold text-ink-900 group-hover:text-brand-600">{{ event.title }}</h3>
-    <p class="mt-1 text-sm text-ink-500">{{ dateLabel }}</p>
+    <span class="mt-4 inline-flex rounded-full bg-[#f6f6f6] px-2.5 py-1 text-sm leading-5 text-[#333740]">{{ event.category.name }}</span>
+    <h3 class="mt-2 line-clamp-2 text-base font-medium leading-6 text-[#333740] group-hover:text-brand-600">{{ event.title }}</h3>
+    <p class="mt-1 text-sm leading-6 text-[#5b5f6a]">{{ dateLabel }}</p>
   </RouterLink>
 
   <!-- Promote: "Promote Events" cards with commission -->

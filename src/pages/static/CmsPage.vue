@@ -5,6 +5,8 @@ import ErrorState from '@/components/feedback/ErrorState.vue'
 import { accountApi } from '@/services/api/account.api'
 import { useAsync } from '@/composables/useAsync'
 import { useSeo } from '@/composables/useSeo'
+import { faqLd, parseFaqHtml } from '@/utils/structuredData'
+import { staticPageFor } from '@/config/seo'
 import { sanitizeRichText } from '@/utils/sanitize'
 import { formatDate } from '@/utils/format'
 import type { CmsPage } from '@/types'
@@ -12,7 +14,17 @@ import type { CmsPage } from '@/types'
 const props = defineProps<{ slug: CmsPage['slug'] }>()
 const { data: page, loading, error, refresh } = useAsync(() => accountApi.page(props.slug), { watch: () => props.slug })
 const html = computed(() => (page.value ? sanitizeRichText(page.value.content) : ''))
-useSeo(() => ({ title: page.value?.title ?? 'Wedpluz' }))
+useSeo(() => {
+  const meta = staticPageFor(`/${props.slug}`)
+  const faq = props.slug === 'faqs' && page.value ? faqLd(parseFaqHtml(page.value.content)) : null
+  return {
+    // Curated titles/descriptions from config/seo.ts; the CMS title is the fallback.
+    title: meta?.title ?? page.value?.title,
+    description: meta?.description,
+    type: 'article' as const,
+    jsonLd: faq ? [faq] : undefined,
+  }
+})
 </script>
 
 <template>

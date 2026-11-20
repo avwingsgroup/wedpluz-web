@@ -15,6 +15,8 @@ export interface AppRouteMeta {
   hideFooter?: boolean
   /** Show the textured band under the header like account/wallet designs. */
   textured?: boolean
+  /** Float the header over a full-bleed cover (vendor profile design). */
+  overlayHeader?: boolean
   layout?: 'public' | 'auth' | 'admin' | 'blank'
 }
 

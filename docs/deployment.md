@@ -33,6 +33,7 @@ All variables are **build-time** and **public**. Vite inlines them into the Java
 | `VITE_REALTIME_URL`, `VITE_REALTIME_KEY` | optional | `wss://ws.wedpluz.com/app/<key>` | Reverb or Pusher public app key. Empty means badge counts are polled instead. |
 | `VITE_PAYSTACK_PUBLIC_KEY`, `VITE_STRIPE_PUBLISHABLE_KEY`, `VITE_PAYPAL_CLIENT_ID` | optional | | Reserved for inline payment SDKs. Today checkout uses hosted redirects only. |
 | `VITE_FIREBASE_CONFIG_JSON` | optional | | Public Firebase web config, for future web push. |
+| `VITE_SITEMAP_EXTRA` | optional | `https://api.wedpluz.com/sitemaps/events.xml,https://api.wedpluz.com/sitemaps/vendors.xml` | Extra sitemaps listed in the generated `robots.txt` (backend event and vendor sitemaps, see [seo.md](seo.md#31-dynamic-sitemaps)). |
 
 Files: `.env.example` (documented template), `.env.development` (mock mode), `.env.staging` and `.env.production` (live). For local overrides use `.env.*.local`, which is git-ignored. In CI, set values as environment variables of the build step; they override the files.
 
@@ -77,7 +78,7 @@ server {
     add_header Cache-Control "no-cache";
   }
   location / {
-    try_files $uri $uri/ /index.html;
+    try_files $uri $uri/index.html /index.html;   # serves pre-rendered page heads (dist/about/index.html) without a trailing-slash redirect
   }
   include /etc/nginx/snippets/wedpluz-security-headers.conf;
 }
@@ -89,7 +90,7 @@ server {
   location /assets/ { add_header Cache-Control "public, max-age=31536000, immutable"; try_files $uri =404; }
   location = /index.html { add_header Cache-Control "no-cache"; }
   location = /robots.txt { return 200 "User-agent: *\nDisallow: /\n"; }
-  location / { try_files $uri $uri/ /index.html; }
+  location / { try_files $uri /index.html; }
   add_header X-Robots-Tag "noindex, nofollow" always;
   include /etc/nginx/snippets/wedpluz-security-headers.conf;
 }
@@ -110,7 +111,8 @@ Netlify or Cloudflare Pages `_redirects`:
 |---|---|
 | `/assets/*` (hashed) | `public, max-age=31536000, immutable` |
 | `/index.html` and SPA fallbacks | `no-cache` (always revalidate, so new deploys are picked up) |
-| `/favicon.svg`, `/robots.txt` | `public, max-age=86400` |
+| `/favicon.svg`, `/icons/*`, `/og/*`, `/site.webmanifest` | `public, max-age=86400` |
+| `/robots.txt`, `/sitemap.xml` | `public, max-age=3600` (generated per build; staging and admin builds disallow all crawling) |
 
 After a deploy, users holding an old `index.html` may request chunks that no longer exist. The router catches chunk-load failures and reloads the page once. Keeping the previous deploy's `/assets` available for a day avoids even that reload.
 

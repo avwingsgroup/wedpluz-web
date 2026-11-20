@@ -1,5 +1,6 @@
-import type { Router } from 'vue-router'
+import type { LocationQuery, Router } from 'vue-router'
 import { APP_NAME } from '@/config/app'
+import { applySeo, INDEXABLE_BUILD } from '@/utils/seo'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAdminStore } from '@/stores/admin.store'
 import { useUiStore } from '@/stores/ui.store'
@@ -50,10 +51,26 @@ export function installGuards(router: Router): void {
     return true
   })
 
-  router.afterEach((to) => {
-    const title = to.meta.title
-    document.title = title ? `${title} | ${APP_NAME}` : APP_NAME
+  router.afterEach((to, from, failure) => {
     useUiStore().mobileNavOpen = false
+    if (failure) return
+
+    // Admin console: never indexed, plain titles.
+    if (to.matched.some((r) => r.meta.admin)) {
+      document.title = to.meta.title ? `${to.meta.title} | ${APP_NAME} Admin` : `${APP_NAME} Admin`
+      let robots = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')
+      if (!robots) {
+        robots = document.createElement('meta')
+        robots.name = 'robots'
+        document.head.appendChild(robots)
+      }
+      robots.content = 'noindex, nofollow'
+      return
+    }
+
+    // Query-only changes (filters, pagination) keep the page's own SEO; useSeo re-applies it.
+    if (from.matched.length && from.path === to.path) return
+    applySeo({ title: to.meta.title }, { path: to.path, query: toSearchParams(to.query), indexable: INDEXABLE_BUILD })
   })
 
   router.onError((error) => {
@@ -66,4 +83,12 @@ export function installGuards(router: Router): void {
       }
     }
   })
+}
+
+function toSearchParams(query: LocationQuery): URLSearchParams {
+  const params = new URLSearchParams()
+  for (const [key, value] of Object.entries(query)) {
+    for (const v of Array.isArray(value) ? value : [value]) if (v !== null && v !== undefined) params.append(key, v)
+  }
+  return params
 }

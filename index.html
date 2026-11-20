@@ -1,20 +1,64 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-NG">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#9b119b" />
-    <meta name="description" content="Wedpluz: discover events, buy tickets, hire vendors and build communities around life's special moments." />
+    <!--
+      Defaults for crawlers and link previews that do not run JavaScript. At build time each
+      public marketing page gets its own copy of this file with page-specific values
+      (vite.config.ts → seoBuild), and the app updates every tag on navigation (src/utils/seo.ts).
+    -->
+    <title>Wedpluz – Discover Events, Tickets &amp; Vendors in Nigeria</title>
+    <meta name="description" content="Discover events near you, buy tickets with QR check-in, and hire trusted photographers, caterers and planners. Plan unforgettable moments with Wedpluz." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="%VITE_WEB_ORIGIN%/" />
+
     <meta property="og:site_name" content="Wedpluz" />
+    <meta property="og:locale" content="en_NG" />
     <meta property="og:type" content="website" />
+    <meta property="og:title" content="Wedpluz – Discover Events, Tickets &amp; Vendors in Nigeria" />
+    <meta property="og:description" content="Discover events near you, buy tickets with QR check-in, and hire trusted photographers, caterers and planners. Plan unforgettable moments with Wedpluz." />
+    <meta property="og:url" content="%VITE_WEB_ORIGIN%/" />
+    <meta property="og:image" content="%VITE_WEB_ORIGIN%/og/wedpluz-default.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Wedpluz – discover events, buy tickets and hire event vendors" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@wedpluz" />
+    <meta name="twitter:title" content="Wedpluz – Discover Events, Tickets &amp; Vendors in Nigeria" />
+    <meta name="twitter:description" content="Discover events near you, buy tickets with secure QR check-in, and hire trusted photographers, caterers, planners and more." />
+    <meta name="twitter:image" content="%VITE_WEB_ORIGIN%/og/wedpluz-default.jpg" />
+    <meta name="twitter:image:alt" content="Wedpluz – discover events, buy tickets and hire event vendors" />
+
+    <meta name="theme-color" content="#9b119b" />
+    <meta name="application-name" content="Wedpluz" />
+    <meta name="apple-mobile-web-app-title" content="Wedpluz" />
+    <meta name="format-detection" content="telephone=no" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Connection warm-up for the API, fonts and media CDN (shorter time to first content). -->
+    <link rel="preconnect" href="%VITE_API_BASE_URL%" crossorigin />
+    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
-    <title>Wedpluz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&family=Raleway:wght@700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      <main style="max-width:720px;margin:48px auto;padding:0 16px;font-family:system-ui,sans-serif;color:#21242a">
+        <h1>Discover events in your area</h1>
+        <p>Find, plan, discover vendors, and experience moments that connect you with friends and community.</p>
+        <nav aria-label="Wedpluz">
+          <a href="/events">Browse events</a> · <a href="/vendors">Hire vendors</a> · <a href="/pricing">Pricing</a> ·
+          <a href="/about">About</a> · <a href="/faqs">FAQs</a> · <a href="/help">Help center</a>
+        </nav>
+        <p>Wedpluz works best with JavaScript enabled.</p>
+      </main>
+    </noscript>
     <script type="module" src="/src/app/main.ts"></script>
   </body>
 </html>

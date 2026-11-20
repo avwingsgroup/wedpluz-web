@@ -5,8 +5,8 @@ import UiButton from '@/components/ui/UiButton.vue'
 import { usePublicConfig } from '@/composables/useReferenceData'
 import { useAuthStore } from '@/stores/auth.store'
 import { useSeo } from '@/composables/useSeo'
+import { faqLd } from '@/utils/structuredData'
 
-useSeo({ title: 'Help center', description: 'Get help with tickets, payments, events and your Wedpluz account.' })
 const auth = useAuthStore()
 const { data: config } = usePublicConfig()
 const faqs = [
@@ -16,6 +16,7 @@ const faqs = [
   { q: 'How do organizers get paid?', a: 'Ticket revenue is settled to your withdrawal bank 3 days after the event ends, minus the platform commission and gateway fees.' },
   { q: 'How do I become a vendor?', a: 'Go to Settings → Business Account → Become a Vendor, add your details and publish your profile.' },
 ]
+useSeo({ jsonLd: faqLd(faqs.map((f) => ({ question: f.q, answer: f.a }))) ?? undefined })
 </script>
 
 <template>

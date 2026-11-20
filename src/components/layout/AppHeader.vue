@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { Bell, LogOut, Menu, MessageCircle, Settings, User, X } from 'lucide-vue-next'
 import BrandLogo from '@/components/brand/BrandLogo.vue'
@@ -19,6 +19,11 @@ const badges = useBadgeStore()
 const route = useRoute()
 const router = useRouter()
 const notifOpen = ref(false)
+// Design: a 104px borderless bar; once the page scrolls it condenses to 76px and gains a hairline so content reads under it.
+const scrolled = ref(false)
+const onScroll = () => (scrolled.value = window.scrollY > 8)
+onMounted(() => { onScroll(); window.addEventListener('scroll', onScroll, { passive: true }) })
+onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
 const navLinks = computed(() => {
   if (!auth.isAuthenticated) {
@@ -70,22 +75,22 @@ function setAudience(a: 'individuals' | 'businesses') {
 </script>
 
 <template>
-  <header :class="cn('z-40 w-full', props.overlay ? 'absolute inset-x-0 top-0' : 'sticky top-0 bg-white/90 backdrop-blur border-b border-ink-100/80')">
-    <div :class="cn('container-app flex h-[72px] items-center gap-4', props.overlay && 'mt-3 rounded-full bg-white/70 backdrop-blur-md shadow-card border border-white/60 h-16')">
-      <RouterLink :to="{ name: 'home' }" class="shrink-0" aria-label="Wedpluz home"><BrandLogo /></RouterLink>
+  <header :class="cn('z-40 w-full transition-[background-color,box-shadow] duration-200', props.overlay ? 'absolute inset-x-0 top-0' : 'sticky top-0', !props.overlay && (scrolled || ui.mobileNavOpen ? 'bg-white/95 shadow-[0_1px_0_rgb(16_24_40/0.06)] backdrop-blur' : 'bg-white'))">
+    <div :class="cn('container-app flex items-center gap-4 transition-[height] duration-200', props.overlay ? 'mt-4 h-16 max-w-[1296px] rounded-full border border-white/50 bg-white/65 shadow-[0_8px_32px_rgb(16_24_40/0.08)] backdrop-blur-md lg:h-[72px] lg:px-6!' : scrolled ? 'h-[76px]' : 'h-[72px] lg:h-[104px]')">
+      <RouterLink :to="{ name: 'home' }" class="shrink-0" aria-label="Wedpluz home"><BrandLogo class="lg:[&_img]:h-[37px]" /></RouterLink>
 
       <!-- audience switch -->
-      <div class="hidden rounded-full bg-ink-100 p-1 md:flex" role="tablist" aria-label="Audience">
-        <button v-for="a in (['individuals', 'businesses'] as const)" :key="a" type="button" role="tab" :aria-selected="auth.audience === a" :class="cn('rounded-full px-4 py-1.5 text-sm transition-colors', auth.audience === a ? 'bg-white text-ink-900 shadow-sm font-medium' : 'text-ink-500 hover:text-ink-900')" @click="setAudience(a)">
+      <div class="ml-2 hidden h-12 items-center rounded-full bg-[#f6f6f6] p-1 md:flex xl:ml-[19px]" role="tablist" aria-label="Audience">
+        <button v-for="a in (['individuals', 'businesses'] as const)" :key="a" type="button" role="tab" :aria-selected="auth.audience === a" :class="cn('h-10 rounded-full px-[18px] text-sm transition-colors xl:w-[132px] xl:px-0', auth.audience === a ? 'bg-white text-[#333740] shadow-[0_1px_2px_rgb(16_24_40/0.06)]' : 'text-[#5b5f6a] hover:text-ink-900')" @click="setAudience(a)">
           {{ a === 'individuals' ? 'For Individuals' : 'For Businesses' }}
         </button>
       </div>
 
-      <nav class="ml-auto hidden items-center gap-6 lg:flex" aria-label="Primary">
-        <RouterLink v-for="l in navLinks" :key="l.label" :to="l.to" :class="cn('text-[15px] transition-colors hover:text-brand-600', isActive(l.to) ? 'font-medium text-brand-600' : 'text-ink-700')">{{ l.label }}</RouterLink>
+      <nav class="hidden items-center gap-6 lg:ml-8 lg:flex xl:ml-[41px]" aria-label="Primary">
+        <RouterLink v-for="l in navLinks" :key="l.label" :to="l.to" :class="cn('text-base transition-colors hover:text-brand-600', isActive(l.to) ? 'font-medium text-brand-600' : 'text-[#5b5f6a]')">{{ l.label }}</RouterLink>
       </nav>
 
-      <div class="ml-auto flex items-center gap-2 lg:ml-6">
+      <div class="ml-auto flex items-center gap-2">
         <template v-if="auth.isAuthenticated">
           <RouterLink :to="{ name: 'messages' }" class="relative flex h-10 w-10 items-center justify-center rounded-full text-ink-700 hover:bg-ink-100" aria-label="Messages">
             <MessageCircle class="h-5 w-5" />
@@ -104,8 +109,8 @@ function setAudience(a: 'individuals' | 'businesses') {
           </UiDropdown>
         </template>
         <template v-else>
-          <UiButton variant="link" :to="{ name: 'auth.login' }" class="hidden sm:inline-flex">Login</UiButton>
-          <UiButton size="sm" :to="{ name: 'auth.signup' }">Sign up</UiButton>
+          <RouterLink :to="{ name: 'auth.login' }" class="hidden h-12 items-center rounded-full px-4 text-base font-medium text-brand-600 hover:text-brand-700 sm:inline-flex xl:mr-[17px]">Login</RouterLink>
+          <UiButton :to="{ name: 'auth.signup' }" class="h-10! px-4! text-sm! font-medium! sm:h-12! sm:w-[105px] sm:px-0! sm:text-base!">Sign up</UiButton>
         </template>
         <button type="button" class="flex h-10 w-10 items-center justify-center rounded-full text-ink-700 hover:bg-ink-100 lg:hidden" :aria-expanded="ui.mobileNavOpen" aria-label="Menu" @click="ui.mobileNavOpen = !ui.mobileNavOpen">
           <X v-if="ui.mobileNavOpen" class="h-5 w-5" /><Menu v-else class="h-5 w-5" />

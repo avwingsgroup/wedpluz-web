@@ -102,3 +102,4 @@ scripts/          OpenAPI generator and validator, Vitest launcher
 - [Frontend architecture](docs/frontend-architecture.md): structure, data flow, decisions, assumptions and design gaps.
 - [Deployment](docs/deployment.md): environments, build commands, hosting both domains, security headers.
 - [Testing](docs/testing.md): what is covered and how to run it.
+- [SEO](docs/seo.md): metadata, structured data, sitemaps, link previews and the backend work for event and vendor visibility.

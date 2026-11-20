@@ -60,6 +60,7 @@ The frontend is a presentation layer. These decisions are made **only** by the b
 6. **Refund policy defaults** (window, service-fee refundability, organiser-cancelled events). [business-rules.md](business-rules.md) proposes defaults.
 7. **Settlement timing and the payout rail** (Monnify or Paystack transfers) and whether payouts are automatic or always admin-approved.
 8. **Ticket transfer** and the **social feed and followers** contracts are proposed but not designed. Are they in scope?
+9. **SEO endpoints (proposed).** Event and vendor sitemaps (`/sitemaps/events.xml`, `/sitemaps/vendors.xml`) and a share endpoint (`/share/events/{slug}`, `/share/vendors/{slug}`) that returns pre-rendered Open Graph HTML for WhatsApp, Facebook and X link previews. Specification: [../seo.md](../seo.md#3-backend-work-needed-for-full-visibility-proposed).
 
 ## Keeping this folder current
 

@@ -9,6 +9,8 @@
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-chip: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-footer: 'Lato', ui-sans-serif, system-ui, sans-serif;
+  --font-footer-heading: 'Raleway', ui-sans-serif, system-ui, sans-serif;
 
   --color-brand-50: #fdf4fd;
   --color-brand-100: #f5e8f5;
@@ -96,7 +98,7 @@
 
 @layer components {
   .container-app {
-    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1224px] px-4 sm:px-6 lg:px-8 xl:px-4;
   }
   .card {
     @apply rounded-2xl border border-ink-200 bg-white;

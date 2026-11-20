@@ -64,6 +64,10 @@ export interface VendorSummary {
   isSaved: boolean
   featuredWorks: MediaItem[]
   availability: 'available' | 'busy' | 'unavailable'
+  /** Short marketing label shown on featured cards, e.g. "Bridal wear rentals". Falls back to the category name. */
+  headline?: string | null
+  /** Portrait/landscape cover used by featured cards. Included by /vendors/featured. */
+  coverUrl?: string | null
 }
 
 export interface Vendor extends VendorSummary {

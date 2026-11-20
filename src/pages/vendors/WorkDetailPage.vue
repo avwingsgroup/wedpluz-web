@@ -13,6 +13,9 @@ import { useAsync } from '@/composables/useAsync'
 import { useShare } from '@/composables/useClipboardShare'
 import { useAuthStore } from '@/stores/auth.store'
 import { formatDate } from '@/utils/format'
+import { useSeo } from '@/composables/useSeo'
+import { breadcrumbLd } from '@/utils/structuredData'
+import { toDescription } from '@/config/seo'
 import { cn } from '@/utils/cn'
 
 const route = useRoute()
@@ -24,6 +27,31 @@ const { data: work, loading, error, refresh } = useAsync(() => vendorsApi.work(i
 const index = ref(0)
 const reportOpen = ref(false)
 const current = computed(() => work.value?.media[index.value])
+
+useSeo(() => {
+  const w = work.value
+  if (!w) return { title: 'Work' }
+  const cover = w.media.find((m) => m.type === 'image') ?? w.media[0]
+  return {
+    title: `${w.title} by ${w.vendor.businessName}`,
+    description: toDescription(w.description || `${w.title} – ${w.vendor.category.name} portfolio by ${w.vendor.businessName} on Wedpluz.`),
+    image: cover?.thumbnailUrl ?? cover?.url ?? null,
+    imageAlt: w.title,
+    canonical: `/works/${w.id}`,
+    type: 'article',
+    jsonLd: [
+      {
+        '@type': 'CreativeWork',
+        name: w.title,
+        description: toDescription(w.description, 500),
+        image: w.media.filter((m) => m.type === 'image').map((m) => m.url).slice(0, 5),
+        dateCreated: w.createdAt.slice(0, 10),
+        creator: { '@type': 'Organization', name: w.vendor.businessName },
+      },
+      breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Vendors', path: '/vendors' }, { name: w.vendor.businessName, path: `/vendors/${w.vendor.slug}` }, { name: w.title, path: `/works/${w.id}` }]),
+    ],
+  }
+})
 
 async function like() {
   if (!work.value) return

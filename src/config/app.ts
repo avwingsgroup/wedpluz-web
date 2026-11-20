@@ -11,6 +11,7 @@ export const STORAGE_KEYS = {
   tokenExpiry: 'wp.token_expiry',
   audience: 'wp.audience',
   recentSearches: 'wp.recent_searches',
+  recentLocations: 'wp.recent_locations',
   dismissedBanners: 'wp.dismissed_banners',
   locale: 'wp.locale',
 } as const

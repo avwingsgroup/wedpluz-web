@@ -16,7 +16,9 @@ import { useAuthStore } from '@/stores/auth.store'
 import { useQueryParams } from '@/composables/useQueryParams'
 import { useAsync } from '@/composables/useAsync'
 import { useSeo } from '@/composables/useSeo'
+import { breadcrumbLd, eventListItems, itemListLd } from '@/utils/structuredData'
 import { DEFAULT_CITY } from '@/config/app'
+import { isCoords } from '@/utils/geo'
 import type { EventCategory, EventFilters } from '@/types'
 
 const router = useRouter()
@@ -29,7 +31,27 @@ const bannerDismissed = ref(false)
 const params = useQueryParams({ search: '', location: '', categorySlug: 'all', dateFrom: '', dateTo: '', timeOfDay: 'any', attendanceMode: 'any', distanceKm: 150, freeOnly: false, sort: 'relevance', page: 1 })
 const filters = computed<EventFilters>(() => ({ ...params.value, categorySlug: params.value.categorySlug === 'all' ? undefined : params.value.categorySlug, timeOfDay: params.value.timeOfDay as EventFilters['timeOfDay'], attendanceMode: params.value.attendanceMode as EventFilters['attendanceMode'], sort: params.value.sort as EventFilters['sort'], perPage: 12 }))
 
-useSeo(() => ({ title: params.value.search ? `“${params.value.search}” events` : `Events near ${params.value.location || DEFAULT_CITY}`, description: 'Browse upcoming events, buy tickets and discover what is happening near you on Wedpluz.' }))
+// Category and location views are indexable landing pages ("Wedding events in Lagos"); searches
+// and other filter combinations are noindex so they never compete with them.
+useSeo(() => {
+  const p = params.value
+  const category = categories.value.find((c) => c.slug === p.categorySlug)?.name ?? null
+  const nearMe = isCoords(p.location)
+  const place = nearMe ? null : p.location || null
+  const pageNo = Number(p.page) > 1 ? ` – Page ${p.page}` : ''
+  const base = category ? `${category} Events ${place ? `in ${place}` : 'Near You'}` : place ? `Events in ${place}` : null
+  const filtered = nearMe || !!p.search || !!p.dateFrom || !!p.dateTo || p.timeOfDay !== 'any' || p.attendanceMode !== 'any' || !!p.freeOnly || p.sort !== 'relevance' || Number(p.distanceKm) !== 150
+  const events = data.value?.data ?? []
+  return {
+    title: base ? base + pageNo : pageNo ? `Events Near You${pageNo}` : undefined,
+    description: base ? `Discover upcoming ${category ? `${category.toLowerCase()} ` : ''}events ${place ? `in ${place}` : 'near you'}. Compare dates and ticket prices, then book securely on Wedpluz.` : undefined,
+    noIndex: filtered,
+    jsonLd: [
+      breadcrumbLd([{ name: 'Home', path: '/' }, { name: 'Events', path: '/events' }, ...(category ? [{ name: category, path: `/events?categorySlug=${p.categorySlug}` }] : [])]),
+      ...(events.length ? [itemListLd(base ?? 'Upcoming events', eventListItems(events))] : []),
+    ],
+  }
+})
 
 const { data, loading, error, refresh } = useAsync((signal) => eventsApi.list(filters.value, signal), { watch: filters, keepPreviousData: true })
 const activeFilterCount = computed(() => [params.value.dateFrom, params.value.dateTo, params.value.timeOfDay !== 'any', params.value.attendanceMode !== 'any', params.value.distanceKm !== 150, params.value.freeOnly].filter(Boolean).length)
@@ -59,7 +81,7 @@ function nextDay(dow: number) {
       <div class="flex items-center gap-3"><UiButton :to="{ name: 'manage.create' }">Create Event</UiButton><button type="button" class="flex h-6 w-6 items-center justify-center rounded-full bg-white/70 text-ink-500" aria-label="Dismiss" @click="bannerDismissed = true"><X class="h-3.5 w-3.5" /></button></div>
     </div>
 
-    <h1 class="text-3xl md:text-4xl">{{ params.search ? `Results for “${params.search}”` : `Events near ${params.location || DEFAULT_CITY}, NG` }}</h1>
+    <h1 class="text-3xl md:text-4xl">{{ params.search ? `Results for “${params.search}”` : isCoords(params.location) ? 'Events near you' : `Events near ${params.location || DEFAULT_CITY}, NG` }}</h1>
 
     <div class="mt-6 flex flex-col gap-4 lg:flex-row lg:items-center">
       <div class="lg:w-[560px]"><UiSearchBar :query="params.search" :location="params.location" @search="(q, l) => set({ search: q, location: l })" /></div>
@@ -88,7 +110,7 @@ function nextDay(dow: number) {
       <ErrorState v-if="error" :error="error" @retry="refresh" />
       <template v-else>
         <p v-if="data && !loading" class="mb-4 text-sm text-ink-500">{{ data.meta.total }} event{{ data.meta.total === 1 ? '' : 's' }}</p>
-        <EventGrid :events="data?.data ?? []" :loading="loading && !data" :variant="auth.isAuthenticated ? 'grid' : 'compact'" :empty-title="params.search ? 'No Search Result' : 'No events match these filters'" :empty-description="params.search ? `We couldn’t find anything for “${params.search}”. Try a different keyword or location.` : 'Try widening your dates or clearing filters.'">
+        <EventGrid :events="data?.data ?? []" :loading="loading && !data" variant="compact" :empty-title="params.search ? 'No Search Result' : 'No events match these filters'" :empty-description="params.search ? `We couldn’t find anything for “${params.search}”. Try a different keyword or location.` : 'Try widening your dates or clearing filters.'">
           <template #empty-action><UiButton variant="outline" @click="router.replace({ name: 'events' })">Clear filters</UiButton></template>
         </EventGrid>
         <UiPagination v-if="data" class="mt-10" :page="data.meta.page" :last-page="data.meta.lastPage" :total="data.meta.total" :per-page="data.meta.perPage" @update:page="set({ page: $event })" />

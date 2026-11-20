@@ -1,4 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { APP_STORE_LINKS } from '@/config/app'
+import { detectMobilePlatform } from '@/utils/appStore'
 
 const PublicLayout = () => import('@/layouts/PublicLayout.vue')
 const AuthLayout = () => import('@/layouts/AuthLayout.vue')
@@ -25,10 +27,12 @@ export const webRoutes: RouteRecordRaw[] = [
     component: PublicLayout,
     children: [
       { path: '', name: 'home', component: () => import('@/pages/HomePage.vue'), meta: { title: 'Discover events' } },
+      // Target of the footer QR code: phones go straight to their store; desktops land on the download card.
+      { path: 'app', name: 'app', redirect: () => { const platform = detectMobilePlatform(); if (platform) window.location.replace(APP_STORE_LINKS[platform]); return { name: 'home', hash: '#get-the-app' } } },
       { path: 'events', name: 'events', component: () => import('@/pages/events/EventsPage.vue'), meta: { title: 'Events' } },
       { path: 'events/:slug', name: 'event', component: () => import('@/pages/events/EventDetailPage.vue'), meta: { title: 'Event' } },
       { path: 'vendors', name: 'vendors', component: () => import('@/pages/vendors/VendorsPage.vue'), meta: { title: 'Hire Vendors' } },
-      { path: 'vendors/:slug', name: 'vendor', component: () => import('@/pages/vendors/VendorProfilePage.vue'), meta: { title: 'Vendor' } },
+      { path: 'vendors/:slug', name: 'vendor', component: () => import('@/pages/vendors/VendorProfilePage.vue'), meta: { title: 'Vendor', overlayHeader: true } },
       { path: 'works/:id', name: 'work', component: () => import('@/pages/vendors/WorkDetailPage.vue'), meta: { title: 'Work' } },
       { path: 'pricing', name: 'pricing', component: () => import('@/pages/PricingPage.vue'), meta: { title: 'Pricing' } },
       { path: 'about', name: 'about', component: () => import('@/pages/static/CmsPage.vue'), props: { slug: 'about' }, meta: { title: 'About us', textured: true } },

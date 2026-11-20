@@ -2,6 +2,7 @@ import { created, data, fail, noContent, paginate, route } from '../adapter'
 import * as db from '../db'
 import { body, requireFields, requireUser, textMatch, dateInRange, userFromToken } from './shared'
 import type { Event, SearchSuggestion } from '@/types'
+import { distanceKm, parseCoords } from '@/utils/geo'
 
 const recentSearches = ['Wedding', 'Piggyvest', 'Movie in the park']
 const trendingSearches = ['Detty December', 'Bole Festival', 'Tech meetup', 'Owambe', 'Comedy night']
@@ -15,7 +16,11 @@ function applyFilters(list: Event[], q: URLSearchParams): Event[] {
   const search = q.get('search')
   if (search) out = out.filter((e) => textMatch([e.title, e.description, e.category.name, e.organizer.displayName, e.city], search))
   const location = q.get('location')
-  if (location) out = out.filter((e) => textMatch([e.city, e.schedules[0]?.venue?.state ?? null], location))
+  const point = parseCoords(location)
+  if (point) {
+    const km = Math.max(1, Math.min(500, Number(q.get('distanceKm') ?? 25)))
+    out = out.filter((e) => e.schedules.some((s) => s.venue?.lat != null && s.venue.lng != null && distanceKm(point, { lat: s.venue.lat, lng: s.venue.lng }) <= km))
+  } else if (location) out = out.filter((e) => textMatch([e.city, e.schedules[0]?.venue?.state ?? null], location))
   const slug = q.get('categorySlug')
   if (slug && slug !== 'all') out = out.filter((e) => e.category.slug === slug)
   const mode = q.get('attendanceMode')

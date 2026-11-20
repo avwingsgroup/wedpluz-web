@@ -9,7 +9,7 @@ export interface TabItem {
   disabled?: boolean
 }
 
-withDefaults(defineProps<{ modelValue: string; tabs: TabItem[]; variant?: 'underline' | 'pill' | 'segment' | 'stretch'; size?: 'sm' | 'md' }>(), { variant: 'underline', size: 'md' })
+withDefaults(defineProps<{ modelValue: string; tabs: TabItem[]; variant?: 'underline' | 'pill' | 'segment' | 'stretch' | 'soft'; size?: 'sm' | 'md' }>(), { variant: 'underline', size: 'md' })
 const emit = defineEmits<{ 'update:modelValue': [key: string] }>()
 </script>
 
@@ -22,6 +22,7 @@ const emit = defineEmits<{ 'update:modelValue': [key: string] }>()
       variant === 'stretch' && 'border-b border-ink-200 w-full',
       variant === 'segment' && 'rounded-full bg-ink-100 p-1',
       variant === 'pill' && 'gap-2',
+      variant === 'soft' && 'gap-2',
     )"
   >
     <button
@@ -37,6 +38,7 @@ const emit = defineEmits<{ 'update:modelValue': [key: string] }>()
         variant === 'underline' && cn('px-4 py-3 -mb-px border-b-2', modelValue === t.key ? 'border-brand-600 text-ink-900' : 'border-transparent text-ink-500 hover:text-ink-900'),
         variant === 'stretch' && cn('flex-1 px-4 py-3 -mb-px border-b-2', modelValue === t.key ? 'border-brand-600 text-ink-900' : 'border-transparent text-ink-500 hover:text-ink-900'),
         variant === 'pill' && cn('pill-tab', modelValue === t.key && 'pill-tab-active'),
+        variant === 'soft' && cn('rounded-full px-5 py-2 transition-colors', modelValue === t.key ? 'bg-[#ececec] font-medium text-[#333740]' : 'text-[#5b5f6a] hover:text-ink-900'),
         variant === 'segment' && cn('rounded-full px-4 py-1.5', modelValue === t.key ? 'bg-brand-600 text-white shadow-sm' : 'text-ink-700 hover:text-ink-900'),
       )"
       @click="emit('update:modelValue', t.key)"

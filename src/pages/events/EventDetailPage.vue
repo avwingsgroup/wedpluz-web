@@ -16,6 +16,8 @@ import { organizerApi } from '@/services/api/organizer.api'
 import { useAsync } from '@/composables/useAsync'
 import { useForm } from '@/composables/useForm'
 import { useSeo } from '@/composables/useSeo'
+import { breadcrumbLd, eventLd } from '@/utils/structuredData'
+import { toDescription } from '@/config/seo'
 import { useShare } from '@/composables/useClipboardShare'
 import { useAuthStore } from '@/stores/auth.store'
 import { useCheckoutStore } from '@/stores/checkout.store'
@@ -51,25 +53,30 @@ watch(event, async (e) => {
   related.value = await eventsApi.related(e.id).catch(() => [])
 })
 
-useSeo(() => (event.value ? {
-  title: event.value.title,
-  description: event.value.description.slice(0, 155),
-  image: event.value.coverUrl,
-  url: `${env.webOrigin}/events/${event.value.slug}`,
-  type: 'event',
-  jsonLd: {
-    '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: event.value.title,
-    startDate: event.value.startsAt,
-    endDate: event.value.endsAt ?? undefined,
-    eventAttendanceMode: { physical: 'https://schema.org/OfflineEventAttendanceMode', online: 'https://schema.org/OnlineEventAttendanceMode', hybrid: 'https://schema.org/MixedEventAttendanceMode' }[event.value.attendanceMode],
-    image: [event.value.coverUrl],
-    organizer: { '@type': 'Organization', name: event.value.organizer.displayName },
-    location: event.value.schedules[0]?.venue ? { '@type': 'Place', name: event.value.schedules[0].venue.name, address: event.value.schedules[0].venue.address } : { '@type': 'VirtualLocation', url: `${env.webOrigin}/events/${event.value.slug}` },
-    offers: event.value.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: t.price / 100, priceCurrency: t.currency, availability: t.quantity > t.sold ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut' })),
-  },
-} : { title: 'Event' }))
+useSeo(() => {
+  const e = event.value
+  if (!e) return { title: 'Event' }
+  const city = e.schedules.find((s) => s.venue)?.venue?.city ?? e.city
+  const price = e.isFree ? 'Free entry' : `Tickets from ${formatMoney(e.minPrice, e.currency)}`
+  return {
+    title: city ? `${e.title} – ${city}` : e.title,
+    description: toDescription(`${formatDate(e.startsAt)}${city ? ` · ${city}` : ''} · ${price}. ${toDescription(e.description, 400)}`),
+    image: e.coverUrl,
+    imageAlt: e.title,
+    canonical: `/events/${e.slug}`,
+    // Private, draft or moderated events must never appear in search.
+    noIndex: e.visibility === 'private' || !['live', 'completed', 'cancelled'].includes(e.status),
+    jsonLd: [
+      eventLd(e),
+      breadcrumbLd([
+        { name: 'Home', path: '/' },
+        { name: 'Events', path: '/events' },
+        { name: e.category.name, path: `/events?categorySlug=${e.category.slug}` },
+        { name: e.title, path: `/events/${e.slug}` },
+      ]),
+    ],
+  }
+})
 
 const descriptionHtml = computed(() => {
   const d = event.value?.description ?? ''
@@ -172,7 +179,7 @@ const directionsUrl = computed(() => {
         <UiBadge v-if="event.status !== 'live'" :status="event.status" />
         <UiBadge v-if="event.isPromoted" tone="brand">✦ Promoted</UiBadge>
       </div>
-      <h1 class="mt-3 text-3xl leading-tight md:text-5xl">{{ event.title }}</h1>
+      <h1 class="mt-3 text-3xl leading-tight md:text-5xl lg:text-[64px] lg:leading-[1.15]">{{ event.title }}</h1>
       <RouterLink :to="{ name: 'user', params: { id: event.organizer.id } }" class="mt-3 inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-900">
         <UiAvatar :src="event.organizer.avatarUrl" :name="event.organizer.displayName" size="xs" /> Hosted by <span class="font-medium text-ink-900">{{ event.organizer.displayName }}</span>
       </RouterLink>
@@ -187,7 +194,8 @@ const directionsUrl = computed(() => {
         <div v-if="event.isAdultOnly" class="flex items-start gap-3 rounded-2xl bg-ink-50 p-4"><span class="mt-0.5 flex h-5 w-5 items-center justify-center rounded border border-ink-500 text-[10px] font-bold text-ink-500">18</span><div><p class="font-medium">Adult event</p><p class="text-sm text-ink-500">This event is rated 18+</p></div></div>
       </div>
 
-      <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_380px]">
+      <!-- Design: one column (cards 600px wide) with the purchase bar pinned along the bottom — no sidebar. -->
+      <div class="mt-8">
         <div class="min-w-0 space-y-10">
           <section>
             <h2 class="text-xl">About the Event</h2>
@@ -196,14 +204,14 @@ const directionsUrl = computed(() => {
             <button v-if="event.description.length > 280" type="button" class="text-sm font-medium text-brand-600 hover:underline" @click="expanded = !expanded">{{ expanded ? 'Show less' : 'Read more' }}</button>
           </section>
 
-          <button v-if="event.isPromoted && !isOrganizer" type="button" class="card flex w-full max-w-md items-center justify-between p-4 text-left hover:shadow-card" :disabled="joining" @click="promote">
+          <button v-if="event.isPromoted && !isOrganizer" type="button" class="card flex w-full max-w-[600px] items-center justify-between p-4 text-left hover:shadow-card" :disabled="joining" @click="promote">
             <div><p class="text-sm font-medium">Promote this event</p><p class="mt-2 text-xs text-ink-500">Earn Reward</p><p class="font-semibold text-brand-600">{{ event.promotion.commissionPercent }}%</p></div>
             <div class="flex flex-col items-end justify-between self-stretch"><ChevronRight class="h-4 w-4" /><span class="flex items-center gap-1 text-xs text-ink-500"><Users class="h-3.5 w-3.5" />{{ event.promotion.promotersCount }} promoting</span></div>
           </button>
 
           <section>
             <h2 class="text-xl">Date &amp; Location</h2>
-            <div class="mt-3 max-w-md space-y-3">
+            <div class="mt-3 max-w-[600px] space-y-3">
               <div v-for="s in event.schedules" :key="s.id" class="card divide-y divide-ink-100">
                 <div class="p-4">
                   <p v-if="s.label" class="text-xs font-semibold uppercase tracking-wide text-brand-600">{{ s.label }}</p>
@@ -222,7 +230,7 @@ const directionsUrl = computed(() => {
             <p class="mt-2 font-medium">{{ firstSchedule.venue.name }}</p>
             <p class="text-sm text-ink-500">{{ firstSchedule.venue.address }}</p>
             <UiButton v-if="directionsUrl" size="xs" class="mt-2" :href="directionsUrl"><Navigation class="h-3.5 w-3.5" />Get directions</UiButton>
-            <iframe v-if="mapUrl" :src="mapUrl" class="mt-3 h-56 w-full max-w-md rounded-2xl border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" :title="`Map of ${firstSchedule.venue.name}`" />
+            <iframe v-if="mapUrl" :src="mapUrl" class="mt-3 h-56 w-full max-w-[600px] rounded-2xl border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" :title="`Map of ${firstSchedule.venue.name}`" />
           </section>
 
           <section v-if="event.subEvents.length">
@@ -237,16 +245,16 @@ const directionsUrl = computed(() => {
 
           <section>
             <h2 class="text-xl">Meet the Organiser</h2>
-            <RouterLink :to="{ name: 'user', params: { id: event.organizer.id } }" class="card mt-3 flex max-w-md items-center gap-3 border-brand-200 bg-ink-50 p-4 hover:shadow-card">
+            <RouterLink :to="{ name: 'user', params: { id: event.organizer.id } }" class="card mt-3 flex max-w-[600px] items-center gap-3 border-brand-200 bg-ink-50 p-4 hover:shadow-card">
               <UiAvatar :src="event.organizer.avatarUrl" :name="event.organizer.displayName" />
               <div><p class="font-medium">{{ event.organizer.displayName }}</p><p class="text-sm text-ink-500">{{ event.organizer.bio }}</p></div>
             </RouterLink>
-            <RouterLink :to="{ name: 'user', params: { id: event.organizer.id } }" class="card mt-3 flex max-w-md items-center justify-between p-4 text-sm hover:shadow-card"><span class="text-brand-600">See more events organised by <span class="font-medium text-ink-900">{{ event.organizer.displayName }}</span></span><ArrowRight class="h-4 w-4" /></RouterLink>
+            <RouterLink :to="{ name: 'user', params: { id: event.organizer.id } }" class="card mt-3 flex max-w-[600px] items-center justify-between p-4 text-sm hover:shadow-card"><span class="text-brand-600">See more events organised by <span class="font-medium text-ink-900">{{ event.organizer.displayName }}</span></span><ArrowRight class="h-4 w-4" /></RouterLink>
           </section>
 
           <section v-if="event.ticketTypes.length">
             <h2 class="text-xl">Tickets</h2>
-            <div class="card mt-3 max-w-md divide-y divide-ink-100">
+            <div class="card mt-3 max-w-[600px] divide-y divide-ink-100">
               <div v-for="t in event.ticketTypes" :key="t.id" class="flex items-start justify-between gap-4 p-4">
                 <div><p class="font-medium">{{ t.name }}</p><p class="text-xs text-ink-500">Sales end: {{ t.salesEndAt ? formatDate(t.salesEndAt) : 'At event start' }} - {{ Math.max(0, t.quantity - t.sold).toLocaleString() }} slots</p></div>
                 <span class="font-medium">{{ t.price === 0 ? 'Free' : formatMoney(t.price, t.currency) }}</span>
@@ -255,29 +263,16 @@ const directionsUrl = computed(() => {
           </section>
         </div>
 
-        <!-- sticky purchase box (desktop) -->
-        <aside class="hidden lg:block">
-          <div class="sticky top-24 card space-y-4 p-6 shadow-card">
-            <p class="text-sm text-ink-500">{{ formatDateWithDay(event.startsAt) }} · {{ formatTimeRange(event.startsAt, event.endsAt) }}</p>
-            <p class="text-2xl font-bold">{{ formatPriceLabel(event.minPrice, event.currency, event.ticketTypes.length > 1 && !event.isFree) }}</p>
-            <UiButton v-if="isOrganizer" block size="lg" :to="{ name: 'manage.overview', params: { id: event.id } }">Manage event</UiButton>
-            <UiButton v-else block size="lg" :disabled="ctaDisabled" @click="attend">{{ ctaLabel }}</UiButton>
-            <div class="flex gap-2">
-              <UiButton variant="outline" block :aria-pressed="saved" @click="toggleSave"><Heart :class="cn('h-4 w-4', saved && 'fill-pink-500 text-pink-500')" />{{ saved ? 'Saved' : 'Save' }}</UiButton>
-              <UiButton variant="outline" block @click="share(`/events/${event.slug}`, event.title)"><Share2 class="h-4 w-4" />Share</UiButton>
-            </div>
-          </div>
-        </aside>
       </div>
 
-      <!-- sticky bar (mobile & tablet, matches design pill) -->
-      <div class="sticky bottom-4 z-20 mt-10 lg:hidden">
-        <div class="flex items-center gap-3 rounded-full border border-brand-300 bg-white p-2 pl-5 shadow-float">
-          <div class="min-w-0 flex-1"><p class="truncate text-xs text-ink-500">{{ formatDateWithDay(event.startsAt) }}</p><p class="font-semibold">{{ formatPriceLabel(event.minPrice, event.currency) }}</p></div>
+      <!-- Purchase bar (all sizes). Design at 1440px: full content width, ~110px tall, brand outline, date/time over price. -->
+      <div class="sticky bottom-4 z-20 mt-10">
+        <div class="flex items-center gap-3 rounded-full border border-brand-300 bg-white p-2 pl-5 shadow-float lg:gap-4 lg:rounded-[40px] lg:px-8 lg:py-[26px] lg:shadow-[0_8px_30px_rgb(16_24_40/0.06)]">
+          <div class="min-w-0 flex-1"><p class="truncate text-xs text-ink-500 lg:text-sm lg:text-[#333740]"><span class="lg:hidden">{{ formatDateWithDay(event.startsAt) }}</span><span class="hidden lg:inline">{{ formatDateWithDay(event.startsAt) }} • {{ formatTimeRange(event.startsAt, event.endsAt) }}</span></p><p class="font-semibold lg:mt-2">{{ formatPriceLabel(event.minPrice, event.currency, event.ticketTypes.length > 1 && !event.isFree) }}</p></div>
           <button type="button" class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-300 text-brand-600" :aria-label="saved ? 'Unsave' : 'Save'" @click="toggleSave"><Heart :class="cn('h-4 w-4', saved && 'fill-current')" /></button>
           <button type="button" class="flex h-10 w-10 items-center justify-center rounded-full border border-brand-300 text-brand-600" aria-label="Share" @click="share(`/events/${event.slug}`, event.title)"><Share2 class="h-4 w-4" /></button>
           <UiButton v-if="isOrganizer" :to="{ name: 'manage.overview', params: { id: event.id } }">Manage</UiButton>
-          <UiButton v-else :disabled="ctaDisabled" @click="attend">{{ ctaLabel }}</UiButton>
+          <UiButton v-else :disabled="ctaDisabled" class="lg:ml-2" @click="attend">{{ ctaLabel }}</UiButton>
         </div>
       </div>
 

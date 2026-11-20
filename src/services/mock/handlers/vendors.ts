@@ -28,7 +28,9 @@ export function registerVendorHandlers() {
     return paginate(list.map(toSummary), q, 10)
   })
 
-  route('GET', '/vendors/featured', () => data(db.vendors.filter((v) => v.status === 'active').slice(0, 6).map(toSummary)))
+  // Mirrors the live API: featured vendors carry a headline and cover for the home page cards.
+  const HEADLINES: Record<string, string> = { ven_beayouwedz: 'Bridal wear rentals', ven_bestchefz: 'Caterer', ven_shotitmoi: 'Photographer', ven_yournextevent: 'Event Planner', ven_chinedu: 'Rental provider' }
+  route('GET', '/vendors/featured', () => data(db.vendors.filter((v) => v.status === 'active').slice(0, 6).map((v) => ({ ...toSummary(v), headline: HEADLINES[v.id] ?? v.category.name, coverUrl: v.coverUrl }))))
 
   route('GET', '/vendors/:slug', (req) => {
     const user = userFromToken(req.authToken)
