@@ -25,10 +25,23 @@ export interface RegisterPayload {
   acceptedTerms: true
 }
 
-export interface SocialAuthPayload {
-  provider: 'google'
-  idToken: string
-  deviceName?: string
+/**
+ * Google sign-in. Either an ID token from Google Identity Services (One Tap), or the authorization `code` + `state`
+ * from the redirect flow started with GET /auth/google/redirect (the backend keeps the state and PKCE verifier).
+ */
+export type SocialAuthPayload =
+  | { provider: 'google'; idToken: string; deviceName?: string }
+  | { provider: 'google'; code: string; state: string; deviceName?: string }
+
+/** GET /auth/google/redirect: where to send the browser to start Google sign-in. */
+export interface GoogleAuthRedirect {
+  /** Google's consent URL (carries client id, state, PKCE challenge and the callback). */
+  url: string
+  state: string
+  /** The callback Google returns to; must be an allowed frontend URL. */
+  redirectUri: string
+  /** Seconds before the state expires. */
+  expiresIn: number
 }
 
 export interface AuthResponse {

@@ -5,6 +5,37 @@ import { body, requireFields, requireUser, tokenFor, userFromToken } from './sha
 import type { AuthResponse, AuthTokens, User } from '@/types'
 
 const VALID_OTP = '1234'
+/**
+ * Google redirect-flow states issued by the mock /auth/google/redirect → expiry time. Kept in sessionStorage because
+ * the redirect is a full page load (the real backend keeps them server-side).
+ */
+const GOOGLE_STATES_KEY = 'wp.mock_google_states'
+const googleStates = {
+  read: (): Record<string, number> => {
+    try {
+      return JSON.parse(sessionStorage.getItem(GOOGLE_STATES_KEY) ?? '{}') as Record<string, number>
+    } catch {
+      return {}
+    }
+  },
+  write: (all: Record<string, number>) => {
+    try {
+      sessionStorage.setItem(GOOGLE_STATES_KEY, JSON.stringify(all))
+    } catch {
+      /* storage blocked */
+    }
+  },
+  set(state: string, expires: number) {
+    this.write({ ...this.read(), [state]: expires })
+  },
+  take(state: string): number | undefined {
+    const all = this.read()
+    const expires = all[state]
+    delete all[state]
+    this.write(all)
+    return expires
+  },
+}
 
 function tokens(user: User): AuthTokens {
   return { accessToken: tokenFor(user.id), refreshToken: `mock-refresh-${user.id}`, tokenType: 'Bearer', expiresIn: 3600, expiresAt: addHours(new Date(), 1).toISOString() }
@@ -58,7 +89,8 @@ export function registerAuthHandlers() {
       plan: 'free',
       locale: 'en',
       city: null,
-      countryCode: 'NG',
+      // Unknown until profile setup: the phone selector then defaults to the visitor's current country.
+      countryCode: null,
       businessProfileId: null,
       walletEnabled: false,
       createdAt: new Date().toISOString(),
@@ -69,9 +101,27 @@ export function registerAuthHandlers() {
     return created(res)
   })
 
+  // Google redirect flow, simulated: "Google" approves at once and sends the browser straight to the callback.
+  // Mirrors the backend: the callback must be allowed (here: this app's own /auth/google/callback), the state is
+  // kept server-side, expires after 10 minutes and works once.
+  route('GET', '/auth/google/redirect', (req) => {
+    const redirectUri = req.query.get('redirectUri') ?? ''
+    const allowed = `${window.location.origin}/auth/google/callback`
+    if (redirectUri !== allowed) fail(422, 'VALIDATION_ERROR', 'This callback URL is not allowed.', { redirectUri: ['The redirect URI is not an allowed Google callback.'] })
+    const state = Math.random().toString(36).slice(2) + Date.now().toString(36)
+    googleStates.set(state, Date.now() + 10 * 60_000)
+    const url = `${redirectUri}?${new URLSearchParams({ code: `mock-google-code-${state}`, state, scope: 'openid email profile' })}`
+    return data({ url, state, redirectUri, expiresIn: 600 })
+  })
+
   route('POST', '/auth/social', (req) => {
-    const b = body<{ provider: string; idToken: string }>(req)
-    requireFields(b, ['provider', 'idToken'])
+    const b = body<{ provider: string; idToken?: string; code?: string; state?: string }>(req)
+    requireFields(b, ['provider'])
+    if (!b.idToken && !b.code) fail(422, 'VALIDATION_ERROR', 'Please check the highlighted fields.', { idToken: ['The id token field is required when code is not present.'], code: ['The code field is required when id token is not present.'] })
+    if (b.code) {
+      const expires = b.state ? googleStates.take(b.state) : undefined
+      if (!expires || expires < Date.now() || b.code !== `mock-google-code-${b.state}`) fail(401, 'UNAUTHENTICATED', 'Your Google sign-in expired. Please try again.')
+    }
     const user = db.me()
     return data<AuthResponse>({ user, tokens: tokens(user), isNewUser: false, nextStep: nextStep(user) })
   })

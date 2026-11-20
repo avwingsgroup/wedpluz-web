@@ -68,7 +68,7 @@ Nginx (one server block per domain):
 server {
   listen 443 ssl http2;
   server_name wedpluz.com;
-  root /var/www/wedpluz-web/dist;
+  root /var/www/apps/wedpluz/web/current/web;
 
   location /assets/ {
     add_header Cache-Control "public, max-age=31536000, immutable";
@@ -86,7 +86,7 @@ server {
 server {
   listen 443 ssl http2;
   server_name admin.wedpluz.com;
-  root /var/www/wedpluz-web/dist-admin;
+  root /var/www/apps/wedpluz/web/current/admin;
   location /assets/ { add_header Cache-Control "public, max-age=31536000, immutable"; try_files $uri =404; }
   location = /index.html { add_header Cache-Control "no-cache"; }
   location = /robots.txt { return 200 "User-agent: *\nDisallow: /\n"; }
@@ -160,41 +160,34 @@ The API must allow CORS from both web origins (and staging, plus `localhost:5173
 
 Payment providers redirect buyers back to `https://wedpluz.com/checkout/return`. Register that URL, plus the staging equivalent, as the allowed callback or return URL in each provider dashboard.
 
-Google Sign-In: add `https://wedpluz.com` and `https://staging.wedpluz.com` as authorised JavaScript origins.
+### 4.5 Google sign-in
 
-## 5. CI/CD outline
+The "Continue with Google" button uses the backend's redirect flow:
 
-```yaml
-# .github/workflows/web.yml (outline)
-on: { push: { branches: [main] }, pull_request: {} }
-jobs:
-  verify:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run openapi:validate
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
-  deploy:
-    needs: verify
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    env:
-      VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN_WEB }}   # public DSN, stored as a secret only for convenience
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
-      - run: npm ci
-      - run: npm run build && npm run build:admin
-      # upload dist/ to wedpluz.com and dist-admin/ to admin.wedpluz.com with your host's CLI
-```
+1. The browser calls `GET /auth/google/redirect?redirectUri=<web origin>/auth/google/callback`.
+2. It goes to Google, then returns to `/auth/google/callback?code&state`.
+3. The callback page sends `{ provider: google, code, state }` to `POST /auth/social`.
+
+The backend holds the state and the PKCE verifier. Google One Tap ("Continue as …") is offered as well when `VITE_GOOGLE_CLIENT_ID` is set. It sends an ID token to the same endpoint.
+
+| Where | Setting |
+|---|---|
+| Frontend env (`.env.production`, `.env.staging`, `.env.development.local`) | `VITE_GOOGLE_CLIENT_ID` = the OAuth **web client ID**. This value is public. |
+| Backend env only | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` and `GOOGLE_REDIRECT_URI`. The **client secret never goes in the frontend.** The build fails if a `GOCSPX-` secret appears in any `VITE_*` variable. |
+| Google Cloud Console → Credentials → the web client → **Authorised JavaScript origins** (One Tap) | `https://wedpluz.com`, `https://staging.wedpluz.com`, and `http://localhost:5174` for local live-API development |
+| Google Cloud Console → the same client → **Authorised redirect URIs** | `https://wedpluz.com/auth/google/callback`, `https://staging.wedpluz.com/auth/google/callback`, `http://localhost:5174/auth/google/callback` |
+| Backend allowlist for `redirectUri` | The same three callback URLs. Today only the production URL is allowed: staging and localhost get `422 "This callback URL is not allowed"`. The button shows that as "Google sign-in isn't available here yet". |
+
+## 5. CI/CD
+
+Production deploys automatically to the VPS that hosts the API, with the same process the API uses. A push to the `production` branch runs the checks, builds both apps, uploads them over SSH and switches releases atomically. A failed release rolls back automatically. The full guide is [deployment-vps.md](deployment-vps.md).
+
+| Workflow | Trigger | Does |
+|---|---|---|
+| `.github/workflows/ci.yml` | push to `main`, `feature/**`, `fix/**`; pull requests; called by Deploy | lint, typecheck, unit tests, OpenAPI check, both production builds, Playwright (mock API) |
+| `.github/workflows/deploy.yml` | push to `production`; manual run with any ref | CI, then build `dist/web` + `dist/admin` with `version.json`, then deploy to `/var/www/apps/wedpluz/web`, then check both hosts serve the commit |
+
+The nginx configuration in §4 is what `deploy/scripts/provision-web.sh` writes, with `root` set to `/var/www/apps/wedpluz/web/current/{web,admin}`. It also serves the previous release's assets and routes link-preview bots to the API's share pages.
 
 Optionally upload source maps to Sentry in CI (`sentry-cli sourcemaps upload`) with an auth token stored as a CI secret. Production builds do not emit source maps; enable `build.sourcemap: 'hidden'` if you upload them.
 

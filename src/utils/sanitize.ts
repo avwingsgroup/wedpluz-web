@@ -1,9 +1,9 @@
 /**
  * Safe rendering helpers for user generated content.
  * We never use v-html with raw user input. Rich text from the backend is restricted
- * to a small whitelist of tags and all attributes except href (http/https/mailto) are stripped.
+ * to a small whitelist of tags and all attributes except href (http/https/mailto, or a same-site "/path") are stripped.
  */
-const ALLOWED_TAGS = new Set(['P', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'UL', 'OL', 'LI', 'A', 'H3', 'H4', 'BLOCKQUOTE'])
+const ALLOWED_TAGS = new Set(['P', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'UL', 'OL', 'LI', 'A', 'H2', 'H3', 'H4', 'BLOCKQUOTE'])
 
 export function sanitizeRichText(html: string): string {
   if (typeof DOMParser === 'undefined') return escapeHtml(html)
@@ -24,6 +24,9 @@ export function sanitizeRichText(html: string): string {
           child.setAttribute('target', '_blank')
           continue
         }
+        // Same-site paths ("/terms", "/help#contact") stay in the app. "//host" and "/\host" are rejected because
+        // browsers treat both as links to another site.
+        if (child.tagName === 'A' && attr.name === 'href' && /^\/(?![/\\])/.test(attr.value)) continue
         child.removeAttribute(attr.name)
       }
       walk(child)

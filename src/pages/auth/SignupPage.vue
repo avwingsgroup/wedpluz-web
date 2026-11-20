@@ -5,6 +5,8 @@ import { Mail } from 'lucide-vue-next'
 import BrandLogo from '@/components/brand/BrandLogo.vue'
 import AuthCard from '@/modules/auth/AuthCard.vue'
 import GoogleButton from '@/modules/auth/GoogleButton.vue'
+import { destinationAfterAuth } from '@/modules/auth/afterAuth'
+import { safeReturnPath } from '@/modules/auth/googleSignIn'
 import UiInput from '@/components/ui/UiInput.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import { useForm } from '@/composables/useForm'
@@ -28,7 +30,7 @@ const form = useForm<RegisterForm>({
 async function onGoogle(idToken: string) {
   try {
     const res = await auth.loginWithGoogle(idToken)
-    router.push(res.nextStep ? { name: { verify_email: 'auth.verify-email', profile_setup: 'auth.profile-setup', interests: 'auth.interests' }[res.nextStep] } : { name: 'home' })
+    router.push(destinationAfterAuth(res, safeReturnPath(route.query.redirect)))
   } catch (e) {
     ui.error((e as Error).message)
   }
@@ -37,11 +39,11 @@ async function onGoogle(idToken: string) {
 
 <template>
   <div v-if="mode === 'choose'" class="flex flex-col items-center text-center">
-    <BrandLogo size="xl" />
+    <RouterLink :to="{ name: 'home' }" class="rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600" aria-label="Wedpluz home"><BrandLogo size="xl" /></RouterLink>
     <h1 class="mt-12 text-2xl">Create your account</h1>
     <div class="mt-5 w-full space-y-3">
       <UiButton variant="outline" size="lg" block @click="mode = 'email'"><Mail class="h-5 w-5" /> Sign up with Email</UiButton>
-      <GoogleButton label="Sign up with Google" @token="onGoogle" />
+      <GoogleButton label="Sign up with Google" context="signup" @token="onGoogle" />
     </div>
     <p class="mt-10 text-sm text-ink-500">Already have an account? <RouterLink :to="{ name: 'auth.login' }" class="font-semibold text-brand-600 hover:underline">Log in</RouterLink></p>
     <p class="mt-10 max-w-xs text-xs text-ink-500">By continuing, you agree to Wedpluz’s <RouterLink :to="{ name: 'terms' }" class="text-brand-600 underline">Terms of use</RouterLink> and <RouterLink :to="{ name: 'privacy' }" class="text-brand-600 underline">Privacy policy</RouterLink></p>

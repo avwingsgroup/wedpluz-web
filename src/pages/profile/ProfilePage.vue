@@ -5,6 +5,7 @@ import UiAvatar from '@/components/ui/UiAvatar.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiModal from '@/components/ui/UiModal.vue'
 import UiInput from '@/components/ui/UiInput.vue'
+import UiPhoneInput from '@/components/ui/UiPhoneInput.vue'
 import UiImageUploader from '@/components/ui/UiImageUploader.vue'
 import IdentityVerificationModal from '@/modules/account/IdentityVerificationModal.vue'
 import { useAuthStore } from '@/stores/auth.store'
@@ -75,7 +76,7 @@ function openEdit() {
       <form class="space-y-4" novalidate @submit.prevent="form.submit()">
         <div class="flex items-center gap-4"><UiImageUploader v-model="avatarUrl" purpose="avatar" shape="circle" aspect="square" /><div><p class="font-medium">Profile Picture</p><p class="text-xs text-ink-500">Max size 5MB</p></div></div>
         <div class="grid grid-cols-2 gap-3"><UiInput v-model="form.values.firstName" label="First name" :error="form.fieldError('firstName')" /><UiInput v-model="form.values.lastName" label="Last name" :error="form.fieldError('lastName')" /></div>
-        <UiInput v-model="form.values.phone" type="tel" label="Phone" :error="form.fieldError('phone')" />
+        <UiPhoneInput v-model="form.values.phone" label="Phone" :default-country="auth.user?.countryCode" :error="form.fieldError('phone')" />
         <UiInput v-model="form.values.city" label="City" />
         <UiInput v-model="form.values.dateOfBirth" type="date" label="Date of birth" :error="form.fieldError('dateOfBirth')" />
         <UiButton type="submit" block size="lg" :loading="form.submitting.value">Save changes</UiButton>

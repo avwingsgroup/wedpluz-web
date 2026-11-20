@@ -46,7 +46,7 @@ const columns = [
 <!-- Measured from the design at 1440px: 1192px content; link columns start 609px and 962px from the left edge;
      40px link rhythm; 394×156 download card; bottom bar flush with the page bottom. -->
 <template>
-  <footer class="plum-footer mt-16 text-white">
+  <footer class="plum-footer mt-16 text-white print:hidden">
     <div class="container-app grid gap-12 pt-14 md:grid-cols-2 lg:grid-cols-[minmax(0,609fr)_minmax(0,353fr)_minmax(0,230fr)] lg:gap-0 lg:pt-[58px]">
       <div class="md:col-span-2 lg:col-span-1">
         <RouterLink :to="{ name: 'home' }" class="inline-block rounded-md lg:mt-[25px]" aria-label="Wedpluz home">

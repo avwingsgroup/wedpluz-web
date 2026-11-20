@@ -6,7 +6,7 @@ import { useUpload } from '@/composables/useUpload'
 import { IMAGE_MIME_TYPES, VIDEO_MIME_TYPES } from '@/utils/files'
 
 const props = withDefaults(
-  defineProps<{ modelValue?: string | null; purpose: string; label?: string; hint?: string; error?: string; aspect?: 'banner' | 'square' | 'video'; multiple?: boolean; accept?: 'image' | 'media'; maxMb?: number; shape?: 'rect' | 'circle' }>(),
+  defineProps<{ modelValue?: string | null; purpose: string; label?: string; hint?: string; error?: string; aspect?: 'banner' | 'square' | 'video' | 'portrait'; multiple?: boolean; accept?: 'image' | 'media'; maxMb?: number; shape?: 'rect' | 'circle' }>(),
   { aspect: 'banner', multiple: false, accept: 'image', shape: 'rect' },
 )
 const emit = defineEmits<{ 'update:modelValue': [url: string | null]; uploaded: [ids: string[], urls: string[]] }>()
@@ -41,7 +41,7 @@ defineExpose({ uploadIds: uploader.uploadIds, items: uploader.items, busy: uploa
     <input ref="fileInput" type="file" class="sr-only" :multiple="multiple" :accept="accept === 'media' ? 'image/*,video/*' : 'image/*'" @change="onFiles(($event.target as HTMLInputElement).files)" />
 
     <!-- single -->
-    <div v-if="!multiple" :class="cn('relative overflow-hidden', shape === 'circle' ? 'h-24 w-24 rounded-full' : cn('w-full rounded-2xl', aspect === 'banner' ? 'aspect-[16/5]' : aspect === 'video' ? 'aspect-video' : 'aspect-square'))">
+    <div v-if="!multiple" :class="cn('relative overflow-hidden', shape === 'circle' ? 'h-24 w-24 rounded-full' : cn('w-full rounded-2xl', aspect === 'banner' ? 'aspect-[16/5]' : aspect === 'video' ? 'aspect-video' : aspect === 'portrait' ? 'mx-auto aspect-[648/1024] max-w-[220px]' : 'aspect-square'))">
       <template v-if="modelValue || uploader.items.value[0]?.previewUrl">
         <img :src="modelValue ?? uploader.items.value[0]?.previewUrl" alt="" class="h-full w-full object-cover" />
         <div v-if="uploader.busy.value" class="absolute inset-0 flex items-center justify-center bg-ink-900/40 text-white"><LoaderCircle class="h-6 w-6 animate-spin" /></div>

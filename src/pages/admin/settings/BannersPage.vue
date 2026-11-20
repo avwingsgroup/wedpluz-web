@@ -23,7 +23,7 @@ const { data, loading, refresh } = useAsync(() => adminApi.settings.banners())
 const open = ref(false)
 const editing = ref<Banner | null>(null)
 const form = reactive<Partial<Banner>>({})
-const placements = [{ label: 'Home: hero', value: 'home_hero' }, { label: 'Home: inline cards', value: 'home_inline' }, { label: 'Events: top', value: 'events_top' }, { label: 'Vendors: top', value: 'vendors_top' }, { label: 'Mobile app home', value: 'app_home' }]
+const placements = [{ label: 'Sign-up & login carousel', value: 'onboarding' }, { label: 'Home: hero', value: 'home_hero' }, { label: 'Home: inline cards', value: 'home_inline' }, { label: 'Events: top', value: 'events_top' }, { label: 'Vendors: top', value: 'vendors_top' }, { label: 'Mobile app home', value: 'app_home' }]
 function edit(b: Banner | null) {
   editing.value = b
   Object.assign(form, b ? { ...b, startsAt: b.startsAt?.slice(0, 10) ?? '', endsAt: b.endsAt?.slice(0, 10) ?? '' } : { title: '', subtitle: '', imageUrl: null, ctaLabel: '', ctaUrl: '', placement: 'home_inline', audience: 'all', startsAt: '', endsAt: '', isActive: true, priority: 1 })
@@ -59,12 +59,14 @@ async function remove(b: Banner) {
     </div>
     <UiDrawer v-model:open="open" :title="editing ? 'Edit banner' : 'New banner'">
       <div class="space-y-4">
-        <UiImageUploader v-model="form.imageUrl" purpose="banner" aspect="banner" label="Image (optional)" />
-        <UiInput v-model="form.title" label="Title" /><UiInput v-model="form.subtitle" label="Subtitle" />
-        <div class="grid gap-3 sm:grid-cols-2"><UiInput v-model="form.ctaLabel" label="Button label" /><UiInput v-model="form.ctaUrl" label="Button link" placeholder="/events?search=december" /></div>
+        <!-- Onboarding slides are portrait photos behind a caption; they have no button. -->
+        <UiImageUploader v-if="form.placement === 'onboarding'" v-model="form.imageUrl" purpose="banner" aspect="portrait" label="Photo" hint="Portrait, about 650×1024. Keep faces in the upper part; the caption sits near the bottom." />
+        <UiImageUploader v-else v-model="form.imageUrl" purpose="banner" aspect="banner" label="Image (optional)" />
+        <UiInput v-model="form.title" :label="form.placement === 'onboarding' ? 'Caption' : 'Title'" /><UiInput v-model="form.subtitle" :label="form.placement === 'onboarding' ? 'Second line (optional)' : 'Subtitle'" />
+        <div v-if="form.placement !== 'onboarding'" class="grid gap-3 sm:grid-cols-2"><UiInput v-model="form.ctaLabel" label="Button label" /><UiInput v-model="form.ctaUrl" label="Button link" placeholder="/events?search=december" /></div>
         <div class="grid gap-3 sm:grid-cols-2"><UiSelect v-model="form.placement" label="Placement" :options="placements" /><UiSelect v-model="form.audience" label="Audience" :options="['all', 'individuals', 'businesses', 'guests'].map((a) => ({ label: a, value: a }))" /></div>
         <div class="grid gap-3 sm:grid-cols-2"><UiInput v-model="form.startsAt" type="date" label="Starts" /><UiInput v-model="form.endsAt" type="date" label="Ends" /></div>
-        <UiInput :model-value="form.priority" type="number" label="Priority (lower shows first)" @update:model-value="form.priority = Number($event)" />
+        <UiInput :model-value="form.priority" type="number" label="Priority (higher shows first)" @update:model-value="form.priority = Number($event)" />
         <UiToggle :model-value="!!form.isActive" label="Active" @update:model-value="form.isActive = $event" />
       </div>
       <template #footer><UiButton block @click="save">Save banner</UiButton></template>

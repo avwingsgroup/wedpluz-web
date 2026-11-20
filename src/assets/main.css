@@ -124,14 +124,13 @@
   .field-error {
     @apply border-danger-500 focus:border-danger-500;
   }
+  /* Footer plum with the design's scattered white specks (scripts/generate-footer-stars.mjs, measured from the design). */
   .plum-footer {
     background-color: #270427;
-    background-image:
-      radial-gradient(circle at 12% 18%, rgb(255 255 255 / 0.08) 1px, transparent 1.5px),
-      radial-gradient(circle at 70% 60%, rgb(255 255 255 / 0.06) 1px, transparent 1.5px),
-      radial-gradient(circle at 40% 85%, rgb(255 255 255 / 0.07) 1px, transparent 1.5px),
-      radial-gradient(circle at 90% 20%, rgb(255 255 255 / 0.05) 1px, transparent 1.5px);
-    background-size: 160px 160px, 220px 220px, 190px 190px, 260px 260px;
+    background-image: url('./patterns/footer-stars.svg');
+    background-position: center top;
+    background-size: 1440px 720px;
+    background-repeat: repeat;
   }
   .texture-band {
     background-color: #fbfbfc;

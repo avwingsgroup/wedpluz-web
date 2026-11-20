@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { dateOfBirthSchema, emailSchema, nameSchema, otpSchema, passwordSchema, phoneSchema } from './common'
+import { dateOfBirthSchema, emailSchema, intlPhoneSchema, nameSchema, otpSchema, passwordSchema } from './common'
 
 export const loginSchema = z.object({
   email: emailSchema,
@@ -40,14 +40,14 @@ export const changePasswordSchema = z
 
 export const profileSetupSchema = z.object({
   username: z.string().trim().min(3, 'At least 3 characters').max(30, 'At most 30 characters').regex(/^[a-z0-9_.]+$/i, 'Letters, numbers, dots and underscores only'),
-  phone: phoneSchema.optional().or(z.literal('')),
+  phone: intlPhoneSchema.optional().or(z.literal('')),
   city: z.string().trim().max(80).optional().or(z.literal('')),
 })
 
 export const editProfileSchema = z.object({
   firstName: nameSchema,
   lastName: nameSchema,
-  phone: phoneSchema.optional().or(z.literal('')),
+  phone: intlPhoneSchema.optional().or(z.literal('')),
   city: z.string().trim().max(80).optional().or(z.literal('')),
   dateOfBirth: dateOfBirthSchema.optional().or(z.literal('')),
 })

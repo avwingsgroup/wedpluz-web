@@ -1299,6 +1299,10 @@ export const banners: Banner[] = [
   { id: 'bn_1', title: 'Host Your Event', subtitle: 'Create and manage your own events.', imageUrl: null, ctaLabel: 'Create Event', ctaUrl: '/manage/events/new', placement: 'home_inline', audience: 'individuals', startsAt: null, endsAt: null, isActive: true, priority: 1, impressions: 120400, clicks: 8120 },
   { id: 'bn_2', title: 'Become a Vendor', subtitle: 'Whether you’re an event planner, photographer, decorator, chef, DJ, etc. Let the right people find you.', imageUrl: null, ctaLabel: 'Become a Vendor', ctaUrl: '/business/become-a-vendor', placement: 'home_inline', audience: 'all', startsAt: null, endsAt: null, isActive: true, priority: 2, impressions: 98000, clicks: 4210 },
   { id: 'bn_3', title: 'Detty December', subtitle: 'The biggest end-of-year events.', imageUrl: img('detty', 1200, 400), ctaLabel: 'Explore', ctaUrl: '/events?search=december', placement: 'events_top', audience: 'all', startsAt: iso(addDays(NOW, 10)), endsAt: iso(addDays(NOW, 50)), isActive: false, priority: 1, impressions: 0, clicks: 0 },
+  // Sign-up/login carousel (placement onboarding). Live slides use the design photos from Cloudinary; mock mode uses portrait placeholders.
+  { id: 'bn_onb_1', title: 'Let the Experience Find You', subtitle: null, imageUrl: img('onboard-friends', 648, 1024), ctaLabel: null, ctaUrl: null, placement: 'onboarding', audience: 'all', startsAt: null, endsAt: null, isActive: true, priority: 99, impressions: 0, clicks: 0 },
+  { id: 'bn_onb_2', title: 'Event Planning Made Easy', subtitle: null, imageUrl: img('onboard-planner', 631, 1024), ctaLabel: null, ctaUrl: null, placement: 'onboarding', audience: 'all', startsAt: null, endsAt: null, isActive: true, priority: 98, impressions: 0, clicks: 0 },
+  { id: 'bn_onb_3', title: 'Show Your Work', subtitle: null, imageUrl: img('onboard-photographer', 665, 1024), ctaLabel: null, ctaUrl: null, placement: 'onboarding', audience: 'all', startsAt: null, endsAt: null, isActive: true, priority: 97, impressions: 0, clicks: 0 },
 ]
 
 export const cmsPages: CmsPage[] = [

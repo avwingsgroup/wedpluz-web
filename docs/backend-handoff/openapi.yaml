@@ -1427,6 +1427,79 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/ServerError'
+  /banners:
+    get:
+      operationId: accountBanners
+      summary: List live banners for a placement (onboarding carousel, home, events, vendors)
+      description: |-
+        **Status:** `required`. Not implemented until confirmed by the backend team.
+
+        **Auth:** public.
+
+        _Frontend call: `account.api → banners`_
+      tags:
+        - Account & Profile
+      x-wedpluz-status: required
+      security: []
+      parameters:
+        - name: placement
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - home_hero
+              - home_inline
+              - events_top
+              - vendors_top
+              - app_home
+              - onboarding
+            description: Where a banner shows. `onboarding` is the sign-up/login photo carousel.
+        - name: audience
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - all
+              - individuals
+              - businesses
+              - guests
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/ClientPlatform'
+        - $ref: '#/components/parameters/ClientVersion'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PublicBanner'
+                  message:
+                    type: string
+              example:
+                data:
+                  - id: res_01J9Z8K3
+                    title: Luxury Wedding Gala
+                    subtitle: string
+                    imageUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
+                    ctaLabel: string
+                    ctaUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
+                    placement: home_hero
+                    audience: individuals
+                    priority: 12
+                message: Example text
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '500':
+          $ref: '#/components/responses/ServerError'
   /pages/{slug}:
     get:
       operationId: accountPage
@@ -2327,8 +2400,8 @@ paths:
           schema:
             type: string
             enum:
-              - suspended
               - all
+              - suspended
               - active
               - deactivated
               - pending_deletion
@@ -2338,11 +2411,11 @@ paths:
           schema:
             type: string
             enum:
+              - all
               - user
               - vendor
               - organizer
               - admin
-              - all
         - name: identityStatus
           in: query
           required: false
@@ -2371,8 +2444,8 @@ paths:
           schema:
             type: string
             enum:
-              - web
               - all
+              - web
               - android
               - ios
         - name: dateFrom
@@ -2880,9 +2953,9 @@ paths:
                   - id: res_01J9Z8K3
                     reference: WPZ-7Q3K9X
                     event:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
                       title: Luxury Wedding Gala
+                      slug: luxury-wedding-gala
                       startsAt: '2026-12-12T18:00:00Z'
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     buyer:
@@ -3610,8 +3683,8 @@ paths:
           schema:
             type: string
             enum:
-              - suspended
               - all
+              - suspended
               - draft
               - cancelled
               - completed
@@ -3969,27 +4042,27 @@ paths:
                         type:
                           - string
                           - 'null'
+                      id:
+                        type: string
+                      title:
+                        type: string
                       slug:
                         type: string
                       status:
                         $ref: '#/components/schemas/EventStatus'
-                      id:
-                        type: string
                       category:
                         type: object
                         properties:
-                          slug:
-                            type: string
                           id:
+                            type: string
+                          slug:
                             type: string
                           name:
                             type: string
                         required:
-                          - slug
                           - id
+                          - slug
                           - name
-                      title:
-                        type: string
                       startsAt:
                         type: string
                         format: date-time
@@ -4074,11 +4147,11 @@ paths:
                       - updatedAt
                       - publishedAt
                       - city
+                      - id
+                      - title
                       - slug
                       - status
-                      - id
                       - category
-                      - title
                       - startsAt
                       - endsAt
                       - coverUrl
@@ -4196,14 +4269,14 @@ paths:
                   updatedAt: '2026-12-12T18:00:00Z'
                   publishedAt: '2026-12-12T18:00:00Z'
                   city: Lagos
+                  id: res_01J9Z8K3
+                  title: Luxury Wedding Gala
                   slug: luxury-wedding-gala
                   status: suspended
-                  id: res_01J9Z8K3
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
-                  title: Luxury Wedding Gala
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -4231,9 +4304,9 @@ paths:
                     - id: res_01J9Z8K3
                       reference: WPZ-7Q3K9X
                       event:
-                        slug: luxury-wedding-gala
                         id: res_01J9Z8K3
                         title: Luxury Wedding Gala
+                        slug: luxury-wedding-gala
                         startsAt: '2026-12-12T18:00:00Z'
                         coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                       buyer:
@@ -4376,8 +4449,8 @@ paths:
                   title: Luxury Wedding Gala
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
@@ -4487,8 +4560,8 @@ paths:
                   title: Luxury Wedding Gala
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
@@ -4598,8 +4671,8 @@ paths:
                   title: Luxury Wedding Gala
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
@@ -4707,8 +4780,8 @@ paths:
                   title: Luxury Wedding Gala
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
@@ -4816,8 +4889,8 @@ paths:
                   title: Luxury Wedding Gala
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
@@ -4925,8 +4998,8 @@ paths:
                   title: Luxury Wedding Gala
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
@@ -5567,8 +5640,8 @@ paths:
                       title: Luxury Wedding Gala
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                       category:
-                        slug: luxury-wedding-gala
                         id: res_01J9Z8K3
+                        slug: luxury-wedding-gala
                         name: Ada Obi
                       startsAt: '2026-12-12T18:00:00Z'
                       endsAt: '2026-12-12T18:00:00Z'
@@ -6369,11 +6442,11 @@ paths:
                       event:
                         type: object
                         properties:
-                          slug:
-                            type: string
                           id:
                             type: string
                           title:
+                            type: string
+                          slug:
                             type: string
                           startsAt:
                             type: string
@@ -6382,9 +6455,9 @@ paths:
                             type: string
                             format: uri
                         required:
-                          - slug
                           - id
                           - title
+                          - slug
                           - startsAt
                           - coverUrl
                       buyer:
@@ -6521,9 +6594,9 @@ paths:
                   id: res_01J9Z8K3
                   reference: WPZ-7Q3K9X
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   buyer:
@@ -8576,13 +8649,13 @@ paths:
                   - id: res_01J9Z8K3
                     reference: WPZ-7Q3K9X
                     booking:
+                      id: res_01J9Z8K3
                       event:
-                        slug: luxury-wedding-gala
                         id: res_01J9Z8K3
                         title: Luxury Wedding Gala
+                        slug: luxury-wedding-gala
                         startsAt: '2026-12-12T18:00:00Z'
                         coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
-                      id: res_01J9Z8K3
                       reference: WPZ-7Q3K9X
                       buyer:
                         id: res_01J9Z8K3
@@ -8662,13 +8735,13 @@ paths:
                   id: res_01J9Z8K3
                   reference: WPZ-7Q3K9X
                   booking:
+                    id: res_01J9Z8K3
                     event:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
                       title: Luxury Wedding Gala
+                      slug: luxury-wedding-gala
                       startsAt: '2026-12-12T18:00:00Z'
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
-                    id: res_01J9Z8K3
                     reference: WPZ-7Q3K9X
                     buyer:
                       id: res_01J9Z8K3
@@ -8744,13 +8817,13 @@ paths:
                   id: res_01J9Z8K3
                   reference: WPZ-7Q3K9X
                   booking:
+                    id: res_01J9Z8K3
                     event:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
                       title: Luxury Wedding Gala
+                      slug: luxury-wedding-gala
                       startsAt: '2026-12-12T18:00:00Z'
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
-                    id: res_01J9Z8K3
                     reference: WPZ-7Q3K9X
                     buyer:
                       id: res_01J9Z8K3
@@ -10378,9 +10451,9 @@ paths:
                         Copies an array, then overwrites the value at the provided index with the
                         given value. If the index is negative, then it replaces from the end
                         of the array.
-                    __@iterator@393:
+                    __@iterator@472:
                       description: Iterator
-                    __@unscopables@395:
+                    __@unscopables@474:
                       type: object
                       properties:
                         length:
@@ -10544,10 +10617,10 @@ paths:
                             Copies an array, then overwrites the value at the provided index with the
                             given value. If the index is negative, then it replaces from the end
                             of the array.
-                        __@iterator@393:
+                        __@iterator@472:
                           type: boolean
                           description: Iterator
-                        __@unscopables@395:
+                        __@unscopables@474:
                           type: boolean
                           description: |-
                             Is an object whose properties have the value 'true'
@@ -10605,8 +10678,8 @@ paths:
                     - toSorted
                     - toSpliced
                     - with
-                    - __@iterator@393
-                    - __@unscopables@395
+                    - __@iterator@472
+                    - __@unscopables@474
                 audience:
                   type: object
                   properties:
@@ -10741,8 +10814,8 @@ paths:
                 toSorted: null
                 toSpliced: null
                 with: null
-                __@iterator@393: null
-                __@unscopables@395:
+                __@iterator@472: null
+                __@unscopables@474:
                   length: true
                   toString: true
                   toLocaleString: true
@@ -10782,8 +10855,8 @@ paths:
                   toSorted: true
                   toSpliced: true
                   with: true
-                  __@iterator@393: true
-                  __@unscopables@395: true
+                  __@iterator@472: true
+                  __@unscopables@474: true
               audience:
                 type: segment
                 filters: {}
@@ -11979,6 +12052,7 @@ paths:
                     - events_top
                     - vendors_top
                     - app_home
+                    - onboarding
                 audience:
                   type: string
                   enum:
@@ -12122,6 +12196,7 @@ paths:
                     - events_top
                     - vendors_top
                     - app_home
+                    - onboarding
                 audience:
                   type: string
                   enum:
@@ -12721,8 +12796,8 @@ paths:
                     email: ada.obi@example.com
                     avatarUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     roles:
-                      - slug: luxury-wedding-gala
-                        id: res_01J9Z8K3
+                      - id: res_01J9Z8K3
+                        slug: luxury-wedding-gala
                         name: Ada Obi
                     permissions:
                       - dashboard.view
@@ -12809,8 +12884,8 @@ paths:
                   email: ada.obi@example.com
                   avatarUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   roles:
-                    - slug: luxury-wedding-gala
-                      id: res_01J9Z8K3
+                    - id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                   permissions:
                     - dashboard.view
@@ -12896,8 +12971,8 @@ paths:
                   email: ada.obi@example.com
                   avatarUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   roles:
-                    - slug: luxury-wedding-gala
-                      id: res_01J9Z8K3
+                    - id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                   permissions:
                     - dashboard.view
@@ -14348,6 +14423,56 @@ paths:
           $ref: '#/components/responses/RateLimited'
         '500':
           $ref: '#/components/responses/ServerError'
+  /auth/google/redirect:
+    get:
+      operationId: authGoogleRedirect
+      summary: 'Start Google sign-in (redirect flow): get the Google consent URL'
+      description: |-
+        **Status:** `required`. Not implemented until confirmed by the backend team.
+
+        **Auth:** public.
+
+        _Frontend call: `auth.api → googleRedirect`_
+      tags:
+        - Auth
+      x-wedpluz-status: required
+      security: []
+      parameters:
+        - name: redirectUri
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/ClientPlatform'
+        - $ref: '#/components/parameters/ClientVersion'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GoogleAuthRedirect'
+                  message:
+                    type: string
+              example:
+                data:
+                  url: https://wedpluz.com/events/luxury-wedding-gala
+                  state: string
+                  redirectUri: string
+                  expiresIn: 12
+                message: Example text
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/ServerError'
   /auth/otp/send:
     post:
       operationId: authSendOtp
@@ -14823,9 +14948,9 @@ paths:
                   - id: res_01J9Z8K3
                     eventId: eve_01J9Z8K3
                     event:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
                       title: Luxury Wedding Gala
+                      slug: luxury-wedding-gala
                       startsAt: '2026-12-12T18:00:00Z'
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                       isPromoted: false
@@ -14905,9 +15030,9 @@ paths:
                   id: res_01J9Z8K3
                   eventId: eve_01J9Z8K3
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isPromoted: false
@@ -15085,9 +15210,9 @@ paths:
                   id: res_01J9Z8K3
                   eventId: eve_01J9Z8K3
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isPromoted: false
@@ -15176,9 +15301,9 @@ paths:
                   id: res_01J9Z8K3
                   eventId: eve_01J9Z8K3
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isPromoted: false
@@ -15251,9 +15376,9 @@ paths:
                   id: res_01J9Z8K3
                   eventId: eve_01J9Z8K3
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isPromoted: false
@@ -15324,9 +15449,9 @@ paths:
                   id: res_01J9Z8K3
                   eventId: eve_01J9Z8K3
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isPromoted: false
@@ -16965,8 +17090,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -17044,8 +17169,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -17120,8 +17245,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -17194,8 +17319,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -17450,8 +17575,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -17539,8 +17664,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -17713,8 +17838,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -18193,9 +18318,9 @@ paths:
                     id: res_01J9Z8K3
                     eventId: eve_01J9Z8K3
                     event:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
                       title: Luxury Wedding Gala
+                      slug: luxury-wedding-gala
                       startsAt: '2026-12-12T18:00:00Z'
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                       isPromoted: false
@@ -18254,9 +18379,9 @@ paths:
                           count: 12
                           reactedByMe: true
                       event:
-                        slug: luxury-wedding-gala
                         id: res_01J9Z8K3
                         title: Luxury Wedding Gala
+                        slug: luxury-wedding-gala
                         startsAt: '2026-12-12T18:00:00Z'
                         coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                         isFree: false
@@ -18695,9 +18820,9 @@ paths:
                       count: 12
                       reactedByMe: true
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isFree: false
@@ -18807,9 +18932,9 @@ paths:
                       count: 12
                       reactedByMe: true
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isFree: false
@@ -18908,9 +19033,9 @@ paths:
                       count: 12
                       reactedByMe: true
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isFree: false
@@ -19007,9 +19132,9 @@ paths:
                       count: 12
                       reactedByMe: true
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isFree: false
@@ -20215,14 +20340,14 @@ paths:
                   updatedAt: '2026-12-12T18:00:00Z'
                   publishedAt: '2026-12-12T18:00:00Z'
                   city: Lagos
+                  id: res_01J9Z8K3
+                  title: Luxury Wedding Gala
                   slug: luxury-wedding-gala
                   status: suspended
-                  id: res_01J9Z8K3
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
-                  title: Luxury Wedding Gala
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -20375,14 +20500,14 @@ paths:
                   updatedAt: '2026-12-12T18:00:00Z'
                   publishedAt: '2026-12-12T18:00:00Z'
                   city: Lagos
+                  id: res_01J9Z8K3
+                  title: Luxury Wedding Gala
                   slug: luxury-wedding-gala
                   status: suspended
-                  id: res_01J9Z8K3
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
-                  title: Luxury Wedding Gala
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -20410,8 +20535,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -20859,14 +20984,14 @@ paths:
                   updatedAt: '2026-12-12T18:00:00Z'
                   publishedAt: '2026-12-12T18:00:00Z'
                   city: Lagos
+                  id: res_01J9Z8K3
+                  title: Luxury Wedding Gala
                   slug: luxury-wedding-gala
                   status: suspended
-                  id: res_01J9Z8K3
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
-                  title: Luxury Wedding Gala
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -21055,14 +21180,14 @@ paths:
                   updatedAt: '2026-12-12T18:00:00Z'
                   publishedAt: '2026-12-12T18:00:00Z'
                   city: Lagos
+                  id: res_01J9Z8K3
+                  title: Luxury Wedding Gala
                   slug: luxury-wedding-gala
                   status: suspended
-                  id: res_01J9Z8K3
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
-                  title: Luxury Wedding Gala
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -21234,14 +21359,14 @@ paths:
                   updatedAt: '2026-12-12T18:00:00Z'
                   publishedAt: '2026-12-12T18:00:00Z'
                   city: Lagos
+                  id: res_01J9Z8K3
+                  title: Luxury Wedding Gala
                   slug: luxury-wedding-gala
                   status: suspended
-                  id: res_01J9Z8K3
                   category:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
+                    slug: luxury-wedding-gala
                     name: Ada Obi
-                  title: Luxury Wedding Gala
                   startsAt: '2026-12-12T18:00:00Z'
                   endsAt: '2026-12-12T18:00:00Z'
                   coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -23038,9 +23163,9 @@ paths:
                   id: res_01J9Z8K3
                   eventId: eve_01J9Z8K3
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isPromoted: false
@@ -23144,9 +23269,9 @@ paths:
                   id: res_01J9Z8K3
                   eventId: eve_01J9Z8K3
                   event:
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     isPromoted: false
@@ -23215,6 +23340,8 @@ paths:
                 data:
                   - id: res_01J9Z8K3
                     event:
+                      id: res_01J9Z8K3
+                      title: Luxury Wedding Gala
                       organizer:
                         id: res_01J9Z8K3
                         displayName: Ada Obi
@@ -23222,8 +23349,6 @@ paths:
                         avatarUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                         isVerified: false
                         isVendor: false
-                      id: res_01J9Z8K3
-                      title: Luxury Wedding Gala
                       startsAt: '2026-12-12T18:00:00Z'
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     status: removed
@@ -23289,6 +23414,8 @@ paths:
                 data:
                   id: res_01J9Z8K3
                   event:
+                    id: res_01J9Z8K3
+                    title: Luxury Wedding Gala
                     organizer:
                       id: res_01J9Z8K3
                       displayName: Ada Obi
@@ -23296,8 +23423,6 @@ paths:
                       avatarUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                       isVerified: false
                       isVendor: false
-                    id: res_01J9Z8K3
-                    title: Luxury Wedding Gala
                     startsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                   status: removed
@@ -23376,8 +23501,8 @@ paths:
                       title: Luxury Wedding Gala
                       coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                       category:
-                        slug: luxury-wedding-gala
                         id: res_01J9Z8K3
+                        slug: luxury-wedding-gala
                         name: Ada Obi
                       startsAt: '2026-12-12T18:00:00Z'
                       endsAt: '2026-12-12T18:00:00Z'
@@ -23466,8 +23591,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -23552,8 +23677,8 @@ paths:
                     title: Luxury Wedding Gala
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
                     category:
-                      slug: luxury-wedding-gala
                       id: res_01J9Z8K3
+                      slug: luxury-wedding-gala
                       name: Ada Obi
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
@@ -23732,22 +23857,22 @@ paths:
                       properties:
                         id:
                           type: string
+                        title:
+                          type: string
                         updatedAt:
                           type: string
                           format: date-time
-                        title:
-                          type: string
                       required:
                         - id
-                        - updatedAt
                         - title
+                        - updatedAt
                   message:
                     type: string
               example:
                 data:
                   - id: res_01J9Z8K3
-                    updatedAt: '2026-12-12T18:00:00Z'
                     title: Luxury Wedding Gala
+                    updatedAt: '2026-12-12T18:00:00Z'
                 message: Example text
         '401':
           $ref: '#/components/responses/Unauthenticated'
@@ -26028,9 +26153,9 @@ paths:
                   eventId: eve_01J9Z8K3
                   event:
                     city: Lagos
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -26145,9 +26270,9 @@ paths:
                   eventId: eve_01J9Z8K3
                   event:
                     city: Lagos
-                    slug: luxury-wedding-gala
                     id: res_01J9Z8K3
                     title: Luxury Wedding Gala
+                    slug: luxury-wedding-gala
                     startsAt: '2026-12-12T18:00:00Z'
                     endsAt: '2026-12-12T18:00:00Z'
                     coverUrl: https://res.cloudinary.com/wedpluz/image/upload/v1/sample.jpg
@@ -30765,11 +30890,11 @@ components:
         event:
           type: object
           properties:
-            slug:
-              type: string
             id:
               type: string
             title:
+              type: string
+            slug:
               type: string
             startsAt:
               type: string
@@ -30778,9 +30903,9 @@ components:
               type: string
               format: uri
           required:
-            - slug
             - id
             - title
+            - slug
             - startsAt
             - coverUrl
         buyer:
@@ -30957,15 +31082,15 @@ components:
         category:
           type: object
           properties:
-            slug:
-              type: string
             id:
+              type: string
+            slug:
               type: string
             name:
               type: string
           required:
-            - slug
             - id
+            - slug
             - name
         startsAt:
           type: string
@@ -31193,15 +31318,15 @@ components:
           items:
             type: object
             properties:
-              slug:
-                type: string
               id:
+                type: string
+              slug:
                 type: string
               name:
                 type: string
             required:
-              - slug
               - id
+              - slug
               - name
         permissions:
           type: array
@@ -31666,13 +31791,7 @@ components:
             - 'null'
           format: uri
         placement:
-          type: string
-          enum:
-            - home_hero
-            - home_inline
-            - events_top
-            - vendors_top
-            - app_home
+          $ref: '#/components/schemas/BannerPlacement'
         audience:
           type: string
           enum:
@@ -31713,6 +31832,16 @@ components:
         - priority
         - impressions
         - clicks
+    BannerPlacement:
+      type: string
+      enum:
+        - home_hero
+        - home_inline
+        - events_top
+        - vendors_top
+        - app_home
+        - onboarding
+      description: Where a banner shows. `onboarding` is the sign-up/login photo carousel.
     CancelReason:
       type: string
       enum:
@@ -31972,11 +32101,11 @@ components:
             - object
             - 'null'
           properties:
-            slug:
-              type: string
             id:
               type: string
             title:
+              type: string
+            slug:
               type: string
             startsAt:
               type: string
@@ -31987,9 +32116,9 @@ components:
             isPromoted:
               type: boolean
           required:
-            - slug
             - id
             - title
+            - slug
             - startsAt
             - coverUrl
             - isPromoted
@@ -32694,27 +32823,27 @@ components:
           type:
             - string
             - 'null'
+        id:
+          type: string
+        title:
+          type: string
         slug:
           type: string
         status:
           $ref: '#/components/schemas/EventStatus'
-        id:
-          type: string
         category:
           type: object
           properties:
-            slug:
-              type: string
             id:
+              type: string
+            slug:
               type: string
             name:
               type: string
           required:
-            - slug
             - id
+            - slug
             - name
-        title:
-          type: string
         startsAt:
           type: string
           format: date-time
@@ -32767,11 +32896,11 @@ components:
         - updatedAt
         - publishedAt
         - city
+        - id
+        - title
         - slug
         - status
-        - id
         - category
-        - title
         - startsAt
         - endsAt
         - coverUrl
@@ -32811,12 +32940,12 @@ components:
         event:
           type: object
           properties:
-            organizer:
-              $ref: '#/components/schemas/UserSummary'
             id:
               type: string
             title:
               type: string
+            organizer:
+              $ref: '#/components/schemas/UserSummary'
             startsAt:
               type: string
               format: date-time
@@ -32824,9 +32953,9 @@ components:
               type: string
               format: uri
           required:
-            - organizer
             - id
             - title
+            - organizer
             - startsAt
             - coverUrl
         status:
@@ -33068,15 +33197,15 @@ components:
         category:
           type: object
           properties:
-            slug:
-              type: string
             id:
+              type: string
+            slug:
               type: string
             name:
               type: string
           required:
-            - slug
             - id
+            - slug
             - name
         startsAt:
           type: string
@@ -33683,6 +33812,26 @@ components:
         - volume
         - failures
         - status
+    GoogleAuthRedirect:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Google's consent URL (carries client id, state, PKCE challenge and the callback).
+        state:
+          type: string
+        redirectUri:
+          type: string
+          description: The callback Google returns to; must be an allowed frontend URL.
+        expiresIn:
+          type: integer
+          description: Seconds before the state expires.
+      required:
+        - url
+        - state
+        - redirectUri
+        - expiresIn
+      description: 'GET /auth/google/redirect: where to send the browser to start Google sign-in.'
     GuestListEntry:
       type: object
       properties:
@@ -34110,27 +34259,27 @@ components:
           type:
             - string
             - 'null'
+        id:
+          type: string
+        title:
+          type: string
         slug:
           type: string
         status:
           $ref: '#/components/schemas/EventStatus'
-        id:
-          type: string
         category:
           type: object
           properties:
-            slug:
-              type: string
             id:
+              type: string
+            slug:
               type: string
             name:
               type: string
           required:
-            - slug
             - id
+            - slug
             - name
-        title:
-          type: string
         startsAt:
           type: string
           format: date-time
@@ -34185,11 +34334,11 @@ components:
         - updatedAt
         - publishedAt
         - city
+        - id
+        - title
         - slug
         - status
-        - id
         - category
-        - title
         - startsAt
         - endsAt
         - coverUrl
@@ -34253,15 +34402,15 @@ components:
         category:
           type: object
           properties:
-            slug:
-              type: string
             id:
+              type: string
+            slug:
               type: string
             name:
               type: string
           required:
-            - slug
             - id
+            - slug
             - name
         startsAt:
           type: string
@@ -34452,11 +34601,11 @@ components:
             - object
             - 'null'
           properties:
-            slug:
-              type: string
             id:
               type: string
             title:
+              type: string
+            slug:
               type: string
             startsAt:
               type: string
@@ -34472,9 +34621,9 @@ components:
               type: integer
               description: Integer amount in minor units (kobo for NGN).
           required:
-            - slug
             - id
             - title
+            - slug
             - startsAt
             - coverUrl
             - isFree
@@ -35833,6 +35982,53 @@ components:
         - withdrawable
         - status
         - joinedAt
+    PublicBanner:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        subtitle:
+          type:
+            - string
+            - 'null'
+        imageUrl:
+          type:
+            - string
+            - 'null'
+          format: uri
+        ctaLabel:
+          type:
+            - string
+            - 'null'
+        ctaUrl:
+          type:
+            - string
+            - 'null'
+          format: uri
+        placement:
+          $ref: '#/components/schemas/BannerPlacement'
+        audience:
+          type: string
+          enum:
+            - all
+            - individuals
+            - businesses
+            - guests
+        priority:
+          type: integer
+      required:
+        - id
+        - title
+        - subtitle
+        - imageUrl
+        - ctaLabel
+        - ctaUrl
+        - placement
+        - audience
+        - priority
+      description: 'Public view of a live banner (GET /banners): no schedule, status or stats.'
     PublicConfig:
       type: object
       properties:
@@ -35867,6 +36063,16 @@ components:
             - email
             - phone
             - whatsapp
+        geo:
+          type: object
+          properties:
+            countryCode:
+              type:
+                - string
+                - 'null'
+          required:
+            - countryCode
+          description: 'Proposed: the visitor''s country from the request IP (e.g. CF-IPCountry), ISO 3166-1 alpha-2. Optional.'
         app:
           type: object
           properties:
@@ -36000,14 +36206,16 @@ components:
         booking:
           type: object
           properties:
+            id:
+              type: string
             event:
               type: object
               properties:
-                slug:
-                  type: string
                 id:
                   type: string
                 title:
+                  type: string
+                slug:
                   type: string
                 startsAt:
                   type: string
@@ -36016,13 +36224,11 @@ components:
                   type: string
                   format: uri
               required:
-                - slug
                 - id
                 - title
+                - slug
                 - startsAt
                 - coverUrl
-            id:
-              type: string
             reference:
               type: string
             buyer:
@@ -36055,8 +36261,8 @@ components:
                 - avatarUrl
                 - email
           required:
-            - event
             - id
+            - event
             - reference
             - buyer
         amount:
@@ -36701,19 +36907,39 @@ components:
         - paidAt
         - payoutId
     SocialAuthPayload:
-      type: object
-      properties:
-        provider:
-          type: string
-          enum:
-            - google
-        idToken:
-          type: string
-        deviceName:
-          type: string
-      required:
-        - provider
-        - idToken
+      anyOf:
+        - type: object
+          properties:
+            provider:
+              type: string
+              enum:
+                - google
+            idToken:
+              type: string
+            deviceName:
+              type: string
+          required:
+            - provider
+            - idToken
+        - type: object
+          properties:
+            provider:
+              type: string
+              enum:
+                - google
+            code:
+              type: string
+            state:
+              type: string
+            deviceName:
+              type: string
+          required:
+            - provider
+            - code
+            - state
+      description: |-
+        Google sign-in. Either an ID token from Google Identity Services (One Tap), or the authorization `code` + `state`
+        from the redirect flow started with GET /auth/google/redirect (the backend keeps the state and PKCE verifier).
     StatusPost:
       type: object
       properties:
@@ -37079,11 +37305,11 @@ components:
               type:
                 - string
                 - 'null'
-            slug:
-              type: string
             id:
               type: string
             title:
+              type: string
+            slug:
               type: string
             startsAt:
               type: string
@@ -37100,9 +37326,9 @@ components:
               $ref: '#/components/schemas/AttendanceMode'
           required:
             - city
-            - slug
             - id
             - title
+            - slug
             - startsAt
             - endsAt
             - coverUrl
@@ -37202,11 +37428,11 @@ components:
               type:
                 - string
                 - 'null'
-            slug:
-              type: string
             id:
               type: string
             title:
+              type: string
+            slug:
               type: string
             startsAt:
               type: string
@@ -37223,9 +37449,9 @@ components:
               $ref: '#/components/schemas/AttendanceMode'
           required:
             - city
-            - slug
             - id
             - title
+            - slug
             - startsAt
             - endsAt
             - coverUrl
@@ -37326,11 +37552,11 @@ components:
               type:
                 - string
                 - 'null'
-            slug:
-              type: string
             id:
               type: string
             title:
+              type: string
+            slug:
               type: string
             startsAt:
               type: string
@@ -37347,9 +37573,9 @@ components:
               $ref: '#/components/schemas/AttendanceMode'
           required:
             - city
-            - slug
             - id
             - title
+            - slug
             - startsAt
             - endsAt
             - coverUrl

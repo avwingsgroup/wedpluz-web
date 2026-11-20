@@ -69,8 +69,10 @@ export const useAuthStore = defineStore('auth', () => {
     return res
   }
 
-  async function loginWithGoogle(idToken: string) {
-    const res = await authApi.social({ provider: 'google', idToken })
+  /** Google sign-in with a One Tap ID token, or the redirect flow's code + state. */
+  async function loginWithGoogle(credential: string | { code: string; state: string }) {
+    const deviceName = navigator.userAgent.slice(0, 80)
+    const res = await authApi.social(typeof credential === 'string' ? { provider: 'google', idToken: credential, deviceName } : { provider: 'google', ...credential, deviceName })
     applyAuth(res)
     return res
   }

@@ -23,6 +23,14 @@ export default defineConfig(({ command, mode }) => {
     throw new Error(`[wedpluz] ${mode} builds require VITE_API_MODE=live. Mock fixtures cannot ship to a deployed environment.`)
   }
 
+  // VITE_* values are bundled into public JavaScript. Stop if a Google OAuth client secret (GOCSPX-…) ends up in
+  // one, and require VITE_GOOGLE_CLIENT_ID to be a client id. Runs for dev and build alike.
+  const leaked = Object.entries(env).filter(([k, v]) => k.startsWith('VITE_') && /GOCSPX-/i.test(v)).map(([k]) => k)
+  if (leaked.length) throw new Error(`[wedpluz] ${leaked.join(', ')} contains a Google OAuth client secret. Secrets belong in the backend .env only.`)
+  if (env.VITE_GOOGLE_CLIENT_ID && !/^[\w-]+\.apps\.googleusercontent\.com$/.test(env.VITE_GOOGLE_CLIENT_ID)) {
+    throw new Error('[wedpluz] VITE_GOOGLE_CLIENT_ID must be a Google OAuth client id (…apps.googleusercontent.com).')
+  }
+
   return {
     plugins: [
       vue(),

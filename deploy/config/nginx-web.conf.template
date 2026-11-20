@@ -1,0 +1,155 @@
+# Wedpluz web + admin — dedicated nginx virtual hosts (rendered by provision-web.sh to /etc/nginx/sites-available/wedpluz-web).
+# Only {{WEB_DOMAIN}}, www.{{WEB_DOMAIN}} and {{ADMIN_DOMAIN}} are handled here; other sites are untouched.
+# Certbot adds the TLS listeners and the HTTP -> HTTPS redirects to this file.
+#
+# Both apps are static builds: nginx serves {{APP_DIR}}/current/web and .../current/admin. A deploy switches the
+# `current` symlink, so no reload is needed. `previous` keeps the last release's hashed assets reachable, so a tab
+# opened before a deploy can still load its lazy chunks.
+
+# Link-preview bots (WhatsApp, Facebook, X…) do not run JavaScript: event and vendor pages are sent to the API's
+# share endpoints, which return the item's own title, image and description. Everyone else gets the SPA.
+map $http_user_agent $wedpluz_preview_bot {
+    default 0;
+    ~*(facebookexternalhit|facebot|whatsapp|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|redditbot|skypeuripreview|applebot|embedly|quora\ link\ preview|vkshare|w3c_validator) 1;
+}
+
+# ------------------------------------------------------------------ public web app
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{WEB_DOMAIN}} www.{{WEB_DOMAIN}};
+
+    root {{APP_DIR}}/current/web;
+    index index.html;
+    charset utf-8;
+
+    access_log /var/log/nginx/wedpluz-web.access.log;
+    error_log  /var/log/nginx/wedpluz-web.error.log warn;
+
+    # www → apex (keeps the scheme, so it works before and after Certbot).
+    if ($host = www.{{WEB_DOMAIN}}) { return 301 $scheme://{{WEB_DOMAIN}}$request_uri; }
+
+    include /etc/nginx/snippets/wedpluz-web-headers.conf;
+    include /etc/nginx/snippets/wedpluz-web-gzip.conf;
+
+    location ~ /\.(?!well-known) { deny all; }
+
+    # Hashed build output: cache forever; fall back to the previous release for tabs opened before a deploy.
+    location /assets/ {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri @web_previous_assets;
+    }
+    location @web_previous_assets {
+        root {{APP_DIR}}/previous/web;
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+
+    # Deploy check and cache-busting: always fresh.
+    location = /version.json {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "no-store" always;
+        try_files $uri =404;
+    }
+    location ~ ^/(robots\.txt|sitemap\.xml)$ {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "public, max-age=3600" always;
+        try_files $uri =404;
+    }
+    location ~ ^/(favicon\.svg|favicon\.ico|site\.webmanifest|icons/|og/) {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "public, max-age=86400" always;
+        try_files $uri =404;
+    }
+
+    # Event and vendor pages: preview bots → API share page; people → the SPA.
+    location ~ ^/(?<wp_kind>events|vendors)/(?<wp_slug>[^/]+)/?$ {
+        # Needed here (where the first error_page fires) so @share_preview can fall back to @spa.
+        recursive_error_pages on;
+        error_page 418 = @share_preview;
+        if ($wedpluz_preview_bot) { return 418; }
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri $uri/index.html /index.html;
+    }
+    location @share_preview {
+        resolver {{RESOLVERS}} valid=300s ipv6=off;
+        resolver_timeout 5s;
+        proxy_pass {{API_ORIGIN}}/share/$wp_kind/$wp_slug;
+        proxy_ssl_server_name on;
+        proxy_set_header Host {{API_HOST}};
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 10s;
+        # If the API is unreachable, bots still get the SPA shell (generic preview) instead of an error.
+        # recursive_error_pages: this location is itself reached through error_page (418 above).
+        recursive_error_pages on;
+        proxy_intercept_errors on;
+        error_page 500 502 503 504 = @spa;
+    }
+    location @spa {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        try_files /index.html =404;
+    }
+
+    # Everything else: a real file, a pre-rendered page head (dist/about/index.html), or the SPA shell.
+    location / {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri $uri/index.html /index.html;
+    }
+}
+
+# ------------------------------------------------------------------ admin console
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ADMIN_DOMAIN}};
+
+    root {{APP_DIR}}/current/admin;
+    index index.html;
+    charset utf-8;
+
+    access_log /var/log/nginx/wedpluz-admin.access.log;
+    error_log  /var/log/nginx/wedpluz-admin.error.log warn;
+
+    include /etc/nginx/snippets/wedpluz-web-headers.conf;
+    include /etc/nginx/snippets/wedpluz-web-gzip.conf;
+    add_header X-Robots-Tag "noindex, nofollow" always;
+
+    location ~ /\.(?!well-known) { deny all; }
+
+    location /assets/ {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header X-Robots-Tag "noindex, nofollow" always;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri @admin_previous_assets;
+    }
+    location @admin_previous_assets {
+        root {{APP_DIR}}/previous/admin;
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header X-Robots-Tag "noindex, nofollow" always;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+    location = /version.json {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header X-Robots-Tag "noindex, nofollow" always;
+        add_header Cache-Control "no-store" always;
+        try_files $uri =404;
+    }
+    location = /robots.txt {
+        add_header Content-Type "text/plain; charset=utf-8" always;
+        return 200 "User-agent: *\nDisallow: /\n";
+    }
+    location / {
+        include /etc/nginx/snippets/wedpluz-web-headers.conf;
+        add_header X-Robots-Tag "noindex, nofollow" always;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri /index.html;
+    }
+}

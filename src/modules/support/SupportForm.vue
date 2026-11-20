@@ -9,13 +9,18 @@ import UiButton from '@/components/ui/UiButton.vue'
 import { useForm } from '@/composables/useForm'
 import { accountApi } from '@/services/api/account.api'
 
+const props = withDefaults(defineProps<{ category?: string }>(), { category: '' })
+const emit = defineEmits<{ sent: [reference: string] }>()
 const sent = ref<string | null>(null)
 const schema = z.object({ subject: z.string().trim().min(4, 'Add a short subject'), category: z.string().min(1, 'Choose a topic'), message: z.string().trim().min(20, 'Describe the issue in at least 20 characters') })
 const form = useForm({
-  initialValues: { subject: '', category: '', message: '' },
+  initialValues: { subject: '', category: props.category, message: '' },
   schema,
   onSubmit: (v) => accountApi.createSupportTicket(v),
-  onSuccess: (t) => (sent.value = t.reference),
+  onSuccess: (t) => {
+    sent.value = t.reference
+    emit('sent', t.reference)
+  },
 })
 </script>
 

@@ -175,6 +175,7 @@ Each section lists the purpose, the screens that use it, the main entities, vali
 | POST | `/auth/login` | Sign in with email and password | public | required | LoginPayload | AuthResponse | `VALIDATION_ERROR` `UNAUTHENTICATED` `ACCOUNT_SUSPENDED` `RATE_LIMITED` |
 | POST | `/auth/register` | Create a customer account | public | required | RegisterPayload | AuthResponse | `VALIDATION_ERROR` `CONFLICT` `RATE_LIMITED` |
 | POST | `/auth/social` | Sign in or sign up with Google | public | required | SocialAuthPayload | AuthResponse | `VALIDATION_ERROR` `UNAUTHENTICATED` `ACCOUNT_SUSPENDED` |
+| GET | `/auth/google/redirect` | Start Google sign-in (redirect flow): get the Google consent URL | public | required | query: redirectUri | GoogleAuthRedirect | — |
 | POST | `/auth/otp/send` | Send a one-time code by email | public | required | { email, purpose } | { sent, expiresInSeconds, channel } | `VALIDATION_ERROR` `RATE_LIMITED` |
 | POST | `/auth/otp/verify` | Verify a one-time code | public | required | VerifyOtpPayload | { verified, resetToken } | `OTP_INVALID` `OTP_EXPIRED` `RATE_LIMITED` |
 | POST | `/auth/password/forgot` | Start password reset | public | required | { email } | { sent } | — |
@@ -226,6 +227,7 @@ Each section lists the purpose, the screens that use it, the main entities, vali
 | POST | `/uploads` | Upload a file (multipart) | customer | required | multipart/form-data { file, purpose } | Upload | `VALIDATION_ERROR` |
 | POST | `/uploads/sign` | Get a signed direct-upload form | customer | optional | { purpose } | UploadSignature | — |
 | GET | `/users/{id}` | Get a user's public profile | optional | required | — | PublicProfile | — |
+| GET | `/banners` | List live banners for a placement (onboarding carousel, home, events, vendors) | public | required | query: placement, audience | PublicBanner[] | — |
 | GET | `/pages/{slug}` | Get a CMS page (about, terms, privacy, FAQs, help, contact) | public | required | — | CmsPage | — |
 | POST | `/support/tickets` | Open a support ticket | customer | required | { subject, category, message } | SupportTicket | — |
 | GET | `/support/tickets` | List my support tickets | customer | required | — | SupportTicket[] | — |
@@ -529,7 +531,7 @@ Each section lists the purpose, the screens that use it, the main entities, vali
 |---|---|---|---|---|---|---|---|
 | GET | `/planner/assets` | List my planner assets | customer | proposed | query: type, sort | PlannerAssetSummary[] | — |
 | DELETE | `/planner/assets/{id}` | Delete a planner asset | customer | proposed | — | 204 No Content | — |
-| GET | `/planner/chats` | List planner chats | customer | proposed | — | { id, updatedAt, title }[] | — |
+| GET | `/planner/chats` | List planner chats | customer | proposed | — | { id, title, updatedAt }[] | — |
 | POST | `/planner/chats` | Create a planner chat | customer | proposed | { title? } | PlannerChat | — |
 | GET | `/planner/chats/{id}` | Get a planner chat | customer | proposed | — | PlannerChat | — |
 | DELETE | `/planner/chats/{id}` | Delete a planner chat | customer | proposed | — | 204 No Content | — |
@@ -599,7 +601,7 @@ Review queue (`status=pending_review`), approval or rejection with reason, suspe
 | Method | Path | Summary | Auth | Status | Request | Response | Domain errors |
 |---|---|---|---|---|---|---|---|
 | GET | `/admin/events` | List events | admin · `events.view` | required | query: search, status, categoryId, attendanceMode, featured, dateFrom, dateTo, sort, order, page, perPage | AdminEventRecord[] + meta(pagination) | — |
-| GET | `/admin/events/{id}` | Get an event with bookings and reports | admin · `events.view` | required | — | { description, visibility, approvalRequired, guestLimit, allowGuestInvites, maxAdditionalGuests, isAdultOnly, organizer, schedules, subEvents, ticketTypes, menu, promotion, stats, gallery, tags, communityId, myRequestStatus, myTicketId, createdAt, updatedAt, publishedAt, city, slug, status, id, category, title, startsAt, endsAt, coverUrl, isFree, attendanceMode, currency, minPrice, isSaved, isFeatured, isPromoted, ticketsSold, revenue, reportsCount, submittedAt, reviewedBy, rejectionReason, source, bookings, reports } | — |
+| GET | `/admin/events/{id}` | Get an event with bookings and reports | admin · `events.view` | required | — | { description, visibility, approvalRequired, guestLimit, allowGuestInvites, maxAdditionalGuests, isAdultOnly, organizer, schedules, subEvents, ticketTypes, menu, promotion, stats, gallery, tags, communityId, myRequestStatus, myTicketId, createdAt, updatedAt, publishedAt, city, id, title, slug, status, category, startsAt, endsAt, coverUrl, isFree, attendanceMode, currency, minPrice, isSaved, isFeatured, isPromoted, ticketsSold, revenue, reportsCount, submittedAt, reviewedBy, rejectionReason, source, bookings, reports } | — |
 | POST | `/admin/events/{id}/approve` | Approve an event pending review | admin · `events.moderate` | required | { reason? } | AdminEventRecord | — |
 | POST | `/admin/events/{id}/reject` | Reject an event pending review | admin · `events.moderate` | required | { reason } | AdminEventRecord | — |
 | POST | `/admin/events/{id}/suspend` | Suspend a live event | admin · `events.moderate` | required | { reason } | AdminEventRecord | — |

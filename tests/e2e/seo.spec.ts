@@ -71,7 +71,16 @@ test.describe('SEO', () => {
 
   test('FAQs expose FAQPage data', async ({ page }) => {
     await page.goto('/faqs')
-    await expect.poll(async () => (await head(page)).types).toEqual(['FAQPage'])
+    await expect.poll(async () => (await head(page)).types).toEqual(['BreadcrumbList', 'FAQPage'])
+  })
+
+  test('information pages expose breadcrumbs (and the help center its popular FAQs)', async ({ page }) => {
+    await page.goto('/help')
+    await expect.poll(async () => (await head(page)).types).toEqual(['BreadcrumbList', 'FAQPage'])
+    await page.goto('/terms')
+    await expect.poll(async () => (await head(page)).types).toEqual(['BreadcrumbList'])
+    await page.goto('/about')
+    await expect.poll(async () => (await head(page)).types).toEqual(['Organization', 'BreadcrumbList'])
   })
 
   test('private pages are noindex without canonical or structured data', async ({ page }) => {

@@ -20,6 +20,8 @@ export const webRoutes: RouteRecordRaw[] = [
       { path: 'interests', name: 'auth.interests', component: () => import('@/pages/auth/InterestsPage.vue'), meta: { title: 'Your interests', guestOnly: false, requiresAuth: true } },
       { path: 'forgot-password', name: 'auth.forgot-password', component: () => import('@/pages/auth/ForgotPasswordPage.vue'), meta: { title: 'Forgot password' } },
       { path: 'reset-password', name: 'auth.reset-password', component: () => import('@/pages/auth/ResetPasswordPage.vue'), meta: { title: 'Reset password' } },
+      // Google redirect-flow callback (GET /auth/google/redirect sends people back here). Open to signed-in users so a refresh doesn't bounce.
+      { path: 'google/callback', name: 'auth.google-callback', component: () => import('@/pages/auth/GoogleCallbackPage.vue'), meta: { title: 'Signing in with Google', guestOnly: false } },
     ],
   },
   {
@@ -35,11 +37,11 @@ export const webRoutes: RouteRecordRaw[] = [
       { path: 'vendors/:slug', name: 'vendor', component: () => import('@/pages/vendors/VendorProfilePage.vue'), meta: { title: 'Vendor', overlayHeader: true } },
       { path: 'works/:id', name: 'work', component: () => import('@/pages/vendors/WorkDetailPage.vue'), meta: { title: 'Work' } },
       { path: 'pricing', name: 'pricing', component: () => import('@/pages/PricingPage.vue'), meta: { title: 'Pricing' } },
-      { path: 'about', name: 'about', component: () => import('@/pages/static/CmsPage.vue'), props: { slug: 'about' }, meta: { title: 'About us', textured: true } },
-      { path: 'terms', name: 'terms', component: () => import('@/pages/static/CmsPage.vue'), props: { slug: 'terms' }, meta: { title: 'Terms and conditions', textured: true } },
-      { path: 'privacy', name: 'privacy', component: () => import('@/pages/static/CmsPage.vue'), props: { slug: 'privacy' }, meta: { title: 'Privacy policy', textured: true } },
-      { path: 'faqs', name: 'faqs', component: () => import('@/pages/static/CmsPage.vue'), props: { slug: 'faqs' }, meta: { title: 'FAQs', textured: true } },
-      { path: 'help', name: 'help', component: () => import('@/pages/static/HelpPage.vue'), meta: { title: 'Help center', textured: true } },
+      { path: 'about', name: 'about', component: () => import('@/pages/static/AboutPage.vue'), meta: { title: 'About us' } },
+      { path: 'terms', name: 'terms', component: () => import('@/pages/static/LegalPage.vue'), props: { slug: 'terms' }, meta: { title: 'Terms and conditions' } },
+      { path: 'privacy', name: 'privacy', component: () => import('@/pages/static/LegalPage.vue'), props: { slug: 'privacy' }, meta: { title: 'Privacy policy' } },
+      { path: 'faqs', name: 'faqs', component: () => import('@/pages/static/FaqsPage.vue'), meta: { title: 'FAQs' } },
+      { path: 'help', name: 'help', component: () => import('@/pages/static/HelpPage.vue'), meta: { title: 'Help center' } },
       { path: 'contact', redirect: { name: 'help' } },
       { path: 'c/join/:code', name: 'community.join', component: () => import('@/pages/community/JoinCommunityPage.vue'), meta: { requiresAuth: true, title: 'Join community' } },
 

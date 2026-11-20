@@ -440,6 +440,9 @@ export interface PlatformSettings {
   legal: { termsUrl: string; privacyUrl: string; termsUpdatedAt: ISODateString; privacyUpdatedAt: ISODateString }
 }
 
+/** Where a banner shows. `onboarding` is the sign-up/login photo carousel. */
+export type BannerPlacement = 'home_hero' | 'home_inline' | 'events_top' | 'vendors_top' | 'app_home' | 'onboarding'
+
 export interface Banner {
   id: Id
   title: string
@@ -447,7 +450,7 @@ export interface Banner {
   imageUrl: string | null
   ctaLabel: string | null
   ctaUrl: string | null
-  placement: 'home_hero' | 'home_inline' | 'events_top' | 'vendors_top' | 'app_home'
+  placement: BannerPlacement
   audience: 'all' | 'individuals' | 'businesses' | 'guests'
   startsAt: ISODateString | null
   endsAt: ISODateString | null
@@ -456,6 +459,9 @@ export interface Banner {
   impressions: number
   clicks: number
 }
+
+/** Public view of a live banner (GET /banners): no schedule, status or stats. */
+export type PublicBanner = Pick<Banner, 'id' | 'title' | 'subtitle' | 'imageUrl' | 'ctaLabel' | 'ctaUrl' | 'placement' | 'audience' | 'priority'>
 
 export interface CmsPage {
   id: Id

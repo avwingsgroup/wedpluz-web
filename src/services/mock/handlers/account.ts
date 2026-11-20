@@ -21,14 +21,17 @@ export function registerAccountHandlers() {
 
   route('POST', '/me/profile-setup', (req) => {
     const user = requireUser(req)
-    const b = body<{ username: string; phone?: string; city?: string; avatarUploadId?: string }>(req)
+    const b = body<{ username: string; phone?: string; city?: string; countryCode?: string; avatarUploadId?: string }>(req)
     requireFields(b, ['username'])
     if (db.users.some((u) => u.id !== user.id && u.username === b.username.toLowerCase())) {
       fail(422, 'VALIDATION_ERROR', 'Please check the highlighted fields.', { username: ['This username is taken.'] })
     }
     user.username = b.username.toLowerCase()
+    if (b.phone && !/^\+[1-9]\d{6,14}$/.test(b.phone)) fail(422, 'VALIDATION_ERROR', 'Please check the highlighted fields.', { phone: ['Enter the phone number in international format.'] })
+    if (b.countryCode && !/^[A-Z]{2}$/.test(b.countryCode)) fail(422, 'VALIDATION_ERROR', 'Please check the highlighted fields.', { countryCode: ['Choose a valid country.'] })
     if (b.phone) user.phone = b.phone
     if (b.city) user.city = b.city
+    if (b.countryCode) user.countryCode = b.countryCode
     if (b.avatarUploadId) user.avatarUrl = db.img(b.avatarUploadId, 300, 300)
     return data(user)
   })
@@ -173,5 +176,16 @@ export function registerAccountHandlers() {
     return created({ id: db.nextId('rep'), status: 'open' }, 'Thanks for letting us know. Our team will review this report.')
   })
 
+  // Public live banners for a placement (and optional audience), highest priority first.
+  route('GET', '/banners', (req) => {
+    const placement = req.query.get('placement')
+    const audience = req.query.get('audience')
+    const now = Date.now()
+    const live = db.banners
+      .filter((b) => b.isActive && (!placement || b.placement === placement) && (!audience || b.audience === 'all' || b.audience === audience))
+      .filter((b) => (!b.startsAt || Date.parse(b.startsAt) <= now) && (!b.endsAt || Date.parse(b.endsAt) > now))
+      .sort((a, b) => b.priority - a.priority)
+    return data(live.map(({ id, title, subtitle, imageUrl, ctaLabel, ctaUrl, placement: p, audience: au, priority }) => ({ id, title, subtitle, imageUrl, ctaLabel, ctaUrl, placement: p, audience: au, priority })))
+  })
   route('GET', '/config', () => data({ features: db.settings.features, payments: { enabledProviders: db.settings.payments.enabledProviders, serviceFeePercent: db.settings.payments.serviceFeePercent }, support: { email: db.settings.general.supportEmail, phone: db.settings.general.supportPhone, whatsapp: db.settings.general.supportWhatsapp }, app: db.settings.app }))
 }

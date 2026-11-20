@@ -75,7 +75,7 @@ function setAudience(a: 'individuals' | 'businesses') {
 </script>
 
 <template>
-  <header :class="cn('z-40 w-full transition-[background-color,box-shadow] duration-200', props.overlay ? 'absolute inset-x-0 top-0' : 'sticky top-0', !props.overlay && (scrolled || ui.mobileNavOpen ? 'bg-white/95 shadow-[0_1px_0_rgb(16_24_40/0.06)] backdrop-blur' : 'bg-white'))">
+  <header :class="cn('z-40 w-full transition-[background-color,box-shadow] duration-200 print:hidden', props.overlay ? 'absolute inset-x-0 top-0' : 'sticky top-0', !props.overlay && (scrolled || ui.mobileNavOpen ? 'bg-white/95 shadow-[0_1px_0_rgb(16_24_40/0.06)] backdrop-blur' : 'bg-white'))">
     <div :class="cn('container-app flex items-center gap-4 transition-[height] duration-200', props.overlay ? 'mt-4 h-16 max-w-[1296px] rounded-full border border-white/50 bg-white/65 shadow-[0_8px_32px_rgb(16_24_40/0.08)] backdrop-blur-md lg:h-[72px] lg:px-6!' : scrolled ? 'h-[76px]' : 'h-[72px] lg:h-[104px]')">
       <RouterLink :to="{ name: 'home' }" class="shrink-0" aria-label="Wedpluz home"><BrandLogo class="lg:[&_img]:h-[37px]" /></RouterLink>
 

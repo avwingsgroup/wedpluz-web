@@ -6,11 +6,6 @@
 const seed = (name: string, w: number, h: number) => `https://picsum.photos/seed/wedpluz-${name}/${w}/${h}`
 
 export const ILLUSTRATIONS = {
-  onboarding: [
-    { title: 'Show Your Work', image: seed('onboard-photographer', 900, 1200) },
-    { title: 'Discover Events Near You', image: seed('onboard-events', 900, 1200) },
-    { title: 'Plan Unforgettable Moments', image: seed('onboard-planner', 900, 1200) },
-  ],
   homeTickets: seed('home-tickets', 900, 600),
   homePhone: seed('home-phone', 700, 900),
   vendorsPhone: seed('vendors-phone', 700, 900),

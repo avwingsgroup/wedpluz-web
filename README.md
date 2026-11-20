@@ -101,5 +101,7 @@ scripts/          OpenAPI generator and validator, Vitest launcher
 - [Backend handoff](docs/backend-handoff/README.md): start here if you build the API.
 - [Frontend architecture](docs/frontend-architecture.md): structure, data flow, decisions, assumptions and design gaps.
 - [Deployment](docs/deployment.md): environments, build commands, hosting both domains, security headers.
+- [VPS deployment](docs/deployment-vps.md): automatic deploys from the `production` branch to the API's VPS (GitHub Actions, zero downtime, automatic rollback).
 - [Testing](docs/testing.md): what is covered and how to run it.
 - [SEO](docs/seo.md): metadata, structured data, sitemaps, link previews and the backend work for event and vendor visibility.
+- [Content pages](docs/content-pages.md): About, Terms, Privacy, FAQs and Help center — CMS content, built-in drafts (legal review before launch) and how to write FAQ/legal HTML.

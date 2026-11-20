@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { phoneProblem } from '@/utils/phone'
 
 export const emailSchema = z.string().trim().min(1, 'Email is required').email('Enter a valid email address')
 export const passwordSchema = z
@@ -8,6 +9,11 @@ export const passwordSchema = z
   .regex(/\d/, 'Include at least one number')
 export const nameSchema = z.string().trim().min(2, 'Enter at least 2 characters').max(60, 'Too long')
 export const phoneSchema = z.string().trim().regex(/^\+?[0-9]{7,15}$/, 'Enter a valid phone number')
+/** E.164 from UiPhoneInput, checked against the country's number length ("Nigeria numbers have 10 digits…"). */
+export const intlPhoneSchema = z.string().trim().superRefine((v, ctx) => {
+  const problem = phoneProblem(v)
+  if (problem) ctx.addIssue({ code: 'custom', message: problem })
+})
 export const otpSchema = z.string().regex(/^\d{4}$/, 'Enter the 4-digit code')
 export const pinSchema = z.string().regex(/^\d{4}$/, 'PIN must be 4 digits')
 export const urlSchema = z.string().trim().url('Enter a valid link')

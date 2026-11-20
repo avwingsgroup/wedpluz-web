@@ -1,6 +1,8 @@
 import { request } from '@/services/http'
 import type {
   AccountDeletionRequest,
+  BannerPlacement,
+  PublicBanner,
   ChangePasswordPayload,
   CmsPage,
   IdentityVerification,
@@ -28,6 +30,8 @@ export interface PublicConfig {
   features: Record<string, boolean>
   payments: { enabledProviders: string[]; serviceFeePercent: number }
   support: { email: string; phone: string; whatsapp: string }
+  /** Proposed: the visitor's country from the request IP (e.g. CF-IPCountry), ISO 3166-1 alpha-2. Optional. */
+  geo?: { countryCode: string | null }
   app: { minAndroidVersion: string; minIosVersion: string; forceUpdate: boolean; androidStoreUrl: string; iosStoreUrl: string }
 }
 
@@ -59,6 +63,8 @@ export const accountApi = {
   },
   uploadSignature: (purpose: string) => request.post<UploadSignature>('/uploads/sign', { purpose }),
   publicProfile: (id: string) => request.get<PublicProfile>(`/users/${id}`),
+  /** Live banners for a placement, highest priority first (render in the order received). Public and cacheable for 5 minutes. */
+  banners: (placement: BannerPlacement, audience?: PublicBanner['audience']) => request.get<PublicBanner[]>('/banners', { placement, audience }, { skipAuth: true }),
   page: (slug: CmsPage['slug']) => request.get<CmsPage>(`/pages/${slug}`, undefined, { skipAuth: true }),
   createSupportTicket: (payload: { subject: string; category: string; message: string }) => request.post<SupportTicket>('/support/tickets', payload),
   supportTickets: () => request.get<SupportTicket[]>('/support/tickets'),

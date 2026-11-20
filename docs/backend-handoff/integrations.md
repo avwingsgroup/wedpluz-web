@@ -110,7 +110,12 @@ Alternatives if Primely is not confirmed: Prembly (Identitypass), Smile ID, Doja
 
 ## 6. Authentication
 
-**Google Sign-In.** The web app uses Google Identity Services to obtain an ID token (JWT) and sends it to `POST /auth/social { provider: google, idToken }`. The backend verifies the signature (Google certs), `aud` (the web client ID plus the Android and iOS client IDs), `iss`, `exp` and `email_verified`. It then links or creates the user. Never accept a Google access token or profile JSON from the client as proof of identity.
+**Google Sign-In.** The web app supports both forms that `POST /auth/social` accepts.
+
+- **Redirect flow (the button).** The browser calls `GET /auth/google/redirect?redirectUri=<web origin>/auth/google/callback`, which returns `{ url, state, redirectUri, expiresIn }`. The backend keeps the state and PKCE verifier, exchanges the code with the client secret, and allowlists `redirectUri`. The browser then posts `{ provider: google, code, state }` from the callback page.
+- **One Tap.** Google Identity Services gives the browser an ID token (JWT), which is posted as `{ provider: google, idToken }`.
+
+For ID tokens: The backend verifies the signature (Google certs), `aud` (the web client ID plus the Android and iOS client IDs), `iss`, `exp` and `email_verified`. It then links or creates the user. Never accept a Google access token or profile JSON from the client as proof of identity.
 
 ## 7. Monitoring and other tools
 

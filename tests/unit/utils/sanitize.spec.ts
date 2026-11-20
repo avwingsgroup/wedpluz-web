@@ -23,6 +23,12 @@ describe('sanitizeRichText', () => {
     expect(out).not.toContain('onerror')
   })
 
+  it('keeps same-site paths and h2 headings but rejects protocol-relative links', () => {
+    expect(sanitizeRichText('<h2>Terms</h2><a href="/privacy">Privacy</a>')).toBe('<h2>Terms</h2><a href="/privacy">Privacy</a>')
+    expect(sanitizeRichText('<a href="//evil.example">x</a>')).toBe('<a>x</a>')
+    expect(sanitizeRichText('<a href="/\\evil.example">x</a>')).toBe('<a>x</a>')
+  })
+
   it('removes javascript: links but keeps safe links hardened', () => {
     expect(sanitizeRichText('<a href="javascript:alert(1)">x</a>')).toBe('<a>x</a>')
     const safe = sanitizeRichText('<a href="https://wedpluz.com">site</a>')

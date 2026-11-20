@@ -1,0 +1,163 @@
+name: Deploy
+
+# Automatic: every push to the `production` branch (all checks must pass first).
+# Manual:    Actions → Deploy → Run workflow (any ref).
+# Same process as the API (avwingsgroup/wedpluz-api): build an artifact, upload it over SSH as usir,
+# and let the server-side release script switch `current` atomically, with automatic rollback.
+on:
+  push:
+    branches: [production]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to deploy (leave empty to deploy the branch chosen in "Use workflow from")
+        required: false
+        default: ''
+
+# One deployment at a time; a newer push waits instead of cancelling a deploy halfway.
+concurrency:
+  group: deploy-web-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    name: Build release artifact
+    needs: tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      sha: ${{ steps.meta.outputs.sha }}
+    env:
+      # Optional public build settings from the `production` environment's variables. VITE_* values end up in
+      # public JavaScript: never put a secret here (the build refuses a Google client secret).
+      VITE_SENTRY_DSN: ${{ vars.VITE_SENTRY_DSN }}
+      VITE_REALTIME_URL: ${{ vars.VITE_REALTIME_URL }}
+      VITE_REALTIME_KEY: ${{ vars.VITE_REALTIME_KEY }}
+      VITE_GOOGLE_MAPS_API_KEY: ${{ vars.VITE_GOOGLE_MAPS_API_KEY }}
+      VITE_PAYSTACK_PUBLIC_KEY: ${{ vars.VITE_PAYSTACK_PUBLIC_KEY }}
+    environment:
+      name: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      # .env.production holds the committed public settings (API https://api.wedpluz.com/api/v1, origins,
+      # Google client id, sitemaps). Empty `vars` above fall back to those files.
+      - name: Build web and admin
+        run: |
+          for v in VITE_SENTRY_DSN VITE_REALTIME_URL VITE_REALTIME_KEY VITE_GOOGLE_MAPS_API_KEY VITE_PAYSTACK_PUBLIC_KEY; do
+            [ -n "${!v}" ] || unset "$v"
+          done
+          npx vite build --mode production --outDir dist/web
+          npx cross-env VITE_APP_TARGET=admin vite build --mode production --outDir dist/admin
+          grep -q 'https://api.wedpluz.com/api/v1' -r dist/web/assets || { echo "::error::web build does not target https://api.wedpluz.com/api/v1"; exit 1; }
+
+      - name: Package
+        id: meta
+        run: |
+          SHA=$(git rev-parse HEAD)
+          BUILT_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "$SHA" > dist/REVISION
+          for app in web admin; do
+            printf '{"revision":"%s","builtAt":"%s"}\n' "$SHA" "$BUILT_AT" > "dist/$app/version.json"
+          done
+          # The archive is written OUTSIDE the directory being archived (GNU tar exits 1 otherwise).
+          tar -C dist -czf "$RUNNER_TEMP/release.tar.gz" REVISION web admin
+          mkdir -p release
+          mv "$RUNNER_TEMP/release.tar.gz" release/release.tar.gz
+          cp deploy/scripts/deploy.sh release/deploy.sh
+          ls -lh release/
+          du -sh dist/web dist/admin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: release/
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Deploy to VPS
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: ${{ vars.WEB_URL || 'https://wedpluz.com' }}
+    env:
+      SHA: ${{ needs.build.outputs.sha }}
+      SSH_PORT: ${{ secrets.VPS_PORT || '22' }}
+      # The release runs as the login user (usir) unless VPS_APP_USER names a separate app user.
+      LOGIN_USER: ${{ secrets.VPS_USER }}
+      APP_USER: ${{ vars.VPS_APP_USER || secrets.VPS_USER }}
+      WEB_URL: ${{ vars.WEB_URL || 'https://wedpluz.com' }}
+      ADMIN_URL: ${{ vars.ADMIN_URL || 'https://admin.wedpluz.com' }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+
+      - name: Configure SSH
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Pinned host key (VPS_KNOWN_HOSTS) prevents man-in-the-middle; never use StrictHostKeyChecking=no.
+          printf '%s\n' "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          cat >> ~/.ssh/config <<EOF
+          Host vps
+            HostName ${{ secrets.VPS_HOST }}
+            User ${{ secrets.VPS_USER }}
+            Port $SSH_PORT
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            ServerAliveInterval 30
+          EOF
+
+      - name: Upload release
+        run: |
+          scp -q release.tar.gz "vps:/tmp/wedpluz-web-$SHA.tar.gz"
+          scp -q deploy.sh "vps:/tmp/wedpluz-web-deploy-$SHA.sh"
+          ssh vps "chmod 644 /tmp/wedpluz-web-$SHA.tar.gz /tmp/wedpluz-web-deploy-$SHA.sh"
+
+      - name: Activate release
+        run: |
+          # Same user (default): run directly. Separate app user: the sudo rule written by provision-web.sh allows
+          # /usr/bin/bash /tmp/wedpluz-web-deploy-*.sh as that user (/etc/sudoers.d/wedpluz-web).
+          RUN="/usr/bin/bash"
+          if [ "$APP_USER" != "$LOGIN_USER" ]; then RUN="sudo -n -u $APP_USER /usr/bin/bash"; fi
+          ssh vps "$RUN /tmp/wedpluz-web-deploy-$SHA.sh --artifact /tmp/wedpluz-web-$SHA.tar.gz; status=\$?; rm -f /tmp/wedpluz-web-$SHA.tar.gz /tmp/wedpluz-web-deploy-$SHA.sh; exit \$status"
+
+      - name: Public check
+        run: |
+          # Through DNS and TLS, as visitors see it: both sites must serve this commit.
+          for url in "$WEB_URL" "$ADMIN_URL"; do
+            body=$(curl -fsS --retry 5 --retry-delay 3 "$url/version.json?ts=$(date +%s)")
+            echo "$url → $body"
+            echo "$body" | grep -q "\"revision\":\"$SHA\"" || { echo "::error::$url does not serve ${SHA:0:7}"; exit 1; }
+          done
+          curl -fsS -o /dev/null -w "$WEB_URL/ → %{http_code}\n" "$WEB_URL/"
+          curl -fsS -o /dev/null -w "$WEB_URL/events → %{http_code} (SPA fallback)\n" "$WEB_URL/events"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### Deploy ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`${SHA:0:7}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Web: $WEB_URL · Admin: $ADMIN_URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "- API: https://api.wedpluz.com" >> "$GITHUB_STEP_SUMMARY"

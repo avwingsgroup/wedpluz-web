@@ -1,6 +1,7 @@
 authLogin | Sign in with email and password
 authRegister | Create a customer account
 authSocial | Sign in or sign up with Google
+authGoogleRedirect | Start Google sign-in (redirect flow): get the Google consent URL
 authSendOtp | Send a one-time code by email
 authVerifyOtp | Verify a one-time code
 authForgotPassword | Start password reset
@@ -34,6 +35,7 @@ accountCreateSupportTicket | Open a support ticket
 accountSupportTickets | List my support tickets
 accountReport | Report content or a user
 accountConfig | Get public platform configuration and feature flags
+accountBanners | List live banners for a placement (onboarding carousel, home, events, vendors)
 accountRegisterDevice | Register a web push token
 eventsCategories | List event categories
 eventsList | Search and filter events
